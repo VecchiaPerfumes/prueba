@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vecchia Perfumes | Perfumería de nicho y diseñador en Barinas, Venezuela</title>
+  <meta name="description" content="Vecchia Perfumes — perfumería de nicho y diseñador en Barinas, Venezuela. Fragancias originales y decants de 5ml para hombre, mujer y unisex. Compra por WhatsApp.">
+  <meta name="theme-color" content="#F5F2EC">
+  <link rel="canonical" href="https://vecchiaperfumes.com/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Vecchia Perfumes | Aromas que crean recuerdos inolvidables">
+  <meta property="og:description" content="Fragancias originales y decants de 5ml. Colecciones masculinas, femeninas y unisex. Compra por WhatsApp.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1200">
+  <meta property="og:locale" content="es_VE">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23111110'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='%23F5F2EC' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://fimgs.net">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Vecchia Perfumes",
+    "description": "Perfumería de nicho y diseñador, decants de 5ml y colecciones para hombre, mujer y unisex.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Barinas", "addressCountry": "VE" },
+    "telephone": "+582735527411",
+    "priceRange": "$$"
+  }
+  </script>
+
+  <style>
+    :root {
+      --cream:    #F5F2EC;
+      --cream2:   #EDEAE3;
+      --black:    #111110;
+      --gray:     #767670;
+      --gray-lt:  #D4D1CB;
+      --line:     #D9D6CF;
+      --white:    #FAFAF8;
+
+      --serif: 'Cormorant Garamond', serif;
+      --sans:  'Inter', sans-serif;
+
+      --ease: cubic-bezier(.22,.61,.36,1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans); background: var(--cream); color: var(--black);
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
+    }
+    body.no-scroll { overflow: hidden; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--black); outline-offset: 3px; }
+    #inicio, #casa, #catalogo, #boutique, #decants, #contacto { scroll-margin-top: 84px; }
+    img { display: block; max-width: 100%; }
+    ::selection { background: var(--black); color: var(--white); }
+
+    /* ── shared editorial marks ── */
+    .eyebrow {
+      font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gray);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--gray-lt); }
+    .eyebrow.on-dark { color: rgba(255,255,255,0.5); }
+    .eyebrow.on-dark::before { background: rgba(255,255,255,0.25); }
+
+    .btn { display: inline-block; text-decoration: none; font-size: 0.68rem; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; transition: all 0.3s var(--ease); }
+    .btn-solid { background: var(--black); color: var(--white); padding: 16px 36px; border: 1px solid var(--black); }
+    .btn-solid:hover { background: transparent; color: var(--black); }
+    .btn-white { background: var(--white); color: var(--black); padding: 16px 36px; border: 1px solid var(--white); }
+    .btn-white:hover { background: transparent; color: var(--white); }
+    .btn-line { color: var(--black); padding: 14px 0; border-bottom: 1px solid var(--black); display: inline-flex; align-items: center; gap: 10px; }
+    .btn-line span.arw { transition: transform 0.3s var(--ease); }
+    .btn-line:hover span.arw { transform: translateX(6px); }
+    .btn-line.on-dark { color: var(--white); border-color: rgba(255,255,255,0.5); }
+
+    /* ── NAV ── */
+    header { position: fixed; top: 0; left: 0; width: 100%; z-index: 900; }
+    nav {
+      padding: 26px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: padding 0.4s var(--ease), background 0.4s var(--ease), border-color 0.4s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      padding: 16px 5%;
+      background: rgba(245,242,236,0.88);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-color: var(--line);
+    }
+    .logo {
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 400;
+      letter-spacing: 7px; text-transform: uppercase; color: var(--black);
+      text-decoration: none; cursor: pointer; z-index: 950; transition: opacity .3s;
+      mix-blend-mode: difference; filter: invert(1);
+    }
+    .logo:hover { opacity: .7; }
+    .nav-links { display: flex; gap: 40px; list-style: none; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: rgba(255,255,255,0.85); font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 2px; text-transform: uppercase; transition: opacity 0.25s; mix-blend-mode: difference; filter: invert(1);
+    }
+    nav.scrolled .nav-links a, nav.scrolled .logo { mix-blend-mode: normal; filter: none; color: var(--gray); }
+    nav.scrolled .logo { color: var(--black); }
+    .nav-links a:hover { opacity: 0.55; }
+    .nav-cta {
+      border: 1px solid rgba(255,255,255,0.7) !important; padding: 10px 20px; color: var(--white) !important;
+    }
+    nav.scrolled .nav-cta { border-color: var(--black) !important; color: var(--black) !important; }
+
+    .hamburger {
+      display: none; background: none; border: none; cursor: pointer; padding: 8px;
+      flex-direction: column; gap: 6px; z-index: 950; position: relative;
+    }
+    .hamburger span { display: block; width: 22px; height: 1px; background: var(--white); mix-blend-mode: difference; filter: invert(1); transition: transform 0.3s var(--ease), opacity 0.3s, background 0.3s; }
+    nav.scrolled .hamburger span { background: var(--black); mix-blend-mode: normal; filter: none; }
+    nav.menu-open .hamburger span:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
+    nav.menu-open .hamburger span:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+    nav.menu-open .hamburger span { background: var(--black) !important; mix-blend-mode: normal !important; filter: none !important; }
+
+    /* ═══════════ HERO — pantalla completa, tipografía monumental ═══════════ */
+    .hero {
+      position: relative; min-height: 100svh; display: flex; align-items: flex-end;
+      background: var(--black); overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(30%) brightness(0.82); opacity: 0.95; will-change: transform;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(17,17,16,0.15) 0%, rgba(17,17,16,0.05) 40%, rgba(17,17,16,0.75) 100%);
+    }
+    .hero-inner {
+      position: relative; z-index: 2; width: 100%;
+      padding: 0 5% 64px; display: flex; flex-direction: column; gap: 28px;
+    }
+    .hero-eyebrow { color: rgba(255,255,255,0.65); }
+    .hero-eyebrow::before { background: rgba(255,255,255,0.3); }
+    .hero-title {
+      font-family: var(--serif); font-weight: 300; color: var(--white);
+      line-height: 0.86; font-size: clamp(3.6rem, 15vw, 9.5rem); letter-spacing: 1px;
+    }
+    .hero-title em { font-style: italic; color: rgba(255,255,255,0.55); }
+    .hero-foot {
+      display: flex; flex-direction: column; gap: 22px; padding-top: 6px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+    }
+    .hero-tagline {
+      font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem, 2vw, 1.4rem);
+      color: rgba(255,255,255,0.7); max-width: 480px; line-height: 1.7; padding-top: 20px;
+    }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 18px; }
+    .hero-scroll {
+      position: absolute; right: 5%; bottom: 40px; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .hero-scroll span {
+      writing-mode: vertical-rl; font-size: 0.62rem; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .hero-scroll .line { width: 1px; height: 46px; background: rgba(255,255,255,0.35); position: relative; overflow: hidden; }
+    .hero-scroll .line::after {
+      content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: var(--white);
+      animation: scrollrun 2.2s ease-in-out infinite;
+    }
+    @keyframes scrollrun { 0% { top: -100%; } 60% { top: 100%; } 100% { top: 100%; } }
+
+    /* ── SECTIONS shared ── */
+    .section { padding: 130px 5%; }
+    .section-black { background: var(--black); color: var(--white); }
+    .section-gray { background: var(--cream2); }
+    .section-tight { padding: 100px 5%; }
+
+    /* ═══════════ CASA — manifiesto editorial ═══════════ */
+    .manifesto {
+      display: grid; grid-template-columns: 1fr; gap: 40px;
+    }
+    .manifesto-label { grid-column: 1; }
+    .manifesto-quote {
+      font-family: var(--serif); font-weight: 300; font-style: italic;
+      font-size: clamp(1.7rem, 4.4vw, 3rem); line-height: 1.32; max-width: 920px; letter-spacing: 0.2px;
+    }
+    .manifesto-quote strong { font-style: normal; font-weight: 400; color: var(--black); }
+    .manifesto-meta {
+      display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px;
+      margin-top: 20px; padding-top: 28px; border-top: 1px solid var(--line);
+    }
+    .manifesto-meta p { font-size: 0.82rem; color: var(--gray); max-width: 360px; line-height: 1.8; }
+
+    /* ═══════════ CATÁLOGO — franjas editoriales alternadas ═══════════ */
+    .spread {
+      display: grid; grid-template-columns: 1fr; gap: 30px;
+      padding: 60px 0; border-top: 1px solid var(--line);
+      align-items: center;
+    }
+    .spread:last-of-type { border-bottom: 1px solid var(--line); }
+    .spread-media { position: relative; overflow: hidden; aspect-ratio: 4/5; background: var(--black); }
+    .spread-media img {
+      width: 100%; height: 100%; object-fit: cover; filter: grayscale(18%);
+      transition: transform 1.1s var(--ease), filter 0.8s;
+    }
+    .spread:hover .spread-media img { transform: scale(1.05); filter: grayscale(0%); }
+    .spread-text { display: flex; flex-direction: column; gap: 20px; }
+    .spread-index { font-family: var(--serif); font-style: italic; color: var(--gray); font-size: 1rem; }
+    .spread-name { font-family: var(--serif); font-weight: 300; font-size: clamp(2.2rem, 5.5vw, 3.8rem); line-height: 1.02; }
+    .spread-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.85; max-width: 400px; }
+    .spread-link { margin-top: 6px; }
+
+    /* ═══════════ BOUTIQUE — más vendidos, jerarquía tipográfica ═══════════ */
+    .boutique-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 56px; }
+    .boutique-list { display: flex; flex-direction: column; }
+    .boutique-row {
+      display: grid; grid-template-columns: 84px 1fr; gap: 22px; align-items: center;
+      padding: 30px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit;
+      position: relative; transition: padding-left 0.35s var(--ease);
+    }
+    .boutique-row:first-child { border-top: 1px solid var(--line); }
+    .boutique-row:hover { padding-left: 14px; }
+    .boutique-thumb { width: 84px; height: 104px; background: var(--white); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .boutique-thumb img { max-width: 76%; max-height: 76%; object-fit: contain; transition: transform 0.5s var(--ease); }
+    .boutique-row:hover .boutique-thumb img { transform: scale(1.1); }
+    .boutique-body { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-width: 0; flex-wrap: wrap; }
+    .boutique-info { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .boutique-num { font-family: var(--serif); font-style: italic; color: var(--gray); font-size: 0.85rem; }
+    .boutique-name { font-family: var(--serif); font-weight: 400; font-size: clamp(1.2rem, 3vw, 1.85rem); }
+    .boutique-tag { font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); }
+    .boutique-right { display: flex; align-items: center; gap: 20px; }
+    .boutique-price { font-size: 0.85rem; letter-spacing: 1px; color: var(--black); }
+    .boutique-arrow {
+      width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .boutique-arrow svg { width: 13px; height: 13px; transition: transform 0.3s var(--ease); }
+    .boutique-row:hover .boutique-arrow { background: var(--black); border-color: var(--black); }
+    .boutique-row:hover .boutique-arrow svg { transform: translateX(2px); stroke: var(--white); }
+
+    /* ═══════════ DECANTS — narrativa premium ═══════════ */
+    .decants-grid { display: grid; grid-template-columns: 1fr; gap: 60px; align-items: start; }
+    .decants-narrative { display: flex; flex-direction: column; gap: 34px; }
+    .decants-lede {
+      font-family: var(--serif); font-weight: 300; font-size: clamp(1.6rem, 4vw, 2.5rem);
+      line-height: 1.3; color: var(--white); max-width: 520px;
+    }
+    .decants-body { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 2; max-width: 460px; }
+    .decants-stats { display: flex; flex-direction: column; gap: 0; border-top: 1px solid rgba(255,255,255,0.14); margin-top: 6px; }
+    .decants-stat { display: flex; justify-content: space-between; align-items: baseline; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.14); }
+    .decants-stat-num { font-family: var(--serif); font-weight: 300; font-size: clamp(2.1rem, 5vw, 3rem); color: var(--white); }
+    .decants-stat-label { font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); text-align: right; max-width: 140px; }
+    .decants-media { position: relative; overflow: hidden; aspect-ratio: 5/6; }
+    .decants-media img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%); transition: transform 1s var(--ease); }
+    .decants-media:hover img { transform: scale(1.04); }
+
+    /* ═══════════ CONTACTO / CTA banda ═══════════ */
+    .cta-band {
+      background: var(--cream2); padding: 110px 5%; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 26px;
+    }
+    .cta-title { font-family: var(--serif); font-weight: 300; font-size: clamp(2.2rem, 6vw, 3.8rem); max-width: 780px; line-height: 1.15; }
+    .cta-sub { font-size: 0.85rem; color: var(--gray); max-width: 460px; line-height: 1.8; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--black); color: rgba(255,255,255,0.6); padding: 90px 5% 30px; }
+    .footer-top {
+      display: grid; grid-template-columns: 1fr; gap: 50px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .footer-brand { display: flex; flex-direction: column; gap: 18px; }
+    .footer-logo { font-family: var(--serif); font-size: 2rem; font-weight: 300; letter-spacing: 9px; color: var(--white); }
+    .footer-brand p { font-size: 0.82rem; line-height: 1.8; max-width: 320px; color: rgba(255,255,255,0.45); }
+    .footer-cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+    .footer-col h3 { font-size: 0.62rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+    .footer-col a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.88rem; transition: color 0.25s, padding-left 0.25s; font-family: var(--serif); }
+    .footer-col a:hover { color: var(--white); padding-left: 4px; }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-top: 26px;
+      font-size: 0.68rem; letter-spacing: 1px; color: rgba(255,255,255,0.32);
+    }
+    .footer-bottom a { color: inherit; text-decoration: none; }
+    .footer-bottom a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── WHATSAPP FAB ── */
+    .wa-fab {
+      position: fixed; bottom: 26px; right: 26px; width: 54px; height: 54px; border-radius: 50%;
+      background: var(--black); display: flex; align-items: center; justify-content: center;
+      z-index: 800; text-decoration: none; transition: transform 0.35s var(--ease), background 0.35s; border: 1px solid var(--black);
+      box-shadow: 0 8px 26px rgba(17,17,16,0.22);
+    }
+    .wa-fab:hover { background: transparent; transform: translateY(-4px); }
+    .wa-fab svg { width: 22px; height: 22px; fill: var(--white); transition: fill 0.3s; }
+    .wa-fab:hover svg { fill: var(--black); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+    .reveal.in { opacity: 1; transform: none; }
+    .r1 { transition-delay: .08s; } .r2 { transition-delay: .16s; } .r3 { transition-delay: .24s; } .r4 { transition-delay: .32s; }
+
+    /* ═══════════ TABLET / DESKTOP ═══════════ */
+    @media (min-width: 640px) {
+      .footer-cols { grid-template-columns: repeat(3, 1fr); }
+      .manifesto-quote { grid-column: span 2; }
+    }
+
+    @media (min-width: 860px) {
+      .hero-inner { padding: 0 6% 84px; max-width: 1500px; }
+      .hero-foot { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+      .hero-tagline { padding-top: 0; }
+
+      .manifesto { grid-template-columns: 220px 1fr; gap: 60px; }
+      .manifesto-meta { display: grid; grid-template-columns: 220px 1fr; gap: 60px; align-items: flex-end; }
+      .manifesto-meta p:first-child { grid-column: 2; }
+
+      .spread { grid-template-columns: 1fr 1fr; gap: 90px; padding: 90px 0; }
+      .spread-media { aspect-ratio: 4/4.7; }
+      .spread:nth-child(even) .spread-media { order: 2; }
+      .spread:nth-child(even) .spread-text { order: 1; align-items: flex-end; text-align: right; }
+      .spread:nth-child(even) .spread-desc { margin-left: auto; }
+
+      .boutique-row { grid-template-columns: 100px 1fr; gap: 30px; }
+      .boutique-thumb { width: 100px; height: 124px; }
+
+      .decants-grid { grid-template-columns: 1fr 1fr; gap: 100px; }
+
+      .footer-top { grid-template-columns: 1fr 1.4fr; align-items: start; }
+    }
+
+    @media (min-width: 1180px) {
+      .hero-title { font-size: clamp(6rem, 9vw, 11rem); }
+      .section { padding: 160px 6%; }
+      .section-tight { padding: 120px 6%; }
+    }
+
+    @media (min-width: 1600px) {
+      .section, .section-tight { padding-left: 8%; padding-right: 8%; }
+      .hero-inner { padding-left: 8%; padding-right: 8%; }
+    }
+
+    /* ═══════════ MOBILE NAV ═══════════ */
+    @media (max-width: 859px) {
+      .nav-links {
+        position: fixed; top: 0; right: -100%; width: 78%; max-width: 360px; height: 100vh;
+        background: var(--cream); display: flex; flex-direction: column;
+        justify-content: flex-start; align-items: flex-start; padding: 120px 40px 50px;
+        list-style: none; transition: right .5s var(--ease); gap: 0;
+        border-left: 1px solid var(--line); box-shadow: -24px 0 60px rgba(0,0,0,.1); z-index: 940;
+      }
+      nav.menu-open .nav-links { right: 0; }
+      .nav-links li { width: 100%; border-bottom: 1px solid var(--line); }
+      .nav-links a {
+        display: block; width: 100%; padding: 22px 0; font-family: var(--serif); font-size: 1.2rem;
+        font-weight: 400; color: var(--black) !important; text-decoration: none; text-transform: none;
+        letter-spacing: 0; mix-blend-mode: normal !important; filter: none !important;
+      }
+      .nav-links a:hover { padding-left: 10px; opacity: 1; }
+      .nav-cta { border: none !important; padding: 22px 0 !important; }
+      .hamburger { display: flex; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .hero-scroll .line::after { animation: none; }
+      * { scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav id="nav">
+      <a href="#inicio" class="logo">VECCHIA</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#casa">La Casa</a></li>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#boutique">Más Vendidos</a></li>
+        <li><a href="#decants">Decants</a></li>
+        <li><a href="vecchia-quiz.html">¿Qué Perfume Soy?</a></li>
+        <li><a href="https://wa.me/582735527411" class="nav-cta" target="_blank" rel="noopener noreferrer">Contacto</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero" id="inicio">
+      <img class="hero-bg" id="heroImg" src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1600" width="1600" height="2000" alt="Frasco de perfume Vecchia envuelto en luz cálida" fetchpriority="high">
+      <div class="hero-inner">
+        <span class="eyebrow hero-eyebrow">Casa de Fragancias · Barinas, Venezuela</span>
+        <h1 class="hero-title">VECCHIA<br><em>Perfumes</em></h1>
+        <div class="hero-foot">
+          <p class="hero-tagline">"Aromas que crean recuerdos inolvidables." Una selección de fragancias originales y decants, para quienes entienden el perfume como una firma personal.</p>
+          <div class="hero-cta">
+            <a href="#catalogo" class="btn btn-white">Ver Catálogo</a>
+            <a href="https://wa.me/582735527411" target="_blank" rel="noopener noreferrer" class="btn-line on-dark">Escribir por WhatsApp <span class="arw">→</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <div class="line"></div>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- ═══ LA CASA — manifiesto ═══ -->
+    <section class="section" id="casa" aria-labelledby="casa-title">
+      <div class="manifesto">
+        <span class="eyebrow manifesto-label reveal">La Casa</span>
+        <p class="manifesto-quote reveal" id="casa-title">No vendemos frascos. Curamos <strong>momentos que se recuerdan por su aroma</strong> — piezas originales y decants pensados para descubrir, sin prisa, la fragancia que ya te pertenece.</p>
+        <div class="manifesto-meta reveal">
+          <p>Selección curada de perfumería de nicho y diseñador, disponible en Barinas y para todo Venezuela a través de WhatsApp.</p>
+          <a href="#catalogo" class="btn-line">Explorar colecciones <span class="arw">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CATÁLOGO — franjas editoriales ═══ -->
+    <section class="section-gray" id="catalogo" aria-labelledby="catalogo-title">
+      <div class="eyebrow reveal" style="margin-bottom:14px;">Catálogo</div>
+      <h2 class="section-title reveal" id="catalogo-title" style="font-family:var(--serif); font-weight:300; font-size:clamp(2.4rem,6vw,4.4rem); margin-bottom: 10px;">Colecciones</h2>
+
+      <article class="spread">
+        <a class="spread-media reveal" href="mens-collection.html" aria-hidden="false">
+          <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=900" width="900" height="1125" loading="lazy" alt="Men's Collection Vecchia">
+        </a>
+        <div class="spread-text reveal r1">
+          <span class="spread-index">01 — Masculino</span>
+          <h3 class="spread-name">Men's<br>Collection</h3>
+          <p class="spread-desc">Maderas, especias y acordes intensos para quien busca presencia sin decirlo en voz alta.</p>
+          <a href="mens-collection.html" class="btn-line spread-link">Ver colección <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="spread">
+        <a class="spread-media reveal" href="woman-collection.html">
+          <img src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=900" width="900" height="675" loading="lazy" alt="Women's Collection Vecchia">
+        </a>
+        <div class="spread-text reveal r1">
+          <span class="spread-index">02 — Femenino</span>
+          <h3 class="spread-name">Women's<br>Collection</h3>
+          <p class="spread-desc">Flores, ámbar y notas gourmand para una elegancia que se siente antes de verse.</p>
+          <a href="woman-collection.html" class="btn-line spread-link">Ver colección <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="spread">
+        <a class="spread-media reveal" href="unisex-collection.html">
+          <img src="https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=900" width="900" height="675" loading="lazy" alt="Unisex Collection Vecchia">
+        </a>
+        <div class="spread-text reveal r1">
+          <span class="spread-index">03 — Unisex</span>
+          <h3 class="spread-name">Unisex<br>Collection</h3>
+          <p class="spread-desc">Composiciones sin género, pensadas para la piel de quien las lleva, no para una etiqueta.</p>
+          <a href="unisex-collection.html" class="btn-line spread-link">Ver colección <span class="arw">→</span></a>
+        </div>
+      </article>
+
+      <article class="spread">
+        <a class="spread-media reveal" href="gift-sets.html">
+          <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=900" width="900" height="675" loading="lazy" alt="Gift Sets Vecchia">
+        </a>
+        <div class="spread-text reveal r1">
+          <span class="spread-index">04 — Regalos</span>
+          <h3 class="spread-name">Gift<br>Sets</h3>
+          <p class="spread-desc">Estuches curados para regalar algo que se recuerda mucho después de abrirse.</p>
+          <a href="gift-sets.html" class="btn-line spread-link">Ver colección <span class="arw">→</span></a>
+        </div>
+      </article>
+    </section>
+
+    <!-- ═══ BOUTIQUE — más vendidos ═══ -->
+    <section class="section" id="boutique" aria-labelledby="boutique-title">
+      <div class="boutique-head">
+        <div>
+          <div class="eyebrow reveal" style="margin-bottom:14px;">Selección</div>
+          <h2 class="reveal" id="boutique-title" style="font-family:var(--serif); font-weight:300; font-size:clamp(2.4rem,6vw,4.4rem);">Más Vendidos</h2>
+        </div>
+        <p class="reveal" style="font-size:0.85rem; color:var(--gray); max-width:280px; line-height:1.8;">Las fragancias que más regresan a buscarnos por WhatsApp.</p>
+      </div>
+
+      <div class="boutique-list">
+        <a class="boutique-row reveal" href="https://wa.me/p/9377978848949576/582735527411" target="_blank" rel="noopener noreferrer">
+          <span class="boutique-thumb"><img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.71761.2x.avif" width="375" height="500" loading="lazy" alt="Valentino Coral Fantasy"></span>
+          <span class="boutique-body">
+            <span class="boutique-info">
+              <span class="boutique-num">01</span>
+              <span class="boutique-name">Valentino Coral Fantasy</span>
+              <span class="boutique-tag">Femenino · Floral</span>
+            </span>
+            <span class="boutique-right">
+              <span class="boutique-price">$160</span>
+              <span class="boutique-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </span>
+        </a>
+
+        <a class="boutique-row reveal r1" href="https://wa.me/p/9382036791833294/582735527411" target="_blank" rel="noopener noreferrer">
+          <span class="boutique-thumb"><img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.66826.2x.avif" width="375" height="500" loading="lazy" alt="Azzaro Most Wanted Intense"></span>
+          <span class="boutique-body">
+            <span class="boutique-info">
+              <span class="boutique-num">02</span>
+              <span class="boutique-name">Azzaro Most Wanted Intense</span>
+              <span class="boutique-tag">Masculino · Amaderado</span>
+            </span>
+            <span class="boutique-right">
+              <span class="boutique-price">$120</span>
+              <span class="boutique-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </span>
+        </a>
+
+        <a class="boutique-row reveal r2" href="https://wa.me/p/28745186378462767/582735527411" target="_blank" rel="noopener noreferrer">
+          <span class="boutique-thumb"><img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.16657.2x.avif" width="375" height="500" loading="lazy" alt="Versace Eros"></span>
+          <span class="boutique-body">
+            <span class="boutique-info">
+              <span class="boutique-num">03</span>
+              <span class="boutique-name">Versace Eros</span>
+              <span class="boutique-tag">Masculino · Fougère</span>
+            </span>
+            <span class="boutique-right">
+              <span class="boutique-price">$105</span>
+              <span class="boutique-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </span>
+        </a>
+
+        <a class="boutique-row reveal r3" href="https://wa.me/p/9994908997289375/582735527411" target="_blank" rel="noopener noreferrer">
+          <span class="boutique-thumb"><img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.72821.2x.avif" width="375" height="500" loading="lazy" alt="Lattafa Asad"></span>
+          <span class="boutique-body">
+            <span class="boutique-info">
+              <span class="boutique-num">04</span>
+              <span class="boutique-name">Lattafa Asad</span>
+              <span class="boutique-tag">Unisex · Oriental</span>
+            </span>
+            <span class="boutique-right">
+              <span class="boutique-price">$50</span>
+              <span class="boutique-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ═══ DECANTS ═══ -->
+    <section class="section-black" id="decants" aria-labelledby="decants-title">
+      <div class="decants-grid">
+        <div class="decants-narrative">
+          <span class="eyebrow on-dark reveal">Decants · 5ml</span>
+          <h2 class="decants-lede reveal r1" id="decants-title">Prueba la fragancia antes de comprometerte con ella.</h2>
+          <p class="decants-body reveal r2">Fraccionamos nuestras piezas originales en formatos de 5ml para que descubras una fragancia nueva, la lleves de viaje, o confirmes que ya encontraste la tuya — sin comprar una botella completa.</p>
+          <a href="https://wa.me/582735527411" target="_blank" rel="noopener noreferrer" class="btn-white reveal r3" style="width:fit-content;">Comprar por WhatsApp</a>
+
+          <div class="decants-stats reveal r3">
+            <div class="decants-stat">
+              <span class="decants-stat-num">5ml</span>
+              <span class="decants-stat-label">Formato de prueba</span>
+            </div>
+            <div class="decants-stat">
+              <span class="decants-stat-num">+50</span>
+              <span class="decants-stat-label">Fragancias disponibles</span>
+            </div>
+            <div class="decants-stat">
+              <span class="decants-stat-num">100%</span>
+              <span class="decants-stat-label">Originales</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="decants-media reveal r2">
+          <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=900" width="900" height="1080" loading="lazy" alt="Frascos decant de 5ml con distintas fragancias Vecchia">
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA / CONTACTO ═══ -->
+    <section class="cta-band" id="contacto" aria-labelledby="cta-title">
+      <span class="eyebrow reveal" style="justify-content:center;">Contacto</span>
+      <h2 class="cta-title reveal r1" id="cta-title">Tu próxima fragancia favorita está a un mensaje de distancia.</h2>
+      <p class="cta-sub reveal r2">Escríbenos por WhatsApp para asesoría personalizada, disponibilidad y envíos desde Barinas.</p>
+      <a href="https://wa.me/582735527411" target="_blank" rel="noopener noreferrer" class="btn btn-solid reveal r3">Escribir por WhatsApp</a>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <p class="footer-logo">VECCHIA</p>
+        <p>Tu esencia. Tu estilo. Perfumería de nicho y diseñador en Barinas, Venezuela.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h3>Navegación</h3>
+          <ul>
+            <li><a href="#casa">La Casa</a></li>
+            <li><a href="#catalogo">Catálogo</a></li>
+            <li><a href="#boutique">Más Vendidos</a></li>
+            <li><a href="#decants">Decants</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Colecciones</h3>
+          <ul>
+            <li><a href="mens-collection.html">Men's</a></li>
+            <li><a href="woman-collection.html">Women's</a></li>
+            <li><a href="unisex-collection.html">Unisex</a></li>
+            <li><a href="gift-sets.html">Gift Sets</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Contacto</h3>
+          <ul>
+            <li><a href="https://wa.me/582735527411" target="_blank" rel="noopener noreferrer">+58 273 552 7411</a></li>
+            <li><a href="vecchia-quiz.html">¿Qué Perfume Soy?</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Vecchia Perfumes · Barinas, Venezuela</span>
+      <a href="https://wa.me/582735527411" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </div>
+  </footer>
+
+  <a class="wa-fab" href="https://wa.me/582735527411" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.114.55 4.1 1.508 5.831L0 24l6.335-1.652A11.953 11.953 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.882a9.877 9.877 0 0 1-5.031-1.378l-.361-.214-3.741.975.999-3.648-.235-.374A9.852 9.852 0 0 1 2.118 12C2.118 6.531 6.531 2.118 12 2.118S21.882 6.531 21.882 12 17.469 21.882 12 21.882z"/>
+    </svg>
+  </a>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Mobile menu
+    const btn = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    function closeMenu() {
+      nav.classList.remove('menu-open');
+      document.body.classList.remove('no-scroll');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Abrir menú');
+    }
+    function openMenu() {
+      nav.classList.add('menu-open');
+      document.body.classList.add('no-scroll');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-label', 'Cerrar menú');
+    }
+    btn.addEventListener('click', () => nav.classList.contains('menu-open') ? closeMenu() : openMenu());
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('menu-open')) { closeMenu(); btn.focus(); }
+    });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+    // Scroll reveal
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(el => io.observe(el));
+
+    // Subtle hero parallax
+    if (!reduceMotion) {
+      const heroImg = document.getElementById('heroImg');
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const y = window.scrollY;
+            if (y < window.innerHeight) {
+              heroImg.style.transform = `translateY(${y * 0.18}px) scale(1.06)`;
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
+  </script>
+</body>
+</html>
