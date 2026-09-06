@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unisex Collection | Vecchia Perfumes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site-variables.css">
+<link rel="stylesheet" href="assets/site-components.css">
+<link rel="stylesheet" href="assets/site-footer.css">
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">VECCHIA</a>
+<div class="nav-left"><a href="index.html" class="back-btn">← Volver</a><button id="menuBtn">☰</button></div>
+</nav>
+<div id="sideMenu" class="side-menu">
+<button id="closeMenu" class="close-menu">✕</button>
+<a href="index.html">Home</a><a href="mens-collection.html">Men's Collection</a><a href="woman-collection.html">Women's Collection</a><a href="unisex-collection.html">Unisex Collection</a><a href="gift-sets.html">Gift Sets</a>
+</div>
+<section class="hero"><h1>Unisex Collection</h1><p>Fragancias exclusivas para todos los estilos</p></section>
+<div class="search-section">
+<div class="search-box"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1016 9.5a6.47 6.47 0 01-1.57 4.23l.27.28h.8L20 20.5 21.5 19 15.5 14zM9.5 14A4.5 4.5 0 119.5 5a4.5 4.5 0 010 9z"/></svg><input type="text" id="searchInput" placeholder="Buscar perfume..."></div>
+<div class="filters">
+<button class="filter-btn active" data-filter="all">Todos</button><button class="filter-btn" data-filter="designer">Designer</button><button class="filter-btn" data-filter="arabes">Árabes</button><button class="filter-btn" data-filter="fresco">Frescos</button><button class="filter-btn" data-filter="dulce">Dulces</button><button class="filter-btn" data-filter="agotado">Agotados</button>
+</div></div>
+<section class="products">
+<div class="card sold-out" data-category="arabes" data-type="dulce"><img src="https://fandi-perfume.com/cdn/shop/files/lattafa-bade-e-al-oud-honor-glory-unisex-perfume-cologne-for-men-women-eau-de-parfum-3-4-oz-gift-set-3-4-oz-edp-1217979978.jpg?v=1769265070"><div class="info"><h2 class="name">Badee Al Oud Honor & Glory</h2><p class="price">$60</p><p class="desc">Una fragancia exótica con notas dulces, cremosas y especiadas que destaca por su elegancia y originalidad.</p><a class="buy" href="https://wa.me/582735527411">Comprar</a></div></div>
+<div class="card sold-out" data-category="arabes" data-type="dulce"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh_TMjkL9i4inTNolLKAUxN3bgeZFOQCC07b6TG2TQuCygXK7ehXBJEnU&s=10"><div class="info"><h2 class="name">Club De Nuit Untold</h2><p class="price">$55</p><p class="desc">Inspirada en Baccarat Rouge 540, combina dulzura, ámbar y un toque sofisticado que deja huella.</p><a class="buy" href="https://wa.me/582735527411">Comprar</a></div></div>
+<div class="card sold-out" data-category="arabes" data-type="fresco"><img src="https://cdn2.jomashop.com/media/catalog/product/cache/b3e31d40bbb1abcc90b26106659d5d3f/e/m/emper-unisex-stallion-53-edp-spray-34-oz-fragrances-6291108524893.jpg?width=800&height=800"><div class="info"><h2 class="name">Stallion 53</h2><p class="price">$50</p><p class="desc">Moderna y versátil, ideal para quienes buscan una fragancia equilibrada con excelente duración.</p><a class="buy" href="https://wa.me/582735527411">Comprar</a></div></div>
+<div class="card" data-category="arabes" data-type="dulce"><img src="https://cdn2.jomashop.com/media/catalog/product/cache/b3e31d40bbb1abcc90b26106659d5d3f/a/r/armaf-mens-odyssey-aoud-edp-2-oz-fragrances-6294015189629.jpg?width=800&height=800"><div class="info"><h2 class="name">Odyssey Aoud EDP</h2><p class="price">$60</p><p class="desc">Oud elegante con notas cálidas y amaderadas.</p><a class="buy" href="https://wa.me/582735527411">Comprar</a></div></div>
+<div class="card sold-out" data-category="arabes" data-type="dulce"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7Sb6836SN9_lfBit4UEnuK2_QyauA-lStbaayzypag9LnKnalrhwATTA&s=10"><div class="info"><h2 class="name">Khamrah Lattafa</h2><p class="price">$60</p><p class="desc">Cálida, dulce y especiada, con excelente duración y una estela envolvente.</p><a class="buy" href="https://wa.me/582735527411">Comprar</a></div></div>
+<div class="card" data-category="designer" data-type="fresco"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRakJEmS9D_j4zVH8MPmHZTAiMUUQjovqp0c8r4Ltdbtg&s"><div class="info"><h2 class="name">Mancera Holidays</h2><p class="price">$160</p><p class="desc">Fresca, tropical y cremosa, con un toque elegante que evoca unas vacaciones junto al mar.</p><a class="buy" href="https://wa.me/582735527411">Comprar</a></div></div>
+</section>
+<button id="topBtn">⌃</button>
+<script>
+const searchInput=document.getElementById("searchInput"),cards=document.querySelectorAll(".card"),filterButtons=document.querySelectorAll(".filter-btn");let currentFilter="all";
+searchInput.addEventListener("input",updateCatalog);
+filterButtons.forEach(button=>button.addEventListener("click",function(){filterButtons.forEach(btn=>btn.classList.remove("active"));this.classList.add("active");currentFilter=this.dataset.filter;updateCatalog()}));
+function updateCatalog(){const search=searchInput.value.toLowerCase().trim();cards.forEach(card=>{const text=card.innerText.toLowerCase(),category=card.dataset.category||"",type=card.dataset.type||"",sold=card.classList.contains("sold-out");let show=text.includes(search);if(currentFilter==="designer")show=show&&category==="designer";else if(currentFilter==="arabes")show=show&&category==="arabes";else if(currentFilter==="fresco")show=show&&type==="fresco";else if(currentFilter==="dulce")show=show&&type==="dulce";else if(currentFilter==="agotado")show=show&&sold;card.style.display=show?"":"none"})}
+const topBtn=document.getElementById("topBtn");window.addEventListener("scroll",()=>topBtn.style.display=window.scrollY>400?"block":"none");topBtn.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+const menuBtn=document.getElementById("menuBtn"),sideMenu=document.getElementById("sideMenu"),closeMenu=document.getElementById("closeMenu");menuBtn.addEventListener("click",()=>sideMenu.classList.add("open"));closeMenu.addEventListener("click",()=>sideMenu.classList.remove("open"));
+</script>
+</body>
+</html>

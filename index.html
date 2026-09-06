@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fffbf7">
+<title>VECCHIA — Gestión Premium 6.0</title>
+<style>
+:root{
+  --cream:#fffbf7;--light-gray:#f5f1e8;--medium-gray:#e8e2d8;--dark-gray:#d4ccbf;--text:#2a2520;--text-muted:#7a7168;--border:#e0d9ce;--success:#5a8a6f;--warn:#a68f5e;--danger:#a85c4f;--focus:#8f7a5e;--radius:12px;--shadow:0 6px 24px rgba(42,37,32,0.08);--shadow-lg:0 12px 40px rgba(42,37,32,0.12)
+}
+
+<link rel="stylesheet" href="assets/site-variables.css">
+<link rel="stylesheet" href="assets/site-components.css">
+<link rel="stylesheet" href="assets/site-footer.css">
+</head>
+<body>
+<header class="no-print">
+  <div class="logo">VECCHIA</div>
+  <nav class="nav">
+    <button class="active" data-page="inventory">Inventario</button>
+    <button data-page="calculator">Precios</button>
+    <button data-page="sales">Ventas</button>
+    <button data-page="invoice">Facturas</button>
+    <button data-page="debts">Deudas</button>
+    <button data-page="chat">Chat</button>
+  </nav>
+  <div class="header-status">
+    <span><span class="status-dot loading"></span>Sincronizando</span>
+    <span id="headerRate">Tasa: —</span>
+  </div>
+</header>
+
+<section id="inventory" class="page active"><main>
+<div class="top"><div><div class="eyebrow">Gestión</div><h1>Inventario</h1></div><button class="btn primary" onclick="openProduct()">+ Nuevo perfume</button></div>
+<div class="stats">
+  <div class="stat"><small>Productos</small><strong id="sProducts">0</strong></div>
+  <div class="stat"><small>Unidades</small><strong id="sUnits">0</strong></div>
+  <div class="stat"><small>Inventario USD</small><strong id="sCost">$0</strong></div>
+  <div class="stat"><small>Valor de venta</small><strong id="sValue">$0</strong></div>
+</div>
+<div class="tools">
+  <input id="search" placeholder="Buscar perfume...">
+  <select id="cat"><option value="all">Todas</option><option>Hombre</option><option>Mujer</option><option>Unisex</option><option>Gift Set</option></select>
+  <select id="stock"><option value="all">Todo</option><option value="available">Disponible</option><option value="low">Bajo stock</option><option value="sold">Agotado</option></select>
+</div>
+<div class="table-card"><div class="table-scroll"><table><thead><tr><th>Perfume</th><th>Costo USD</th><th>Venta USD</th><th>Margen</th><th>Stock Val.</th><th>Precio Bs.</th><th>Stock</th><th>Estado</th><th></th></tr></thead><tbody id="inventoryBody"></tbody></table></div></div>
+<div id="mobileInventory" class="mobile-list"></div>
+</main></section>
+
+<section id="calculator" class="page"><main>
+<div class="top"><div><div class="eyebrow">Herramientas</div><h1>Calculadora de precios</h1></div></div>
+<div class="grid2">
+  <div class="card">
+    <div class="field"><label>Nombre del perfume</label><input id="calcName" placeholder="Ej. Dior Sauvage"></div>
+    <div class="field"><label>Costo de compra USD</label><input id="calcCost" type="number" min="0" step="0.01"></div>
+    <div class="field"><label>Envío y gastos %</label><input id="calcShip" type="number" min="0" value="30"></div>
+    <div class="field"><label>Margen de ganancia %</label><input id="calcMargin" type="number" min="0" value="40"></div>
+    <button class="btn primary" style="width:100%" onclick="calculate()">Calcular precio</button>
+  </div>
+  <div class="card">
+    <div style="text-align:center;padding:12px 0">
+      <p style="color:var(--text-muted);margin:0;font-size:9px;text-transform:uppercase">Precio recomendado</p>
+      <div style="font-size:48px;font-weight:700;margin:16px 0;color:var(--text)" id="calcFinal">$0.00</div>
+      <div style="display:flex;justify-content:center;gap:20px;color:var(--text-muted);font-size:11px">
+        <div>USD <b style="color:var(--text);display:block;font-size:16px" id="calcUSD">$0.00</b></div>
+        <div>Bolívares <b style="color:var(--text);display:block;font-size:16px" id="calcBs">—</b></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text-muted)">Costo total</span><b id="calcTotal">$0.00</b></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text-muted)">Ganancia</span><b id="calcProfit" style="color:var(--success)">$0.00</b></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--text-muted)">Tasa USDT</span><b id="calcRate">—</b></div>
+    </div>
+  </div>
+</div>
+</main></section>
+
+<section id="sales" class="page"><main>
+<div class="top"><div><div class="eyebrow">Comercial</div><h1>Ventas</h1></div><button class="btn primary" onclick="openSale()">+ Registrar venta</button></div>
+<div class="stats">
+  <div class="stat"><small>Transacciones</small><strong id="saleCount">0</strong></div>
+  <div class="stat"><small>Ingresos USD</small><strong id="saleRevenue">$0</strong></div>
+  <div class="stat"><small>Costo USD</small><strong id="saleCost">$0</strong></div>
+  <div class="stat"><small>Ganancia USD</small><strong id="saleProfit">$0</strong></div>
+</div>
+<div class="table-card"><div class="table-scroll"><table><thead><tr><th>Fecha</th><th>Producto</th><th>Cliente</th><th>Total USD</th><th>Total Bs.</th><th></th></tr></thead><tbody id="salesBody"></tbody></table></div></div>
+<div id="mobileSales" class="mobile-list"></div>
+</main></section>
+
+<section id="invoice" class="page"><main>
+<div class="top no-print"><div><div class="eyebrow">Documentos</div><h1>Factura</h1></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn secondary small" onclick="downloadInvoiceImage()">Descargar</button><button class="btn secondary small" onclick="sendInvoiceWhatsApp()">WhatsApp</button><button class="btn secondary small" onclick="saveInvoice()">Guardar</button><button class="btn primary small" onclick="printInvoice()">Imprimir</button></div></div>
+<div class="invoice-layout">
+  <div class="card invoice-builder no-print">
+    <div style="background:var(--light-gray);border:1px solid var(--border);padding:12px;border-radius:8px;margin-bottom:16px;font-size:11px">
+      <b>Tasa actual:</b> <b id="invoiceRate">Consultando...</b><br>
+      <small style="color:var(--text-muted)">Usa una tasa manual si la automática no funciona</small><br>
+      <button class="btn secondary small" style="margin-top:8px;width:100%" onclick="fetchRate(true)">Actualizar tasa</button>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Cliente</label><input id="clientName" placeholder="Nombre completo"></div>
+      <div class="field"><label>Cédula / RIF</label><input id="clientId" placeholder="V-12345678"></div>
+      <div class="field"><label>Teléfono</label><input id="clientPhone" placeholder="+58 414 123 4567"></div>
+      <div class="field"><label>Fecha</label><input id="invoiceDate" type="date"></div>
+    </div>
+    <div class="field"><label>Tasa Bs/USDT (opcional)</label><input id="manualRate" type="number" min="0" step="0.01" placeholder="Deja vacío para automática"></div>
+    <div class="field"><label>Producto</label><select id="invoiceProduct"></select></div>
+    <div class="add-row"><input id="itemQty" type="number" min="1" value="1" placeholder="Cant."><input id="itemPrice" type="number" min="0" step="0.01" placeholder="USD"><button class="btn secondary small" onclick="addItem()">Agregar</button></div>
+    <div class="items" id="builderItems"></div>
+    <div class="field"><label>Descuento USD</label><input id="discount" type="number" min="0" value="0" step="0.01"></div>
+    <button class="btn primary" style="width:100%" onclick="updateInvoice()">Actualizar factura</button>
+  </div>
+  <div id="invoicePaper" class="invoice-paper"></div>
+</div>
+</main></section>
+
+<section id="debts" class="page"><main>
+<div class="top"><div><div class="eyebrow">Cuentas</div><h1>Personas que me deben</h1></div><button class="btn primary" onclick="openDebt()">+ Nueva deuda</button></div>
+<div class="stats">
+  <div class="stat"><small>Clientes</small><strong id="debtCount">0</strong></div>
+  <div class="stat"><small>Total adeudado</small><strong id="debtTotal">$0.00</strong></div>
+  <div class="stat"><small>Total abonado</small><strong id="debtPaid">$0.00</strong></div>
+  <div class="stat"><small>Pendiente</small><strong id="debtPending">$0.00</strong></div>
+</div>
+<div class="tools"><input id="debtSearch" placeholder="Buscar cliente..."><select id="debtStatus"><option value="all">Todas</option><option value="pending">Pendientes</option><option value="paid">Saldadas</option></select></div>
+<div class="table-card"><div class="table-scroll"><table><thead><tr><th>Cliente</th><th>Producto</th><th>Teléfono</th><th>Deuda</th><th>Abonado</th><th>Pendiente</th><th></th></tr></thead><tbody id="debtsBody"></tbody></table></div></div>
+<div id="mobileDebts" class="mobile-list"></div>
+</main></section>
+
+<section id="chat" class="page"><main>
+<div class="top"><div><div class="eyebrow">Atención</div><h1>Chat en vivo</h1></div></div>
+<div class="grid2">
+  <div class="card">
+    <h3>Mensajes</h3>
+    <div id="chatMessages" style="height:400px;overflow-y:auto;border:1px solid var(--border);padding:12px;border-radius:8px;display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
+    <div class="field"><label>Tu respuesta</label><input id="chatInput" placeholder="Escribe aquí..."></div>
+    <button class="btn primary" style="width:100%" onclick="sendChatMessage('admin')">Enviar</button>
+  </div>
+  <div class="card">
+    <h3>Información</h3>
+    <p style="color:var(--text-muted);line-height:1.8;margin:0">Los datos se sincronizan con Firebase Realtime Database cuando hay conexión. Los cambios de otros dispositivos aparecen automáticamente aquí.</p>
+    <div style="background:var(--light-gray);padding:12px;border-radius:8px;margin-top:16px;font-size:11px;color:var(--text-muted)">
+      <b style="color:var(--text)">Estado de sincronización</b><br>
+      ✓ Inventario<br>
+      ✓ Ventas<br>
+      ✓ Deudas<br>
+      ✓ Chat<br>
+      ✓ Facturas
+    </div>
+  </div>
+</div>
+</main></section>
+
+<div class="modal" id="productModal"><div class="modal-box"><div class="modal-head"><h2 id="productTitle">Nuevo perfume</h2><button class="close" onclick="closeProduct()">×</button></div>
+  <div class="field"><label>Nombre</label><input id="pName" placeholder="Ej. Dior Sauvage 100ml"></div>
+  <div class="grid2">
+    <div class="field"><label>Categoría</label><select id="pCat"><option>Hombre</option><option>Mujer</option><option>Unisex</option><option>Gift Set</option></select></div>
+    <div class="field"><label>Unidades en stock</label><input id="pUnits" type="number" min="0" step="1" value="1"></div>
+  </div>
+  <div class="grid2">
+    <div class="field"><label>Costo USD</label><input id="pCost" type="number" min="0" step="0.01"></div>
+    <div class="field"><label>Precio de venta USD</label><input id="pPrice" type="number" min="0" step="0.01"></div>
+  </div>
+  <button class="btn primary" style="width:100%" onclick="saveProduct()">Guardar producto</button>
+</div></div>
+
+<div class="modal" id="saleModal"><div class="modal-box"><div class="modal-head"><h2>Registrar venta</h2><button class="close" onclick="closeSale()">×</button></div>
+  <div class="field"><label>Producto</label><select id="saleProduct"></select></div>
+  <div class="grid2">
+    <div class="field"><label>Cantidad</label><input id="saleQty" type="number" min="1" step="1" value="1"></div>
+    <div class="field"><label>Precio USD</label><input id="salePrice" type="number" min="0" step="0.01"></div>
+  </div>
+  <div class="field"><label>Cliente</label><input id="saleClient" placeholder="Nombre (opcional)"></div>
+  <button class="btn primary" style="width:100%" onclick="saveSale()">Registrar venta</button>
+</div></div>
+
+<div class="modal" id="debtModal"><div class="modal-box"><div class="modal-head"><h2>Nueva deuda</h2><button class="close" onclick="closeDebt()">×</button></div>
+  <div class="field"><label>Cliente</label><input id="debtClient" placeholder="Nombre completo"></div>
+  <div class="field"><label>Teléfono</label><input id="debtPhone" placeholder="04XX-XXXXXXX"></div>
+  <div id="debtProducts"></div>
+  <button type="button" class="btn secondary small" style="width:100%;margin-bottom:12px" onclick="addDebtProduct()">+ Agregar producto</button>
+  <div class="grid2">
+    <div class="field"><label>Deuda total USD</label><input id="debtAmount" type="number" min="0" step="0.01" readonly></div>
+    <div class="field"><label>Pagado USD</label><input id="debtPaidInput" type="number" min="0" step="0.01" value="0"></div>
+  </div>
+  <div class="field"><label>Fecha</label><input id="debtDate" type="date"></div>
+  <div class="field"><label>Nota</label><textarea id="debtNote" placeholder="Ej. Paga el viernes próximo"></textarea></div>
+  <button class="btn primary" style="width:100%" onclick="saveDebt()">Guardar deuda</button>
+</div></div>
+
+<div class="login" id="login"><div class="loginbox"><div class="logo">VECCHIA</div><p>Gestión privada</p><input id="pass" type="password" placeholder="Contraseña" autocomplete="current-password"><label style="display:flex;align-items:center;gap:8px;margin:12px 0;font-size:10px;color:var(--text-muted);cursor:pointer"><input type="checkbox" id="remember" style="width:auto"> Mantener sesión iniciada</label><button class="btn primary" style="width:100%" onclick="login()">Entrar</button></div></div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY='vecchia_inventory_v3';const SALES='vecchia_sales_v3';const DEBTS='vecchia_debts_v1';const CHAT='vecchia_chat_v1';
+const INVOICES='vecchia_invoices_v1';const RATE_KEY='vecchia_exchange_rate';const RATE_UPDATED_KEY='vecchia_exchange_rate_updated';
+const PASSWORD_KEY='vecchia_password';const SESSION_KEY='vecchia_session';
+
+const defaults=[{"name":"Valentino Uomo Born In Roma Intense","cat":"Hombre","cost":0,"price":210.0,"units":1},{"name":"Odyssey Mandarin Sky Elixir 100ml EDP","cat":"Hombre","cost":0,"price":75.0,"units":1},{"name":"212 VIP Black Elixir EDP 100ml","cat":"Hombre","cost":0,"price":190.0,"units":1},{"name":"Prada L'Homme Intense EDP 100ml","cat":"Hombre","cost":0,"price":160.0,"units":1},{"name":"Stronger With You Parfum 100ml","cat":"Hombre","cost":0,"price":195.0,"units":1},{"name":"Versace Eros EDT 100ml","cat":"Hombre","cost":0,"price":110.0,"units":1},{"name":"Armani Stronger With You Intensely 100ml EDP","cat":"Hombre","cost":0,"price":160.0,"units":1},{"name":"Stronger With You Absolutely Giorgio Armani EDP 100ml","cat":"Hombre","cost":0,"price":170.0,"units":1},{"name":"Valentino Uomo Intense 100ml EDP","cat":"Hombre","cost":0,"price":150.0,"units":0},{"name":"Valentino Uomo Born In Roma Coral Fantasy 100ml EDT","cat":"Hombre","cost":0,"price":160.0,"units":0},{"name":"Club De Nuit Intense Man 105ml EDT","cat":"Hombre","cost":0,"price":60.0,"units":1},{"name":"Invictus By Paco Rabanne 100ml EDT","cat":"Hombre","cost":0,"price":95.0,"units":0},{"name":"1 Million Paco Rabanne 100ml EDT","cat":"Hombre","cost":0,"price":115.0,"units":1},{"name":"Christian Dior Sauvage 100ml EDT","cat":"Hombre","cost":0,"price":170.0,"units":0},{"name":"Yellow Diamond By Versace EDT 100ml","cat":"Mujer","cost":0,"price":95.0,"units":1},{"name":"Bright Crystal Absolu EDP 100ml","cat":"Mujer","cost":0,"price":110.0,"units":1},{"name":"Prada Candy By Prada 80ml","cat":"Mujer","cost":0,"price":145.0,"units":1},{"name":"Carolina Herrera Good Girl EDP 100ml","cat":"Mujer","cost":0,"price":190.0,"units":1},{"name":"FlowerBomb By Viktor & Rolf 100ml EDP","cat":"Mujer","cost":0,"price":130.0,"units":1},{"name":"Libre Yves Saint Laurent 100ml EDT","cat":"Mujer","cost":0,"price":135.0,"units":0},{"name":"Guess Seductive Gift Set 4 piezas 100ml EDT","cat":"Gift Set","cost":0,"price":75.0,"units":1},{"name":"Versace Dylan Set 4-Piece Set 100ml EDP","cat":"Gift Set","cost":0,"price":130.0,"units":0},{"name":"Opium Black 3-Piece Set 100ml EDP","cat":"Gift Set","cost":0,"price":195.0,"units":1}];
+
+let data=[],sales=[],debts=[],chatMessages=[],invoices=[],editIndex=-1,items=[],rate=0,rateSource='cache';
+let firebaseListenersStarted=false,rateAutoBusy=false;
+
+// Utilities
+const $=id=>document.getElementById(id);
+const norm=s=>String(s??'').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const number=(v,fallback=0)=>{const n=Number(v);return Number.isFinite(n)?n:fallback};
+const money=n=>'$'+number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const formatBs=v=>'Bs. '+number(v).toLocaleString('es-VE',{minimumFractionDigits:0,maximumFractionDigits:0});
+const localDateString=(d=new Date())=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`};
+const makeId=()=>'id-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+const toast=msg=>{const t=$('toast');if(t){t.textContent=msg;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),2500)}};
+
+function cleanProduct(p){return {id:p?.id||makeId(),name:String(p?.name||'').trim(),cat:['Hombre','Mujer','Unisex','Gift Set'].includes(p?.cat)?p.cat:'Unisex',units:Math.max(0,Math.floor(number(p?.units))),cost:Math.max(0,number(p?.cost)),price:Math.max(0,number(p?.price))}}
+function getExchangeRate(){const stored=localStorage.getItem(RATE_KEY);return number(stored)>0?number(stored):0}
+function status(u){u=number(u);return u<=0?['sold','Agotado']:u<=3?['low','Bajo stock']:['available','Disponible']}
+
+function setExchangeRate(n,meta={}){
+  if(!(n>0))return false;
+  rate=n;rateSource=meta.source||'manual';
+  localStorage.setItem(RATE_KEY,String(n));
+  localStorage.setItem(RATE_UPDATED_KEY,meta.updatedAt||new Date().toISOString());
+  try{localStorage.setItem(RATE_KEY+'_source',rateSource)}catch(e){}
+  if(firebaseDB)firebaseDB.ref('config/exchangeRate').set({value:n,updatedAt:meta.updatedAt||new Date().toISOString(),source:rateSource}).catch(e=>console.error('Firebase rate save error:',e));
+  updateRateUI();render();renderSales();renderDebts();updateInvoice();return true;
+}
+
+function updateRateUI(message=''){
+  const rate=getExchangeRate();
+  if(rate>0){
+    $('invoiceRate').textContent=money(rate)+' por USDT';
+    $('headerRate').textContent='Tasa: '+money(rate);
+    $('calcRate').textContent=money(rate);
+  }else{
+    $('invoiceRate').textContent='Sin tasa';
+    $('headerRate').textContent='Tasa: —';
+  }
+}
+
+async function fetchRate(force=false){
+  if(rateAutoBusy)return;
+  rateAutoBusy=true;
+  updateRateUI('Cargando tasa...');
+  try{
+    let rate=null,source='desconocida';
+    const apis=[
+      {url:'https://api.exchangerate.host/convert?from=USD&to=VES',parse:d=>d.result},
+      {url:'https://api.exchangerate.host/latest?base=USD&symbols=VES',parse:d=>d.rates?.VES}
+    ];
+    for(const api of apis){
+      try{
+        const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),8000);
+        try{
+          const response=await fetch(api.url+'&_t='+Date.now(),{cache:'no-store',signal:controller.signal});
+          clearTimeout(timeout);
+          if(!response.ok)continue;
+          const j=await response.json();
+          const value=api.parse(j);
+          const n=number(value);
+          if(n>0){rate=n;source='exchangerate.host';break}
+        }finally{clearTimeout(timeout)}
+      }catch(e){console.warn('API failed:',e)}
+    }
+    if(rate&&rate>0){
+      setExchangeRate(rate,{source:source,updatedAt:new Date().toISOString()});
+      if(force)toast('✓ Tasa actualizada de '+source);
+    }else throw new Error('No API available');
+  }catch(e){
+    console.error('Fetch rate error:',e);
+    if(force)toast('✗ No se pudo actualizar la tasa');
+  }finally{
+    rateAutoBusy=false;
+    updateRateUI();
+  }
+}
+
+// Authentication
+function login(){
+  const pass=$('pass').value.trim();
+  if(!pass){toast('✗ Ingresa contraseña');return}
+  const stored=localStorage.getItem(PASSWORD_KEY)||'vecchia2024';
+  if(pass===stored){
+    localStorage.setItem(SESSION_KEY,'1');
+    $('login').style.display='none';
+    init();
+    toast('✓ Bienvenido');
+  }else{
+    toast('✗ Contraseña incorrecta');
+    $('pass').value='';
+  }
+}
+
+function logout(){
+  localStorage.removeItem(SESSION_KEY);
+  location.reload();
+}
+
+// Products
+function render(){
+  const q=norm($('search')?.value),c=$('cat')?.value||'all',st=$('stock')?.value||'all';
+  const list=data.map((p,i)=>({...p,i})).filter(p=>{const s=status(p.units)[0];return norm(p.name).includes(q)&&(c==='all'||p.cat===c)&&(st==='all'||s===st)});
+  $('inventoryBody').innerHTML=list.length?list.map(p=>{const s=status(p.units),margin=p.price-p.cost;return `<tr><td><div class="card-name">${esc(p.name)}</div><div class="card-sub">${p.cat}</div></td><td>${money(p.cost)}</td><td>${money(p.price)}</td><td>${money(margin)}</td><td>${money(p.cost*p.units)}</td><td>${p.price?formatBs(p.price*getExchangeRate()):'—'}</td><td>${p.units}</td><td><span class="badge ${s[0]}">${s[1]}</span></td><td style="text-align:right"><button class="btn secondary small" onclick="openProduct(${p.i})">Ed.</button><button class="btn danger small" onclick="removeProduct(${p.i})">Del.</button></td></tr>`}).join(''):`<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--text-muted)">No hay productos que mostrar</td></tr>`;
+
+  $('mobileInventory').innerHTML=list.length?list.map(p=>{const s=status(p.units),margin=p.price-p.cost;return `<div class="product-card"><div class="card-head"><div><div class="card-name">${esc(p.name)}</div><div class="card-sub">${p.cat}</div></div><span class="badge ${s[0]}">${s[1]}</span></div><div class="card-meta"><div class="meta-box"><small>Costo</small><b>${money(p.cost)}</b></div><div class="meta-box"><small>Venta</small><b>${money(p.price)}</b></div><div class="meta-box"><small>Margen</small><b>${money(margin)}</b></div></div><div style="margin-top:8px;font-size:11px;color:var(--text-muted)">Stock: ${p.units} · ${p.price?formatBs(p.price*getExchangeRate()):'Sin tasa'}</div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn secondary small" style="flex:1" onclick="openProduct(${p.i})">Editar</button><button class="btn danger small" style="flex:1" onclick="removeProduct(${p.i})">Eliminar</button></div></div>`}).join(''):`<div style="text-align:center;padding:20px;color:var(--text-muted)">No hay productos</div>`;
+
+  $('sProducts').textContent=data.length;
+  $('sUnits').textContent=data.reduce((a,p)=>a+p.units,0);
+  $('sCost').textContent=money(data.reduce((a,p)=>a+p.cost*p.units,0));
+  $('sValue').textContent=money(data.reduce((a,p)=>a+p.price*p.units,0));
+  refreshProducts();
+}
+
+function openProduct(i=-1){
+  editIndex=i;
+  $('productTitle').textContent=i<0?'Nuevo perfume':'Editar perfume';
+  const p=i<0?{name:'',cat:'Hombre',units:1,cost:0,price:0}:data[i];
+  if(!p)return;
+  $('pName').value=p.name;
+  $('pCat').value=p.cat;
+  $('pUnits').value=p.units;
+  $('pCost').value=p.cost;
+  $('pPrice').value=p.price;
+  $('productModal').classList.add('open');
+  setTimeout(()=>$('pName').focus(),50);
+}
+
+function closeProduct(){$('productModal').classList.remove('open')}
+
+function saveProduct(){
+  const name=$('pName').value.trim(),units=Math.max(0,Math.floor(number($('pUnits').value))),cost=Math.max(0,number($('pCost').value)),price=Math.max(0,number($('pPrice').value));
+  if(!name){toast('✗ Ingresa el nombre');return}
+  const p={id:(editIndex>=0?data[editIndex]?.id:null)||makeId(),name,cat:$('pCat').value,units,cost,price,updatedAt:new Date().toISOString()};
+  if(editIndex<0)data.push(p);else data[editIndex]=p;
+  localStorage.setItem(KEY,JSON.stringify(data));
+  if(firebaseDB)firebaseDB.ref('productos/'+p.id).set(p).catch(e=>console.error('Save error:',e));
+  closeProduct();render();
+  toast(editIndex<0?'✓ Perfume agregado':'✓ Perfume actualizado');
+  editIndex=-1;
+}
+
+function removeProduct(i){
+  const p=data[i];
+  if(!p)return;
+  if(!confirm('¿Eliminar '+p.name+'?'))return;
+  data.splice(i,1);
+  localStorage.setItem(KEY,JSON.stringify(data));
+  if(firebaseDB)firebaseDB.ref('productos/'+p.id).remove().catch(e=>console.error('Delete error:',e));
+  render();toast('✓ Perfume eliminado');
+}
+
+function refreshProducts(){
+  $('invoiceProduct').innerHTML='<option value="">Selecciona un perfume</option>'+data.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  $('saleProduct').innerHTML='<option value="">Selecciona un perfume</option>'+data.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+}
+
+// Calculator
+function calculate(){
+  const cost=number($('calcCost').value),ship=number($('calcShip').value),margin=number($('calcMargin').value);
+  if(cost<=0){toast('✗ Ingresa costo válido');return}
+  const withShip=cost*(1+ship/100);const profit=withShip*(margin/100);const final=withShip+profit;
+  $('calcFinal').textContent=money(final);$('calcUSD').textContent=money(final);$('calcBs').textContent=formatBs(final*getExchangeRate());
+  $('calcTotal').textContent=money(withShip);$('calcProfit').textContent=money(profit);
+}
+
+// Sales
+function renderSales(){
+  const list=sales.slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  $('salesBody').innerHTML=list.length?list.map(s=>{const p=data.find(x=>x.id===s.productId);return `<tr><td>${s.date}</td><td>${esc(p?.name||'Producto eliminado')}</td><td>${esc(s.client||'—')}</td><td>${money(s.total)}</td><td>${formatBs(s.total*number(s.exchangeRate||getExchangeRate()))}</td><td><button class="btn danger small" onclick="removeSale('${s.id}')">Eliminar</button></td></tr>`}).join(''):`<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">No hay ventas</td></tr>`;
+
+  $('mobileSales').innerHTML=list.length?list.map(s=>{const p=data.find(x=>x.id===s.productId);return `<div class="sale-card"><div class="card-head"><div><div class="card-name">${esc(p?.name||'Producto')}</div><div class="card-sub">${s.date}</div></div></div><div class="card-meta"><div class="meta-box"><small>USD</small><b>${money(s.total)}</b></div><div class="meta-box"><small>Bs.</small><b>${formatBs(s.total*number(s.exchangeRate||getExchangeRate()))}</b></div><div class="meta-box"><small>Cliente</small><b>${esc(s.client||'—')}</b></div></div><div style="margin-top:8px"><button class="btn danger small" style="width:100%" onclick="removeSale('${s.id}')">Eliminar</button></div></div>`}).join(''):`<div style="text-align:center;padding:20px;color:var(--text-muted)">No hay ventas</div>`;
+
+  const totalRevenue=sales.reduce((a,s)=>a+number(s.total),0);
+  const totalCost=sales.reduce((a,s)=>{const p=data.find(x=>x.id===s.productId);return a+(p?.cost||0)},0);
+  $('saleCount').textContent=sales.length;
+  $('saleRevenue').textContent=money(totalRevenue);
+  $('saleCost').textContent=money(totalCost);
+  $('saleProfit').textContent=money(totalRevenue-totalCost);
+}
+
+function openSale(){
+  $('saleProduct').value='';$('saleQty').value='1';$('salePrice').value='';$('saleClient').value='';
+  $('saleModal').classList.add('open');
+  setTimeout(()=>$('saleProduct').focus(),50);
+}
+
+function closeSale(){$('saleModal').classList.remove('open')}
+
+function saveSale(){
+  const productId=$('saleProduct').value,qty=Math.max(1,Math.floor(number($('saleQty').value))),price=Math.max(0,number($('salePrice').value)),client=$('saleClient').value.trim();
+  if(!productId||price<=0){toast('✗ Datos incompletos');return}
+  const product=data.find(p=>p.id===productId);if(!product||product.units<qty){toast('✗ Stock insuficiente');return}
+  product.units-=qty;
+  const sale={id:makeId(),productId,qty,price:price*qty,client,date:localDateString(),exchangeRate:getExchangeRate(),total:price*qty};
+  sales.push(sale);
+  localStorage.setItem(SALES,JSON.stringify(sales));
+  localStorage.setItem(KEY,JSON.stringify(data));
+  if(firebaseDB){firebaseDB.ref('ventas/'+sale.id).set(sale).catch(e=>console.error('Sale save error:',e));firebaseDB.ref('productos/'+productId).set(product).catch(e=>console.error('Product update error:',e))}
+  closeSale();render();renderSales();
+  toast('✓ Venta registrada');
+}
+
+function removeSale(id){
+  const saleIndex=sales.findIndex(s=>s.id===id);
+  if(saleIndex<0)return;
+  const sale=sales[saleIndex];const product=data.find(p=>p.id===sale.productId);
+  if(product)product.units+=sale.qty;
+  sales.splice(saleIndex,1);
+  localStorage.setItem(SALES,JSON.stringify(sales));localStorage.setItem(KEY,JSON.stringify(data));
+  if(firebaseDB){firebaseDB.ref('ventas/'+id).remove().catch(e=>console.error('Sale delete error:',e));if(product)firebaseDB.ref('productos/'+product.id).set(product).catch(e=>console.error('Product update error:',e))}
+  render();renderSales();toast('✓ Venta eliminada');
+}
+
+// Invoices
+function addItem(){
+  const productId=$('invoiceProduct').value,qty=Math.max(1,Math.floor(number($('itemQty').value))),price=Math.max(0,number($('itemPrice').value));
+  if(!productId||price<=0){toast('✗ Producto y precio requeridos');return}
+  const product=data.find(p=>p.id===productId);if(!product){toast('✗ Producto no encontrado');return}
+  items.push({id:makeId(),productId,qty,price,productName:product.name});
+  $('itemQty').value='1';$('itemPrice').value='';$('invoiceProduct').value='';
+  updateInvoice();
+}
+
+function removeItem(id){
+  items=items.filter(i=>i.id!==id);
+  updateInvoice();
+}
+
+function updateInvoice(){
+  const manualRate=number($('manualRate').value);const rate=manualRate>0?manualRate:getExchangeRate();
+  $('builderItems').innerHTML=items.length?items.map(i=>`<div class="item"><div>${esc(i.productName)}</div><div>${i.qty}</div><div>${money(i.price*i.qty)}</div><button onclick="removeItem('${i.id}')">×</button></div>`).join('')+'<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Subtotal</span><b>'+money(items.reduce((a,i)=>a+i.price*i.qty,0))+'</b></div><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Descuento</span><b>'+money(number($('discount').value))+'</b></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;border-top:1px solid var(--border);padding-top:8px"><span>Total</span><b>'+money(Math.max(0,items.reduce((a,i)=>a+i.price*i.qty,0)-number($('discount').value)))+'</b></div></div></div>':'<div style="color:var(--text-muted);text-align:center;padding:20px">Sin items</div>';
+
+  if(items.length>0&&rate>0){
+    const subtotal=items.reduce((a,i)=>a+i.price*i.qty,0);const discount=number($('discount').value);const total=Math.max(0,subtotal-discount);
+    const paperHTML=`<div style="margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:16px"><h2 style="font-size:20px;margin:0">FACTURA</h2><div style="font-size:10px;color:var(--text-muted);margin-top:8px"><div><b>VECCHIA</b><br>Gestión de Perfumería</div><div style="text-align:right"><b>Factura:</b> ${makeId().split('-')[0]}<br><b>Fecha:</b> ${$('invoiceDate').value||localDateString()}</div></div></div><div style="margin-bottom:20px;font-size:11px"><div style="margin-bottom:8px"><b>Cliente:</b> ${esc($('clientName').value||'—')}</div><div style="margin-bottom:8px"><b>Cédula:</b> ${esc($('clientId').value||'—')}</div><div><b>Teléfono:</b> ${esc($('clientPhone').value||'—')}</div></div><table class="invoice-table"><thead><tr><th>Producto</th><th>Cantidad</th><th>Precio USD</th><th>Total</th></tr></thead><tbody>${items.map(i=>`<tr><td>${esc(i.productName)}</td><td>${i.qty}</td><td>${money(i.price)}</td><td>${money(i.price*i.qty)}</td></tr>`).join('')}</tbody></table><div style="margin-top:16px;text-align:right;font-size:11px"><div style="margin-bottom:6px">Subtotal: ${money(subtotal)}</div><div style="margin-bottom:6px">Descuento: ${money(discount)}</div><div style="margin-bottom:16px;border-top:1px solid var(--border);padding-top:8px"><b>Total USD:</b> ${money(total)}</div><div style="font-size:14px;font-weight:700;color:var(--text)"><b>Total Bs.:</b> ${formatBs(total*rate)}</div><div style="font-size:9px;color:var(--text-muted);margin-top:8px">Tasa: ${money(rate)} por USDT</div></div></div>`;
+    $('invoicePaper').innerHTML=paperHTML;
+  }
+}
+
+function printInvoice(){if(items.length===0){toast('✗ Agrega items a la factura');return}$('invoice').classList.add('invoice-print');window.print();$('invoice').classList.remove('invoice-print')}
+
+function saveInvoice(){
+  if(items.length===0){toast('✗ Sin items para guardar');return}
+  const inv={id:makeId(),items:JSON.parse(JSON.stringify(items)),client:{name:$('clientName').value,id:$('clientId').value,phone:$('clientPhone').value},date:$('invoiceDate').value,rate:getExchangeRate(),createdAt:new Date().toISOString()};
+  invoices.push(inv);localStorage.setItem(INVOICES,JSON.stringify(invoices));
+  if(firebaseDB)firebaseDB.ref('facturas/'+inv.id).set(inv).catch(e=>console.error('Invoice save error:',e));
+  toast('✓ Factura guardada');
+  items=[];$('clientName').value='';$('clientId').value='';$('clientPhone').value='';updateInvoice();
+}
+
+function downloadInvoiceImage(){
+  if(items.length===0){toast('✗ Agrega items a la factura');return}
+  const paper=$('invoicePaper');if(!paper){toast('✗ Genera la factura primero');return}
+  html2canvas(paper,{scale:2,backgroundColor:'#fffbf7'}).then(canvas=>{const link=document.createElement('a');link.href=canvas.toDataURL();link.download='factura-'+Date.now()+'.png';link.click()}).catch(e=>{console.error('Canvas error:',e);toast('✗ Error al descargar')})
+}
+
+function sendInvoiceWhatsApp(){
+  if(items.length===0){toast('✗ Agrega items a la factura');return}
+  const client=$('clientPhone').value.trim();if(!client){toast('✗ Ingresa teléfono del cliente');return}
+  const subtotal=items.reduce((a,i)=>a+i.price*i.qty,0);const total=Math.max(0,subtotal-number($('discount').value));const msg=encodeURIComponent(`Hola, tu factura de VECCHIA:\n\n${items.map(i=>`• ${i.productName} (${i.qty}x ${money(i.price)})`).join('\n')}\n\nTotal: ${money(total)} USD (${formatBs(total*getExchangeRate())})\n\nTasa USDT: ${money(getExchangeRate())}`);
+  window.open(`https://wa.me/${client.replace(/\D/g,'')}?text=${msg}`);
+}
+
+// Debts
+function renderDebts(){
+  const q=norm($('debtSearch')?.value),st=$('debtStatus')?.value||'all';
+  const list=debts.filter(d=>{const pending=d.amount-d.paid;return(norm(d.client).includes(q)||norm(d.products).includes(q))&&(st==='all'||(st==='pending'&&pending>0)||(st==='paid'&&pending<=0))});
+  $('debtsBody').innerHTML=list.length?list.map(d=>{const pending=d.amount-d.paid;const paid=pending<=0;return `<tr style="opacity:${paid?0.6:1}"><td><b>${esc(d.client)}</b></td><td><small>${esc(d.products)}</small></td><td>${esc(d.phone)}</td><td>${money(d.amount)}</td><td>${money(d.paid)}</td><td>${money(pending)}</td><td><button class="btn secondary small" onclick="addPayment('${d.id}')">Abono</button><button class="btn danger small" onclick="removeDebt('${d.id}')">Eliminar</button></td></tr>`}).join(''):`<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">No hay deudas</td></tr>`;
+
+  const totalDebt=debts.reduce((a,d)=>a+d.amount,0);const totalPaid=debts.reduce((a,d)=>a+d.paid,0);
+  $('debtCount').textContent=debts.length;$('debtTotal').textContent=money(totalDebt);$('debtPaid').textContent=money(totalPaid);$('debtPending').textContent=money(totalDebt-totalPaid);
+}
+
+function openDebt(){
+  editIndex=-1;$('debtClient').value='';$('debtPhone').value='';$('debtAmount').value='0';$('debtPaidInput').value='0';$('debtDate').value=localDateString();$('debtNote').value='';$('debtProducts').innerHTML='<div class="field"><label>Producto</label><input class="debt-product" placeholder="Nombre del producto"></div>';
+  $('debtModal').classList.add('open');
+  setTimeout(()=>$('debtClient').focus(),50);
+}
+
+function closeDebt(){$('debtModal').classList.remove('open')}
+
+function addDebtProduct(){
+  const container=$('debtProducts');const field=document.createElement('div');field.className='field';field.innerHTML='<label>Producto</label><input class="debt-product" placeholder="Nombre del producto">';container.appendChild(field);
+}
+
+function saveDebt(){
+  const client=$('debtClient').value.trim(),phone=$('debtPhone').value.trim(),amount=Math.max(0,number($('debtAmount').value)),paid=Math.max(0,number($('debtPaidInput').value)),date=$('debtDate').value||localDateString();
+  if(!client||amount<=0){toast('✗ Cliente y monto requeridos');return}
+  const products=Array.from(document.querySelectorAll('.debt-product')).map(i=>i.value.trim()).filter(v=>v).join(', ')||'Varios';
+  const debt={id:makeId(),client,phone,products,amount,paid:Math.min(paid,amount),date,note:$('debtNote').value.trim(),createdAt:new Date().toISOString()};
+  debts.push(debt);
+  localStorage.setItem(DEBTS,JSON.stringify(debts));
+  if(firebaseDB)firebaseDB.ref('deudas/'+debt.id).set(debt).catch(e=>console.error('Debt save error:',e));
+  closeDebt();renderDebts();toast('✓ Deuda registrada');
+}
+
+function addPayment(id){
+  const debt=debts.find(d=>d.id===id);if(!debt)return;
+  const payment=prompt('Monto del abono USD:','');if(!payment)return;
+  const p=Math.max(0,number(payment));if(p<=0){toast('✗ Monto inválido');return}
+  debt.paid=Math.min(debt.paid+p,debt.amount);
+  localStorage.setItem(DEBTS,JSON.stringify(debts));
+  if(firebaseDB)firebaseDB.ref('deudas/'+id).set(debt).catch(e=>console.error('Payment save error:',e));
+  renderDebts();toast('✓ Abono registrado');
+}
+
+function removeDebt(id){
+  if(!confirm('¿Eliminar deuda?'))return;
+  debts=debts.filter(d=>d.id!==id);
+  localStorage.setItem(DEBTS,JSON.stringify(debts));
+  if(firebaseDB)firebaseDB.ref('deudas/'+id).remove().catch(e=>console.error('Debt delete error:',e));
+  renderDebts();toast('✓ Deuda eliminada');
+}
+
+// Chat
+function renderChat(){
+  const container=$('chatMessages');
+  container.innerHTML=chatMessages.length?chatMessages.map(m=>`<div style="font-size:11px;padding:8px;background:${m.author==='admin'?'var(--light-gray)':'white'};border-radius:6px;border:1px solid var(--border);word-wrap:break-word"><small style="color:var(--text-muted)">${esc(m.author)}</small><div>${esc(m.text)}</div></div>`).join(''):'<div style="text-align:center;color:var(--text-muted);padding:20px">Sin mensajes</div>';
+  container.scrollTop=container.scrollHeight;
+}
+
+function sendChatMessage(author){
+  const input=$('chatInput');const text=input.value.trim();if(!text)return;
+  const msg={id:makeId(),author,text,time:Date.now(),date:new Date().toLocaleString('es-VE')};
+  chatMessages.push(msg);
+  localStorage.setItem(CHAT,JSON.stringify(chatMessages));
+  if(firebaseDB)firebaseDB.ref('chat/'+msg.id).set(msg).catch(e=>console.error('Chat save error:',e));
+  input.value='';renderChat();
+}
+
+// Firebase
+function startFirebaseSync(){
+  if(!firebaseDB||firebaseListenersStarted)return;
+  firebaseListenersStarted=true;
+  const listen=(path,key,fn)=>{
+    firebaseDB.ref(path).on('value',snap=>{fn(snap.val());},err=>{console.error('Sync error at '+path+':',err)});
+  };
+  listen('productos','productos',v=>{if(v&&typeof v==='object'){data=Object.values(v).map(cleanProduct);localStorage.setItem(KEY,JSON.stringify(data));render()}});
+  listen('ventas','ventas',v=>{if(v&&typeof v==='object'){sales=Object.values(v).sort((a,b)=>new Date(b.date)-new Date(a.date));localStorage.setItem(SALES,JSON.stringify(sales));renderSales()}});
+  listen('deudas','deudas',v=>{if(v&&typeof v==='object'){debts=Object.values(v);localStorage.setItem(DEBTS,JSON.stringify(debts));renderDebts()}});
+  listen('chat','chat',v=>{if(v&&typeof v==='object'){chatMessages=Object.values(v).sort((a,b)=>a.time-b.time);localStorage.setItem(CHAT,JSON.stringify(chatMessages));renderChat()}});
+  listen('config/exchangeRate','rate',v=>{const remote=typeof v==='object'?number(v.value):number(v);if(remote>0){setExchangeRate(remote,{source:typeof v==='object'?v.source:'firebase',updatedAt:typeof v==='object'?v.updatedAt:new Date().toISOString()})}});
+}
+
+// Init
+function init(){
+  data=JSON.parse(localStorage.getItem(KEY)||'[]')||defaults;
+  sales=JSON.parse(localStorage.getItem(SALES)||'[]')||[];
+  debts=JSON.parse(localStorage.getItem(DEBTS)||'[]')||[];
+  chatMessages=JSON.parse(localStorage.getItem(CHAT)||'[]')||[];
+  invoices=JSON.parse(localStorage.getItem(INVOICES)||'[]')||[];
+  if(data.length===0)data=defaults;
+  localStorage.setItem(KEY,JSON.stringify(data));
+  rate=getExchangeRate();
+  $('invoiceDate').value=localDateString();
+  $('debtDate').value=localDateString();
+  document.querySelectorAll('.nav button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      const page=$(btn.dataset.page);if(page)page.classList.add('active');
+    });
+  });
+  render();renderSales();renderDebts();renderChat();updateRateUI();
+  if(rate<=0)fetchRate();
+  else{const auto=setInterval(()=>fetchRate(),5*60*1000);window.addEventListener('beforeunload',()=>clearInterval(auto))}
+  startFirebaseSync();
+  toast('✓ Bienvenido a VECCHIA');
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  if(localStorage.getItem(SESSION_KEY)&&localStorage.getItem(SESSION_KEY)==='1'){
+    $('login').style.display='none';
+    init();
+  }else{
+    $('login').style.display='flex';
+    $('pass').focus();
+  }
+});
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&$('pass').value&&$('login').style.display!=='none')login();if(e.key==='Escape'){$('productModal').classList.remove('open');$('saleModal').classList.remove('open');$('debtModal').classList.remove('open')}});
+</script>
+</body>
+</html>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¿Qué Perfume Vecchia Eres? — Vecchia Perfumes</title>
+  <meta name="description" content="Descubre la fragancia que mejor representa tu personalidad. Una experiencia exclusiva de Vecchia Perfumes." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="stylesheet" href="assets/site-variables.css">
+    <link rel="stylesheet" href="assets/site-components.css">
+    <link rel="stylesheet" href="assets/site-footer.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       SECCIÓN 1: HERO / PORTADA
+  ============================================================ -->
+  <section id="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Vecchia Perfumes — Experiencia Exclusiva</p>
+
+      <h1 class="hero-title">
+        ¿Qué perfume<br><em>Vecchia</em> eres?
+      </h1>
+
+      <div class="hero-divider"></div>
+
+      <p class="hero-subtitle">
+        Descubre la fragancia que mejor representa tu personalidad. Una experiencia diseñada para revelar tu esencia.
+      </p>
+
+      <button class="btn-primary" id="btn-start" onclick="startQuiz()">
+        <span>Comenzar experiencia</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 7H13M13 7L7 1M13 7L7 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SECCIÓN 2: QUIZ INTERACTIVO
+  ============================================================ -->
+  <section id="quiz-section">
+
+    <!-- Barra de progreso -->
+    <div class="progress-wrap reveal" id="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-label">Tu personalidad</span>
+        <span class="progress-count" id="progress-count">1 / 8</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-dots" id="progress-dots"></div>
+    </div>
+
+    <!-- Tarjeta de pregunta -->
+    <div class="question-card" id="question-card">
+      <span class="question-number" id="question-number">Pregunta uno</span>
+      <h2 class="question-text" id="question-text"></h2>
+      <div class="options-grid" id="options-grid"></div>
+      <p class="question-hint">Selecciona la opción que mejor te describe</p>
+    </div>
+
+  </section>
+
+
+  <!-- ============================================================
+       PANTALLA DE ANÁLISIS
+  ============================================================ -->
+  <div id="analyzing-screen">
+    <p class="analyzing-text">Analizando tu personalidad…</p>
+    <div class="analyzing-dots">
+      <div class="analyzing-dot"></div>
+      <div class="analyzing-dot"></div>
+      <div class="analyzing-dot"></div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       SECCIÓN 3: RESULTADO
+  ============================================================ -->
+  <section id="result-section">
+
+    <p class="result-eyebrow">Tu fragancia ideal es</p>
+    <p class="result-headline" id="result-headline">La esencia que define quién eres</p>
+
+    <div class="result-card">
+
+      <!-- Imagen -->
+      <div class="result-image-wrap">
+        <img id="result-img" src="" alt="Perfume resultado" loading="lazy" />
+        <div class="result-image-badge" id="result-badge">Tu perfume</div>
+      </div>
+
+      <!-- Cuerpo -->
+      <div class="result-body">
+
+        <h2 class="result-name" id="result-name"></h2>
+        <p class="result-family" id="result-family"></p>
+
+        <div class="result-divider"></div>
+
+        <!-- Notas olfativas -->
+        <div class="notes-grid">
+          <div class="note-group">
+            <span class="note-label">Salida</span>
+            <span class="note-value" id="result-top"></span>
+          </div>
+          <div class="note-group">
+            <span class="note-label">Corazón</span>
+            <span class="note-value" id="result-heart"></span>
+          </div>
+          <div class="note-group">
+            <span class="note-label">Fondo</span>
+            <span class="note-value" id="result-base"></span>
+          </div>
+        </div>
+
+        <div class="result-divider"></div>
+
+        <!-- Atributos -->
+        <div class="attributes-grid">
+          <div class="attribute-item">
+            <p class="attribute-label">Duración</p>
+            <p class="attribute-value" id="result-duracion"></p>
+          </div>
+          <div class="attribute-item">
+            <p class="attribute-label">Proyección</p>
+            <p class="attribute-value" id="result-proyeccion"></p>
+          </div>
+          <div class="attribute-item">
+            <p class="attribute-label">Temporada ideal</p>
+            <p class="attribute-value" id="result-temporada"></p>
+          </div>
+          <div class="attribute-item">
+            <p class="attribute-label">Ocasión</p>
+            <p class="attribute-value" id="result-ocasion"></p>
+          </div>
+        </div>
+
+        <!-- Personalidad -->
+        <div class="result-personality">
+          <p class="result-personality-label">Tu personalidad</p>
+          <p class="result-personality-text" id="result-personalidad"></p>
+        </div>
+
+        <!-- Descripción -->
+        <p class="result-description" id="result-descripcion"></p>
+
+        <!-- Acciones -->
+        <div class="result-actions">
+          <a id="btn-ver" href="#" class="btn-primary" target="_blank" rel="noopener">
+            <span>Ver este perfume</span>
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L7 1M13 7L7 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a id="btn-comprar" href="#" class="btn-secondary" target="_blank" rel="noopener">
+            <span>Comprar ahora</span>
+          </a>
+          <button class="btn-ghost" onclick="resetQuiz()">
+            ↩ Volver a hacer el test
+          </button>
+          <button class="btn-whatsapp" id="btn-whatsapp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span>Compartir resultado</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ============================================================
+       JAVASCRIPT — Lógica principal
+  ============================================================ -->
+  <script>
+    /* ============================================================
+       BASE DE DATOS DE PERFUMES
+       Cada perfume tiene un objeto de puntos que define con qué
+       respuestas hace match. Al final se suma y gana el mayor.
+    ============================================================ */
+    const PERFUMES = [
+      {
+        id: 'creed-aventus',
+        nombre: 'Creed Aventus',
+        familia: 'Frutal Amaderado',
+        top: 'Piña, Grosella Negra, Manzana',
+        heart: 'Abedul Ahumado, Rosa, Jazmín',
+        base: 'Musgo de Roble, Almizcle, Ámbar',
+        duracion: 'Extrema — +12 horas',
+        proyeccion: 'Bestial — Enorme radio',
+        temporada: 'Primavera / Otoño',
+        ocasion: 'Eventos exclusivos, trabajo de alto nivel',
+        personalidad: 'El perfume del ganador. Lo usas cuando entras a una sala y quieres que todos lo noten.',
+        descripcion: 'Creed Aventus es la declaración olfativa definitiva. Una fragancia que exuda poder, ambición y sofisticación. Creada para hombres que lideran, conquistan y no pasan desapercibidos. La piña inicial abre con fuerza, el corazón ahumado añade carácter, y el fondo amaderado permanece como una firma inconfundible.',
+        imagen: 'https://images.unsplash.com/photo-1541643600914-78b084683702?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        // Pesos por respuesta: [pregunta][opcion]
+        puntos: {
+          personalidad: { Elegante:2, Misterioso:1, Extrovertido:2, Romántico:0, Seguro:3, Ambicioso:3 },
+          aroma:        { Fresco:1, Dulce:0, Amaderado:2, Ámbar:1, Especiado:1, Cítrico:2 },
+          ocasion:      { Trabajo:3, Cita:1, Fiesta:2, Viaje:1, 'Uso diario':0, 'Evento elegante':3 },
+          estacion:     { Primavera:3, Verano:1, Otoño:3, Invierno:1 },
+          color:        { Negro:2, Blanco:1, Azul:2, Rojo:1, Verde:1, Dorado:3 },
+          estilo:       { 'Old Money':3, Streetwear:0, Elegante:3, Casual:0, Minimalista:2 },
+          bebida:       { Whisky:2, Café:1, Champagne:3, Cócteles:2, Agua:0 },
+          destino:      { París:3, Dubái:3, 'Nueva York':3, Roma:2, Tokio:1, Santorini:1 }
+        }
+      },
+      {
+        id: 'dior-sauvage-elixir',
+        nombre: 'Dior Sauvage Elixir',
+        familia: 'Especiado Amaderado Fresco',
+        top: 'Pomelo, Pimienta Negra, Canela',
+        heart: 'Lavanda, Nuez Moscada, Cardamomo',
+        base: 'Madera de Sándalo, Ámbar, Vainilla',
+        duracion: 'Extrema — +14 horas',
+        proyeccion: 'Enorme — Bestial',
+        temporada: 'Otoño / Invierno',
+        ocasion: 'Citas, noches especiales, eventos de lujo',
+        personalidad: 'Magnético, intenso y brutalmente seductor. La bestia del lujo contemporáneo.',
+        descripcion: 'Sauvage Elixir es la versión más oscura y concentrada del ícono de Dior. Especiado, amaderado y con una proyección devastadora. Para el hombre que no necesita decir nada: su presencia habla primero. Una de las fragancias más comentadas de la última década.',
+        imagen: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:2, Misterioso:3, Extrovertido:1, Romántico:2, Seguro:3, Ambicioso:2 },
+          aroma:        { Fresco:2, Dulce:1, Amaderado:3, Ámbar:3, Especiado:3, Cítrico:1 },
+          ocasion:      { Trabajo:1, Cita:3, Fiesta:2, Viaje:1, 'Uso diario':1, 'Evento elegante':3 },
+          estacion:     { Primavera:0, Verano:0, Otoño:3, Invierno:3 },
+          color:        { Negro:3, Blanco:0, Azul:2, Rojo:2, Verde:0, Dorado:2 },
+          estilo:       { 'Old Money':2, Streetwear:1, Elegante:3, Casual:0, Minimalista:2 },
+          bebida:       { Whisky:3, Café:1, Champagne:2, Cócteles:2, Agua:0 },
+          destino:      { París:3, Dubái:3, 'Nueva York':2, Roma:3, Tokio:1, Santorini:1 }
+        }
+      },
+      {
+        id: 'bleu-de-chanel',
+        nombre: 'Bleu de Chanel',
+        familia: 'Aromático Amaderado',
+        top: 'Limón, Pomelo, Menta',
+        heart: 'Jengibre, Nuez Moscada, Jazmín',
+        base: 'Cedro, Sándalo, Pachulí, Almizcle',
+        duracion: 'Alta — 8 a 10 horas',
+        proyeccion: 'Moderada — Elegante',
+        temporada: 'Todo el año — Especialmente primavera',
+        ocasion: 'Trabajo, uso diario, reuniones ejecutivas',
+        personalidad: 'Pulcro, sofisticado, impecable. El lenguaje universal de la elegancia masculina.',
+        descripcion: 'Bleu de Chanel es la definición de la elegancia atemporal. No busca sorprender con giros dramáticos sino conquistar por su consistencia y refinamiento. Un hombre que usa Bleu sabe exactamente quién es y no necesita demostrarlo a gritos. Es la elección del ejecutivo seguro, del esteta silencioso.',
+        imagen: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:3, Misterioso:1, Extrovertido:1, Romántico:1, Seguro:3, Ambicioso:2 },
+          aroma:        { Fresco:3, Dulce:0, Amaderado:2, Ámbar:1, Especiado:1, Cítrico:3 },
+          ocasion:      { Trabajo:3, Cita:2, Fiesta:0, Viaje:2, 'Uso diario':3, 'Evento elegante':2 },
+          estacion:     { Primavera:3, Verano:2, Otoño:2, Invierno:1 },
+          color:        { Negro:1, Blanco:2, Azul:3, Rojo:0, Verde:1, Dorado:1 },
+          estilo:       { 'Old Money':3, Streetwear:0, Elegante:3, Casual:1, Minimalista:3 },
+          bebida:       { Whisky:1, Café:2, Champagne:2, Cócteles:1, Agua:2 },
+          destino:      { París:3, Dubái:1, 'Nueva York':2, Roma:3, Tokio:2, Santorini:2 }
+        }
+      },
+      {
+        id: 'versace-eros',
+        nombre: 'Versace Eros',
+        familia: 'Frutal Aromático',
+        top: 'Menta, Limón Verde, Manzana Verde',
+        heart: 'Tonka, Ambroxan, Geranio',
+        base: 'Vainilla, Musgo de Roble, Vétiver',
+        duracion: 'Alta — 8 a 10 horas',
+        proyeccion: 'Enorme — Muy notable',
+        temporada: 'Primavera / Verano',
+        ocasion: 'Salidas nocturnas, fiestas, citas',
+        personalidad: 'Apasionado, seductor e imparable. El dios griego en versión fragancia.',
+        descripcion: 'Versace Eros lleva el nombre del dios griego del amor por una razón: es irresistible. Energético, fresco y con una proyección que llena cualquier espacio. La menta inicial explota con vitalidad, la Tonka añade sensualidad y la vainilla del fondo envuelve de calidez. Para el hombre que vive a tope.',
+        imagen: 'https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:1, Misterioso:1, Extrovertido:3, Romántico:3, Seguro:2, Ambicioso:2 },
+          aroma:        { Fresco:3, Dulce:2, Amaderado:1, Ámbar:1, Especiado:1, Cítrico:3 },
+          ocasion:      { Trabajo:0, Cita:3, Fiesta:3, Viaje:2, 'Uso diario':2, 'Evento elegante':1 },
+          estacion:     { Primavera:3, Verano:3, Otoño:1, Invierno:0 },
+          color:        { Negro:2, Blanco:1, Azul:3, Rojo:2, Verde:2, Dorado:1 },
+          estilo:       { 'Old Money':0, Streetwear:2, Elegante:2, Casual:2, Minimalista:0 },
+          bebida:       { Whisky:1, Café:0, Champagne:2, Cócteles:3, Agua:1 },
+          destino:      { París:2, Dubái:2, 'Nueva York':2, Roma:3, Tokio:1, Santorini:3 }
+        }
+      },
+      {
+        id: 'swi-intensely',
+        nombre: 'Stronger With You Intensely',
+        familia: 'Gourmand Amaderado',
+        top: 'Cardamomo, Salvia, Cedro de Virginia',
+        heart: 'Chestnut, Vainilla, Lavanda',
+        base: 'Madera de Cachemira, Almizcle Blanco, Ámbar',
+        duracion: 'Muy alta — 10 a 12 horas',
+        proyeccion: 'Alta — Envolvente',
+        temporada: 'Otoño / Invierno',
+        ocasion: 'Citas románticas, noches íntimas',
+        personalidad: 'Apasionado, emotivo y profundamente romántico. El perfume del que se queda en la memoria.',
+        descripcion: 'Stronger With You Intensely es la versión más cálida y sensual de la familia SWY. La castaña asada y la vainilla crean una atmósfera envolvente e irresistible. Para el hombre que no teme mostrar su lado más romántico y que sabe que la vulnerabilidad bien llevada es la mayor de las fortalezas.',
+        imagen: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:1, Misterioso:2, Extrovertido:1, Romántico:3, Seguro:2, Ambicioso:1 },
+          aroma:        { Fresco:0, Dulce:3, Amaderado:2, Ámbar:3, Especiado:2, Cítrico:0 },
+          ocasion:      { Trabajo:0, Cita:3, Fiesta:1, Viaje:1, 'Uso diario':2, 'Evento elegante':2 },
+          estacion:     { Primavera:0, Verano:0, Otoño:3, Invierno:3 },
+          color:        { Negro:2, Blanco:1, Azul:1, Rojo:3, Verde:0, Dorado:2 },
+          estilo:       { 'Old Money':1, Streetwear:1, Elegante:2, Casual:2, Minimalista:1 },
+          bebida:       { Whisky:2, Café:2, Champagne:1, Cócteles:2, Agua:0 },
+          destino:      { París:3, Dubái:1, 'Nueva York':1, Roma:3, Tokio:1, Santorini:2 }
+        }
+      },
+      {
+        id: 'jpl-le-male-elixir',
+        nombre: 'Jean Paul Gaultier Le Male Elixir',
+        familia: 'Oriental Amaderado',
+        top: 'Lavanda, Bergamota, Cardamomo',
+        heart: 'Iris, Vainilla, Tonka',
+        base: 'Sándalo, Haya, Almizcle, Ámbar Gris',
+        duracion: 'Extrema — +14 horas',
+        proyeccion: 'Devastadora — Para noches largas',
+        temporada: 'Otoño / Invierno',
+        ocasion: 'Noches especiales, eventos de gala',
+        personalidad: 'Misterioso, seductor y dramático. El perfume que recuerdan sin saber por qué.',
+        descripcion: 'Le Male Elixir es la versión más oscura y concentrada del ícono de JPG. Una fragancia que mezcla masculinidad clásica con sensualidad oriental profunda. La lavanda inicial da paso a un corazón de iris y vainilla, que culmina en una base amaderada de proyección hipnótica. Solo para los que se atreven.',
+        imagen: 'https://images.unsplash.com/photo-1606830733744-0ad4930c2313?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:2, Misterioso:3, Extrovertido:1, Romántico:2, Seguro:2, Ambicioso:1 },
+          aroma:        { Fresco:0, Dulce:2, Amaderado:2, Ámbar:3, Especiado:2, Cítrico:0 },
+          ocasion:      { Trabajo:0, Cita:3, Fiesta:3, Viaje:0, 'Uso diario':0, 'Evento elegante':3 },
+          estacion:     { Primavera:0, Verano:0, Otoño:2, Invierno:3 },
+          color:        { Negro:3, Blanco:0, Azul:2, Rojo:2, Verde:0, Dorado:1 },
+          estilo:       { 'Old Money':1, Streetwear:2, Elegante:2, Casual:1, Minimalista:0 },
+          bebida:       { Whisky:2, Café:1, Champagne:2, Cócteles:3, Agua:0 },
+          destino:      { París:3, Dubái:2, 'Nueva York':2, Roma:2, Tokio:2, Santorini:1 }
+        }
+      },
+      {
+        id: 'ysl-y-edp',
+        nombre: 'YSL Y EDP',
+        familia: 'Aromático Amaderado Fresco',
+        top: 'Albahaca, Bergamota, Jengibre',
+        heart: 'Salvia, Geranio',
+        base: 'Cedro de Virginia, Ámbar, Vétiver',
+        duracion: 'Alta — 8 a 10 horas',
+        proyeccion: 'Moderada-Alta',
+        temporada: 'Primavera / Verano / Otoño',
+        ocasion: 'Trabajo, reuniones, uso versátil',
+        personalidad: 'Moderno, accesible y con gran estilo. El hombre que siempre luce impecable sin esfuerzo.',
+        descripcion: 'YSL Y EDP es la fragancia del hombre contemporáneo que sabe lo que quiere. Fresca, amaderada y con un toque especiado que la hace versátil para casi cualquier situación. No grita, pero siempre es notada. Para el que prefiere comunicar su estilo de manera refinada y cotidiana.',
+        imagen: 'https://images.unsplash.com/photo-1512678080530-7760d81faba6?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:2, Misterioso:1, Extrovertido:2, Romántico:1, Seguro:3, Ambicioso:3 },
+          aroma:        { Fresco:3, Dulce:0, Amaderado:2, Ámbar:1, Especiado:2, Cítrico:2 },
+          ocasion:      { Trabajo:3, Cita:2, Fiesta:1, Viaje:3, 'Uso diario':3, 'Evento elegante':2 },
+          estacion:     { Primavera:3, Verano:2, Otoño:2, Invierno:1 },
+          color:        { Negro:2, Blanco:2, Azul:3, Rojo:1, Verde:2, Dorado:1 },
+          estilo:       { 'Old Money':2, Streetwear:1, Elegante:3, Casual:2, Minimalista:2 },
+          bebida:       { Whisky:1, Café:2, Champagne:2, Cócteles:2, Agua:2 },
+          destino:      { París:3, Dubái:2, 'Nueva York':3, Roma:2, Tokio:2, Santorini:2 }
+        }
+      },
+      {
+        id: 'club-nuit-intense',
+        nombre: 'Club de Nuit Intense Man',
+        familia: 'Frutal Amaderado Ahumado',
+        top: 'Limón, Piña, Pomelo, Grosella Negra',
+        heart: 'Abedul Ahumado, Rosa, Jazmín',
+        base: 'Musgo de Roble, Patchuli, Almizcle',
+        duracion: 'Muy alta — 10 a 12 horas',
+        proyeccion: 'Bestial — Altísima',
+        temporada: 'Todo el año',
+        ocasion: 'Eventos, noches, uso diario premium',
+        personalidad: 'Ambicioso e inteligente. Sabe cómo obtener resultados de lujo sin pagar el precio máximo.',
+        descripcion: 'Club de Nuit Intense Man es el clon más célebre del mundo de la perfumería: inspirado en Creed Aventus, ofrece una experiencia olfativa de ultra premium a un precio imbatible. Frutal, ahumado y con una proyección devastadora. Para el hombre que conoce el valor de las cosas, no solo su precio.',
+        imagen: 'https://images.unsplash.com/photo-1519415387722-a1c3bbef716c?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:2, Misterioso:1, Extrovertido:2, Romántico:0, Seguro:3, Ambicioso:3 },
+          aroma:        { Fresco:2, Dulce:0, Amaderado:2, Ámbar:1, Especiado:1, Cítrico:2 },
+          ocasion:      { Trabajo:2, Cita:1, Fiesta:3, Viaje:2, 'Uso diario':2, 'Evento elegante':2 },
+          estacion:     { Primavera:2, Verano:2, Otoño:2, Invierno:2 },
+          color:        { Negro:2, Blanco:1, Azul:2, Rojo:1, Verde:1, Dorado:2 },
+          estilo:       { 'Old Money':2, Streetwear:1, Elegante:2, Casual:1, Minimalista:2 },
+          bebida:       { Whisky:2, Café:1, Champagne:2, Cócteles:2, Agua:1 },
+          destino:      { París:2, Dubái:3, 'Nueva York':2, Roma:2, Tokio:1, Santorini:2 }
+        }
+      },
+      {
+        id: 'mancera-cedrat-boise',
+        nombre: 'Mancera Cedrat Boisé',
+        familia: 'Cítrico Amaderado',
+        top: 'Cedrat, Limón, Bergamota, Mandarina',
+        heart: 'Madera de Cedro, Patchuli, Lavanda',
+        base: 'Sándalo, Musgo de Roble, Vainilla Negra',
+        duracion: 'Muy alta — 10 a 12 horas',
+        proyeccion: 'Alta — Presencia clara',
+        temporada: 'Primavera / Verano / Otoño',
+        ocasion: 'Uso diario de lujo, trabajo de alto nivel, viajes',
+        personalidad: 'Sofisticado, cosmopolita y con criterio impecable. El conocedor de fragancias nicho.',
+        descripcion: 'Mancera Cedrat Boisé es la fragancia del verdadero entendido. Un cítrico amaderado de alta perfumería que mezcla la frescura explosiva del cedrat con una base amaderada profunda e hipnótica. Para el hombre que conoce el universo nicho y no necesita marcas de lujo masivo para demostrar su buen gusto.',
+        imagen: 'https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:3, Misterioso:2, Extrovertido:1, Romántico:1, Seguro:3, Ambicioso:2 },
+          aroma:        { Fresco:3, Dulce:0, Amaderado:3, Ámbar:1, Especiado:1, Cítrico:3 },
+          ocasion:      { Trabajo:3, Cita:2, Fiesta:1, Viaje:3, 'Uso diario':3, 'Evento elegante':2 },
+          estacion:     { Primavera:3, Verano:3, Otoño:2, Invierno:1 },
+          color:        { Negro:1, Blanco:2, Azul:3, Rojo:0, Verde:3, Dorado:1 },
+          estilo:       { 'Old Money':3, Streetwear:0, Elegante:3, Casual:1, Minimalista:3 },
+          bebida:       { Whisky:2, Café:2, Champagne:2, Cócteles:1, Agua:3 },
+          destino:      { París:3, Dubái:2, 'Nueva York':2, Roma:3, Tokio:2, Santorini:3 }
+        }
+      },
+      {
+        id: 'khamrah-lattafa',
+        nombre: 'Khamrah Lattafa',
+        familia: 'Gourmand Oriental',
+        top: 'Azafrán, Bergamota, Pera',
+        heart: 'Jazmín, Rosa, Oud',
+        base: 'Ámbar, Vainilla, Almizcle, Sándalo',
+        duracion: 'Extrema — +16 horas',
+        proyeccion: 'Devastadora — Se queda en la ropa días',
+        temporada: 'Otoño / Invierno',
+        ocasion: 'Eventos especiales, noches mágicas',
+        personalidad: 'Misterioso, profundo y con un aura magnética que atrae miradas sin buscarlas.',
+        descripcion: 'Khamrah es la joya de la corona de Lattafa. Una fragancia oriental de intensidad inigualable que combina oud árabe, azafrán, vainilla y ámbar en una composición que hipnotiza. Su proyección y longevidad son legendarias. Para quien quiere llevar un perfume de experiencia única con un valor excepcional.',
+        imagen: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:2, Misterioso:3, Extrovertido:0, Romántico:2, Seguro:1, Ambicioso:2 },
+          aroma:        { Fresco:0, Dulce:3, Amaderado:2, Ámbar:3, Especiado:3, Cítrico:0 },
+          ocasion:      { Trabajo:0, Cita:3, Fiesta:2, Viaje:2, 'Uso diario':0, 'Evento elegante':3 },
+          estacion:     { Primavera:0, Verano:0, Otoño:3, Invierno:3 },
+          color:        { Negro:3, Blanco:0, Azul:1, Rojo:3, Verde:0, Dorado:3 },
+          estilo:       { 'Old Money':2, Streetwear:0, Elegante:3, Casual:0, Minimalista:1 },
+          bebida:       { Whisky:3, Café:1, Champagne:1, Cócteles:2, Agua:0 },
+          destino:      { París:2, Dubái:3, 'Nueva York':1, Roma:2, Tokio:1, Santorini:2 }
+        }
+      },
+      {
+        id: 'arabians-tonka',
+        nombre: 'Arabians Tonka',
+        familia: 'Oriental Dulce Amaderado',
+        top: 'Bergamota, Especias, Azafrán',
+        heart: 'Tonka, Rosa, Orquídea',
+        base: 'Ámbar, Oud, Sándalo, Vainilla',
+        duracion: 'Extrema — +14 horas',
+        proyeccion: 'Enorme — Nube de lujo',
+        temporada: 'Otoño / Invierno',
+        ocasion: 'Eventos, noches especiales, viajes de lujo',
+        personalidad: 'Exótico, magnético y con una personalidad que cautiva desde el primer instante.',
+        descripcion: 'Arabians Tonka fusiona la sensualidad oriental árabe con la elegancia occidental en una composición que parece sacada de Las Mil y Una Noches. Tonka, oud y ámbar crean una danza envolvente e irresistible. Para el que no teme destacar y lleva su personalidad como el mayor de sus lujos.',
+        imagen: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:2, Misterioso:3, Extrovertido:1, Romántico:2, Seguro:2, Ambicioso:2 },
+          aroma:        { Fresco:0, Dulce:2, Amaderado:2, Ámbar:3, Especiado:3, Cítrico:0 },
+          ocasion:      { Trabajo:0, Cita:2, Fiesta:2, Viaje:3, 'Uso diario':0, 'Evento elegante':3 },
+          estacion:     { Primavera:0, Verano:0, Otoño:3, Invierno:3 },
+          color:        { Negro:2, Blanco:1, Azul:1, Rojo:2, Verde:0, Dorado:3 },
+          estilo:       { 'Old Money':3, Streetwear:0, Elegante:3, Casual:0, Minimalista:1 },
+          bebida:       { Whisky:3, Café:0, Champagne:2, Cócteles:2, Agua:0 },
+          destino:      { París:2, Dubái:3, 'Nueva York':1, Roma:2, Tokio:1, Santorini:2 }
+        }
+      },
+      {
+        id: 'erba-pura',
+        nombre: 'Erba Pura',
+        familia: 'Frutal Floral Dulce',
+        top: 'Naranja de Sicilia, Lima, Frutas',
+        heart: 'Heliotropo, Flor de Syringa',
+        base: 'Almizcle Blanco, Madera, Ámbar',
+        duracion: 'Alta — 8 a 10 horas',
+        proyeccion: 'Alta — Fresca y notable',
+        temporada: 'Primavera / Verano',
+        ocasion: 'Uso diario, viajes, playa, eventos casuales',
+        personalidad: 'Luminoso, optimista y con una energía contagiosa que alegra cualquier ambiente.',
+        descripcion: 'Erba Pura es la explosión de alegría en formato perfume. Cítricos mediterráneos, flores blancas y un fondo suave y almizcleado que lo hacen adictivo desde el primer spray. Para el hombre —o mujer— que irradia positividad y lleva el verano por dentro incluso en diciembre.',
+        imagen: 'https://images.unsplash.com/photo-1563170351-be82bc888aa4?w=900&q=80&auto=format',
+        url_ver: '#',
+        url_comprar: '#',
+        puntos: {
+          personalidad: { Elegante:1, Misterioso:0, Extrovertido:3, Romántico:2, Seguro:2, Ambicioso:1 },
+          aroma:        { Fresco:3, Dulce:3, Amaderado:1, Ámbar:1, Especiado:0, Cítrico:3 },
+          ocasion:      { Trabajo:1, Cita:2, Fiesta:2, Viaje:3, 'Uso diario':3, 'Evento elegante':1 },
+          estacion:     { Primavera:3, Verano:3, Otoño:1, Invierno:0 },
+          color:        { Negro:0, Blanco:3, Azul:2, Rojo:1, Verde:3, Dorado:1 },
+          estilo:       { 'Old Money':1, Streetwear:2, Elegante:1, Casual:3, Minimalista:2 },
+          bebida:       { Whisky:0, Café:1, Champagne:2, Cócteles:3, Agua:3 },
+          destino:      { París:1, Dubái:1, 'Nueva York':2, Roma:2, Tokio:2, Santorini:3 }
+        }
+      }
+    ];
+
+    /* ============================================================
+       PREGUNTAS DEL QUIZ
+    ============================================================ */
+    const PREGUNTAS = [
+      {
+        id: 'personalidad',
+        numero: 'Pregunta uno',
+        texto: '¿Cómo describirías tu personalidad?',
+        opciones: ['Elegante', 'Misterioso', 'Extrovertido', 'Romántico', 'Seguro', 'Ambicioso']
+      },
+      {
+        id: 'aroma',
+        numero: 'Pregunta dos',
+        texto: '¿Qué familia de aromas prefieres?',
+        opciones: ['Fresco', 'Dulce', 'Amaderado', 'Ámbar', 'Especiado', 'Cítrico']
+      },
+      {
+        id: 'ocasion',
+        numero: 'Pregunta tres',
+        texto: '¿Cuál es tu ocasión favorita para perfumarte?',
+        opciones: ['Trabajo', 'Cita', 'Fiesta', 'Viaje', 'Uso diario', 'Evento elegante']
+      },
+      {
+        id: 'estacion',
+        numero: 'Pregunta cuatro',
+        texto: '¿Qué estación del año prefieres?',
+        opciones: ['Primavera', 'Verano', 'Otoño', 'Invierno']
+      },
+      {
+        id: 'color',
+        numero: 'Pregunta cinco',
+        texto: '¿Qué color te representa mejor?',
+        opciones: ['Negro', 'Blanco', 'Azul', 'Rojo', 'Verde', 'Dorado']
+      },
+      {
+        id: 'estilo',
+        numero: 'Pregunta seis',
+        texto: '¿Qué estilo define tu forma de vestir?',
+        opciones: ['Old Money', 'Streetwear', 'Elegante', 'Casual', 'Minimalista']
+      },
+      {
+        id: 'bebida',
+        numero: 'Pregunta siete',
+        texto: '¿Cuál es tu bebida favorita?',
+        opciones: ['Whisky', 'Café', 'Champagne', 'Cócteles', 'Agua']
+      },
+      {
+        id: 'destino',
+        numero: 'Pregunta ocho',
+        texto: '¿A qué destino viajarías sin pensarlo?',
+        opciones: ['París', 'Dubái', 'Nueva York', 'Roma', 'Tokio', 'Santorini']
+      }
+    ];
+
+    /* ============================================================
+       ESTADO DEL QUIZ
+    ============================================================ */
+    let estadoActual = 0;       // índice de pregunta actual
+    let respuestas   = {};       // { preguntaId: opcionElegida }
+    let perfumeResultado = null;
+
+    /* ============================================================
+       FUNCIONES PRINCIPALES
+    ============================================================ */
+
+    /** Oculta el hero y muestra el quiz */
+    function startQuiz() {
+      const hero = document.getElementById('hero');
+      const quiz = document.getElementById('quiz-section');
+
+      // Fade out hero
+      hero.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      hero.style.opacity = '0';
+      hero.style.transform = 'translateY(-20px)';
+
+      setTimeout(() => {
+        hero.style.display = 'none';
+        quiz.classList.add('active');
+
+        // Init progress dots
+        initProgressDots();
+
+        // Scroll reveal
+        setTimeout(() => {
+          document.getElementById('progress-wrap').classList.add('revealed');
+        }, 100);
+
+        // Mostrar primera pregunta
+        mostrarPregunta(0);
+      }, 600);
+    }
+
+    /** Genera los dots de progreso */
+    function initProgressDots() {
+      const container = document.getElementById('progress-dots');
+      container.innerHTML = '';
+      PREGUNTAS.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+        dot.id = `dot-${i}`;
+        container.appendChild(dot);
+      });
+    }
+
+    /** Actualiza la barra de progreso */
+    function updateProgress(index) {
+      const pct  = (index / PREGUNTAS.length) * 100;
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-count').textContent = `${index + 1} / ${PREGUNTAS.length}`;
+
+      // Dots
+      PREGUNTAS.forEach((_, i) => {
+        const dot = document.getElementById(`dot-${i}`);
+        if (!dot) return;
+        dot.className = 'progress-dot';
+        if (i < index)       dot.classList.add('done');
+        else if (i === index) dot.classList.add('active');
+      });
+    }
+
+    /** Renderiza la pregunta en la tarjeta */
+    function mostrarPregunta(index) {
+      const pregunta = PREGUNTAS[index];
+      const card     = document.getElementById('question-card');
+
+      // Fade out
+      card.classList.remove('visible');
+
+      setTimeout(() => {
+        // Actualizar contenido
+        document.getElementById('question-number').textContent = pregunta.numero;
+        document.getElementById('question-text').textContent   = pregunta.texto;
+
+        // Opciones
+        const grid = document.getElementById('options-grid');
+        grid.innerHTML = '';
+        pregunta.opciones.forEach(opcion => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.innerHTML = `<span>${opcion}</span>`;
+
+          // Si ya fue respondida, marcar seleccionada
+          if (respuestas[pregunta.id] === opcion) {
+            btn.classList.add('selected');
+          }
+
+          btn.addEventListener('click', () => elegirOpcion(opcion, pregunta.id));
+          grid.appendChild(btn);
+        });
+
+        // Actualizar progreso
+        updateProgress(index);
+
+        // Fade in
+        requestAnimationFrame(() => {
+          setTimeout(() => card.classList.add('visible'), 30);
+        });
+      }, 300);
+    }
+
+    /** Maneja la elección de una opción */
+    function elegirOpcion(opcion, preguntaId) {
+      // Guardar respuesta
+      respuestas[preguntaId] = opcion;
+
+      // Feedback visual breve
+      const grid    = document.getElementById('options-grid');
+      const botones = grid.querySelectorAll('.option-btn');
+      botones.forEach(b => {
+        b.classList.remove('selected');
+        if (b.querySelector('span').textContent === opcion) {
+          b.classList.add('selected');
+        }
+      });
+
+      // Avanzar después de un momento
+      setTimeout(() => {
+        if (estadoActual < PREGUNTAS.length - 1) {
+          estadoActual++;
+          mostrarPregunta(estadoActual);
+        } else {
+          // Fin del quiz
+          finalizarQuiz();
+        }
+      }, 420);
+    }
+
+    /** Calcula el resultado y muestra la pantalla de análisis */
+    function finalizarQuiz() {
+      // Pantalla de análisis
+      const analyzing = document.getElementById('analyzing-screen');
+      analyzing.classList.add('active');
+
+      // Calcular puntuación
+      const scores = {};
+      PERFUMES.forEach(p => { scores[p.id] = 0; });
+
+      Object.entries(respuestas).forEach(([preguntaId, opcion]) => {
+        PERFUMES.forEach(p => {
+          const puntosPregunta = p.puntos[preguntaId];
+          if (puntosPregunta && puntosPregunta[opcion] !== undefined) {
+            scores[p.id] += puntosPregunta[opcion];
+          }
+        });
+      });
+
+      // Encontrar ganador
+      let maxScore  = -1;
+      let winnerId  = null;
+      Object.entries(scores).forEach(([id, score]) => {
+        if (score > maxScore) { maxScore = score; winnerId = id; }
+      });
+
+      perfumeResultado = PERFUMES.find(p => p.id === winnerId);
+
+      // Esperar 2.2s y mostrar resultado
+      setTimeout(() => {
+        analyzing.classList.remove('active');
+        mostrarResultado();
+      }, 2200);
+    }
+
+    /** Renderiza la tarjeta de resultado */
+    function mostrarResultado() {
+      const quiz   = document.getElementById('quiz-section');
+      const result = document.getElementById('result-section');
+      const p      = perfumeResultado;
+
+      quiz.style.display = 'none';
+
+      // Rellenar datos
+      document.getElementById('result-headline').textContent   = `Tu fragancia ideal es ${p.nombre}`;
+      document.getElementById('result-img').src                = p.imagen;
+      document.getElementById('result-img').alt                = p.nombre;
+      document.getElementById('result-badge').textContent      = p.familia;
+      document.getElementById('result-name').textContent       = p.nombre;
+      document.getElementById('result-family').textContent     = p.familia;
+      document.getElementById('result-top').textContent        = p.top;
+      document.getElementById('result-heart').textContent      = p.heart;
+      document.getElementById('result-base').textContent       = p.base;
+      document.getElementById('result-duracion').textContent   = p.duracion;
+      document.getElementById('result-proyeccion').textContent = p.proyeccion;
+      document.getElementById('result-temporada').textContent  = p.temporada;
+      document.getElementById('result-ocasion').textContent    = p.ocasion;
+      document.getElementById('result-personalidad').textContent = p.personalidad;
+      document.getElementById('result-descripcion').textContent  = p.descripcion;
+
+      // Botones de acción
+      document.getElementById('btn-ver').href     = p.url_ver;
+      document.getElementById('btn-comprar').href = p.url_comprar;
+
+      // Compartir en WhatsApp
+      document.getElementById('btn-whatsapp').onclick = () => {
+        const msg = `✨ Hice el test de Vecchia Perfumes y mi fragancia ideal es *${p.nombre}*.\n\n"${p.personalidad}"\n\n¿Cuál es la tuya? Descúbrelo en Vecchia Perfumes.`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+      };
+
+      result.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /** Reinicia todo el quiz */
+    function resetQuiz() {
+      estadoActual     = 0;
+      respuestas       = {};
+      perfumeResultado = null;
+
+      const result = document.getElementById('result-section');
+      const hero   = document.getElementById('hero');
+
+      result.classList.remove('active');
+
+      // Volver al hero
+      hero.style.display    = 'flex';
+      hero.style.opacity    = '0';
+      hero.style.transform  = 'translateY(20px)';
+      hero.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+
+      setTimeout(() => {
+        hero.style.opacity   = '1';
+        hero.style.transform = 'translateY(0)';
+      }, 50);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ============================================================
+       SCROLL REVEAL — IntersectionObserver
+    ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); }),
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
+  </script>
+
+</body>
+</html>
