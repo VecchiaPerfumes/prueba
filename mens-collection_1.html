@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Men's Collection | Vecchia Perfumes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F5F2EC;--cream2:#EDEAE3;--black:#111110;--gray:#767670;--line:#D9D6CF;--white:#FAFAF8}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'Inter',sans-serif;color:var(--black);padding-top:90px}
+body.menu-open{overflow:hidden}
+nav{position:fixed;top:0;left:0;width:100%;z-index:9999;padding:20px 5%;background:rgba(245,242,236,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;letter-spacing:8px;text-decoration:none;color:var(--black);transition:.25s}
+.logo:hover{opacity:.7}
+.nav-left{display:flex;align-items:center;gap:18px}
+.back-btn{text-decoration:none;color:var(--gray);text-transform:uppercase;font-size:.75rem;letter-spacing:2px}
+#menuBtn{background:none;border:none;font-size:28px;cursor:pointer;color:#111}
+.side-menu{position:fixed;top:0;right:-340px;width:min(320px,88vw);height:100vh;background:var(--cream);padding:90px 35px;display:flex;flex-direction:column;gap:25px;transition:.35s ease;box-shadow:-10px 0 30px rgba(0,0,0,.15);z-index:100001}
+.side-menu.open{right:0}
+.side-menu a{text-decoration:none;color:#111;font-size:1.2rem;font-family:'Cormorant Garamond',serif;border-bottom:1px solid #ddd;padding-bottom:15px;transition:.25s}
+.side-menu a:hover{padding-left:8px}
+.close-menu{position:absolute;top:25px;right:25px;border:none;background:none;font-size:32px;cursor:pointer;color:#111}
+.menu-overlay{position:fixed;inset:0;background:rgba(17,17,16,.28);opacity:0;visibility:hidden;transition:.3s;z-index:100000}
+.menu-overlay.open{opacity:1;visibility:visible}
+.hero{text-align:center;padding:100px 5% 65px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,10vw,8rem);font-weight:300}
+.hero p{color:var(--gray);margin-top:15px}
+.search-section{max-width:1200px;margin:20px auto 50px;padding:0 20px}
+.search-box{position:relative;margin-bottom:28px}
+.search-box input{width:100%;height:58px;padding:0 60px;background:transparent;border:1px solid rgba(0,0,0,.15);border-radius:50px;color:#111;font-size:15px;transition:.35s}
+.search-box input:focus{outline:none;border-color:#000}
+.search-box svg{position:absolute;left:22px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:#111}
+.filter-group{margin-top:22px}
+.filter-label{text-align:center;color:var(--gray);font-size:.68rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.filters{display:flex;justify-content:center;flex-wrap:wrap;gap:18px}
+.filter-btn{background:transparent;border:none;color:#666;font-size:14px;font-weight:500;cursor:pointer;padding:6px 0;position:relative;transition:.3s}
+.filter-btn::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:2px;background:#000;transition:.3s}
+.filter-btn:hover,.filter-btn.active{color:#000}
+.filter-btn:hover::after,.filter-btn.active::after{width:100%}
+.results-info{text-align:center;color:var(--gray);font-size:.78rem;letter-spacing:1px;margin-top:28px}
+.products{width:min(1500px,92%);margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding-bottom:100px}
+.card{background:var(--white);border:1px solid var(--line);transition:.3s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-6px)}
+.card img{width:100%;height:320px;object-fit:contain;background:white;padding:30px}
+.info{padding:25px}
+.name{font-family:'Cormorant Garamond',serif;font-size:1.7rem}
+.price{margin-top:10px;font-weight:600;color:var(--gray)}
+.desc{margin-top:15px;line-height:1.6;color:var(--gray)}
+.buy{display:inline-block;margin-top:20px;text-decoration:none;background:var(--black);color:white;padding:12px 22px;text-transform:uppercase;font-size:.7rem;letter-spacing:2px}
+.card.sold-out{opacity:.75}
+.card.sold-out img{filter:grayscale(100%)}
+.card.sold-out::before{content:"AGOTADO";position:absolute;top:18px;right:18px;background:rgba(17,17,16,.92);color:#fff;padding:6px 14px;font-size:.65rem;letter-spacing:2px;z-index:2}
+.card.sold-out .buy{background:transparent;color:#111;border:1px solid #111;pointer-events:none;opacity:.5}
+.card.sold-out .buy::after{content:" · Sin stock"}
+.no-results{display:none;grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray)}
+#topBtn{position:fixed;bottom:25px;right:25px;width:55px;height:55px;border:none;border-radius:50%;background:#111;color:white;font-size:22px;cursor:pointer;display:none;transition:.3s;box-shadow:0 10px 25px rgba(0,0,0,.18);z-index:9999}
+#topBtn:hover{transform:translateY(-5px);background:#333}
+@media(max-width:1400px){.products{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:1024px){.products{grid-template-columns:repeat(3,1fr);gap:22px}}
+@media(max-width:768px){
+ body{padding-top:76px}nav{padding:17px 4%}.logo{font-size:1.25rem;letter-spacing:5px}.back-btn{display:none}
+ .hero{padding:70px 5% 45px}.products{grid-template-columns:repeat(2,1fr);gap:15px;width:94%}
+ .card img{height:180px;padding:15px}.info{padding:15px}.name{font-size:1.3rem;line-height:1.2}.price{font-size:1rem}.desc{display:none}.buy{width:100%;text-align:center;padding:10px;font-size:.65rem}
+ .filters{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;gap:10px;padding:4px 2px 12px;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}.filter-btn{flex:0 0 auto;padding:10px 15px;border:1px solid var(--line);border-radius:50px}.filter-btn::after{display:none}.filter-btn.active{background:#111;color:#fff;border-color:#111}
+ .filter-label{text-align:left}.search-section{margin-bottom:35px}
+}
+@media(max-width:480px){.products{gap:12px}.card img{height:150px}.name{font-size:1.1rem}}
+
+/* ── ICONS / SEARCH / DRAWER (favoritos y pedido) ── */
+.nav-icons{display:flex;align-items:center;gap:16px;margin-right:4px}
+.icon-btn{background:none;border:none;cursor:pointer;color:#111;display:flex;align-items:center;justify-content:center;width:22px;height:22px;position:relative;transition:opacity .25s}
+.icon-btn:hover{opacity:.6}
+.icon-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.4}
+.icon-badge{position:absolute;top:-7px;right:-9px;background:var(--black);color:#fff;font-size:.58rem;font-weight:600;line-height:1;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);transition:opacity .25s,transform .25s}
+.icon-badge.show{opacity:1;transform:scale(1)}
+
+#quick-search{position:fixed;inset:0;background:rgba(17,17,16,.97);z-index:100050;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:.4s;padding:0 6%}
+#quick-search.open{opacity:1;visibility:visible}
+.qs-inner{width:100%;max-width:720px}
+.qs-inner label{display:block;color:rgba(245,242,236,.55);font-size:.68rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:18px}
+#quickSearchInput{width:100%;background:none;border:none;border-bottom:1px solid rgba(255,255,255,.25);color:#fff;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.5rem,4vw,2.4rem);padding:10px 0;outline:none}
+#quickSearchInput::placeholder{color:rgba(255,255,255,.3)}
+#qsResults{margin-top:24px;display:flex;flex-direction:column;gap:2px;max-height:44vh;overflow-y:auto}
+#qsResults a{display:flex;justify-content:space-between;gap:14px;text-decoration:none;color:rgba(245,242,236,.75);font-size:.88rem;padding:12px 4px;border-bottom:1px solid rgba(255,255,255,.08);transition:.2s}
+#qsResults a:hover{color:#fff;padding-left:8px}
+#qsEmpty{color:rgba(245,242,236,.35);font-size:.8rem;margin-top:18px}
+.qs-close{position:absolute;top:26px;right:5%;background:none;border:none;cursor:pointer;color:#fff;font-size:.68rem;letter-spacing:2px;text-transform:uppercase}
+
+#drawerBackdrop{position:fixed;inset:0;background:rgba(17,17,16,.5);z-index:100060;opacity:0;visibility:hidden;transition:.4s}
+#drawerBackdrop.open{opacity:1;visibility:visible}
+#drawer{position:fixed;top:0;right:-420px;width:min(88%,400px);height:100vh;background:var(--white);z-index:100070;display:flex;flex-direction:column;transition:right .45s cubic-bezier(.22,.61,.36,1);box-shadow:-30px 0 60px rgba(0,0,0,.15)}
+#drawer.open{right:0}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;padding:24px 26px;border-bottom:1px solid var(--line)}
+.drawer-tabs{display:flex;gap:20px}
+.drawer-tab{background:none;border:none;cursor:pointer;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);padding-bottom:6px;border-bottom:1px solid transparent}
+.drawer-tab.active{color:#111;border-color:#111}
+.drawer-close{background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--gray);line-height:1}
+.drawer-body{flex:1;overflow-y:auto;padding:6px 26px}
+.drawer-item{display:flex;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.drawer-item img{width:48px;height:60px;object-fit:contain;background:var(--cream);border:1px solid var(--line)}
+.drawer-item-info{flex:1}
+.drawer-item-name{font-family:'Cormorant Garamond',serif;font-size:.95rem;line-height:1.2}
+.drawer-item-price{font-size:.72rem;color:var(--gray);margin-top:4px}
+.drawer-remove{background:none;border:none;cursor:pointer;color:var(--gray);font-size:.63rem;letter-spacing:1px;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
+.drawer-empty{color:var(--gray);font-size:.82rem;padding:40px 0;text-align:center}
+.drawer-foot{padding:20px 26px 26px;border-top:1px solid var(--line)}
+.drawer-foot a{display:block;width:100%;text-align:center;text-decoration:none;background:var(--black);color:#fff;padding:14px 20px;text-transform:uppercase;font-size:.68rem;letter-spacing:2px}
+
+.fav-btn{position:absolute;top:12px;left:12px;background:var(--white);border:1px solid var(--line);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;transition:border-color .25s}
+.fav-btn svg{width:14px;height:14px;fill:none;stroke:#111;stroke-width:1.4;transition:fill .25s,stroke .25s}
+.fav-btn.active svg{fill:#111;stroke:#111}
+.fav-btn:hover{border-color:#111}
+.add-cart-btn{margin-top:10px;width:100%;background:none;border:1px solid #111;color:#111;font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;padding:9px 12px;cursor:pointer;transition:.25s}
+.add-cart-btn:hover,.add-cart-btn.active{background:#111;color:#fff}
+.card.sold-out .add-cart-btn{opacity:.4;pointer-events:none;border-color:#999;color:#999}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   VECCHIA — CAPA DE REFINAMIENTO
+   Minimalismo elegante · se aplica sobre el CSS base de cada página
+   ══════════════════════════════════════════════════════════════════ */
+
+:root{
+  --gold:#A9895A;
+  --gold-soft:rgba(169,137,90,.12);
+  --ink:#0A0A08;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --shadow-soft:0 1px 2px rgba(10,10,8,.04), 0 10px 30px rgba(10,10,8,.06);
+  --shadow-lift:0 6px 14px rgba(10,10,8,.07), 0 26px 50px rgba(10,10,8,.12);
+}
+
+html{ -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+body{ letter-spacing:.1px; }
+
+/* ── Tipografía refinada ── */
+.hero h1{ letter-spacing:-.02em; line-height:1.02; }
+.hero p{ letter-spacing:.06em; font-size:.95rem; }
+.name{ letter-spacing:.005em; line-height:1.18; }
+.price{ letter-spacing:.04em; font-variant-numeric:tabular-nums; }
+.desc{ font-size:.9rem; letter-spacing:.01em; }
+
+/* ── Navegación ── */
+nav{ transition:padding .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease); }
+nav.scrolled{ padding-top:13px; padding-bottom:13px; box-shadow:0 1px 0 rgba(10,10,8,.06), 0 10px 30px rgba(10,10,8,.05); }
+.logo{ transition:opacity .3s var(--ease), letter-spacing .45s var(--ease); }
+.logo:hover{ letter-spacing:9px; }
+
+.icon-btn{ transition:transform .3s var(--ease), opacity .3s var(--ease); }
+.icon-btn:hover{ transform:translateY(-2px); }
+.icon-badge{ font-variant-numeric:tabular-nums; }
+
+/* ── Tarjetas de producto ── */
+.card{
+  border-radius:2px;
+  overflow:hidden;
+  box-shadow:var(--shadow-soft);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+}
+.card:hover{ box-shadow:var(--shadow-lift); border-color:rgba(169,137,90,.45); }
+.card img{ transition:transform .7s var(--ease); }
+.card:hover img{ transform:scale(1.045); }
+.card .name{ transition:color .3s var(--ease); }
+.card:hover .name{ color:var(--gold); }
+
+/* ── Botones ── */
+.buy{
+  border-radius:2px;
+  transition:background .35s var(--ease), color .35s var(--ease), transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.buy:hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(10,10,8,.18); }
+
+.add-cart-btn{ border-radius:2px; transition:background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease); }
+.fav-btn{ transition:border-color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease); }
+.fav-btn:hover{ transform:scale(1.09); }
+.fav-btn.active{ border-color:var(--gold); background:var(--gold-soft); }
+
+/* ── Filtros ── */
+.filter-btn{ transition:color .3s var(--ease); }
+.filter-btn::after{ transition:width .35s var(--ease); }
+.filter-btn.active{ color:var(--ink); }
+
+/* ── Buscador ── */
+.search-box input{ border-radius:50px; transition:border-color .35s var(--ease), box-shadow .35s var(--ease); }
+.search-box input:focus{ border-color:var(--gold); box-shadow:0 0 0 4px var(--gold-soft); }
+
+/* ── Menú lateral y drawer ── */
+.side-menu{ transition:right .45s var(--ease); }
+.side-menu a{ transition:padding-left .3s var(--ease), color .3s var(--ease); }
+.side-menu a:hover{ color:var(--gold); }
+#drawer{ transition:right .45s var(--ease); }
+.drawer-tab{ transition:color .3s var(--ease), border-color .3s var(--ease); }
+
+/* ── Botón subir ── */
+#topBtn{ transition:transform .3s var(--ease), opacity .3s var(--ease), background .3s var(--ease); }
+#topBtn:hover{ transform:translateY(-3px); }
+
+/* ── Accesibilidad ── */
+:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+
+/* ── Aparición suave al cargar ── */
+@keyframes vecchiaFade{ from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none} }
+.card{ animation:vecchiaFade .6s var(--ease) both; }
+.products .card:nth-child(1),.products .card:nth-child(2),.products .card:nth-child(3),.products .card:nth-child(4){ animation-delay:.03s }
+.products .card:nth-child(n+5){ animation-delay:.08s }
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* ── Pie de página ── */
+.vecchia-footer{
+  background:var(--ink); color:#F7F4EC;
+  padding:72px 5% 32px; margin-top:80px;
+  border-top:1px solid rgba(169,137,90,.22);
+  font-size:.85rem;
+}
+.vecchia-footer .vf-grid{
+  width:min(1500px,92%); margin:0 auto 40px;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:40px;
+}
+.vecchia-footer h3{
+  font-family:'Cormorant Garamond',Georgia,serif; font-size:1.1rem; font-weight:300;
+  letter-spacing:2px; margin:0 0 18px; color:#F7F4EC;
+}
+.vecchia-footer ul{ list-style:none; margin:0; padding:0; }
+.vecchia-footer li{ margin-bottom:12px; }
+.vecchia-footer a{ color:rgba(247,244,236,.75); text-decoration:none; transition:color .3s var(--ease); }
+.vecchia-footer a:hover{ color:var(--gold); }
+.vecchia-footer p{ color:rgba(247,244,236,.6); line-height:1.7; margin:0 0 12px; }
+.vecchia-footer .vf-bottom{
+  width:min(1500px,92%); margin:0 auto; padding-top:26px;
+  border-top:1px solid rgba(169,137,90,.22);
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:16px; font-size:.72rem; letter-spacing:.5px;
+  color:rgba(247,244,236,.55);
+}
+@media(max-width:1024px){ .vecchia-footer .vf-grid{ grid-template-columns:repeat(2,1fr) } }
+@media(max-width:768px){
+  .vecchia-footer{ padding:48px 5% 26px; margin-top:56px }
+  .vecchia-footer .vf-grid{ grid-template-columns:1fr; gap:32px }
+  .vecchia-footer .vf-bottom{ flex-direction:column; align-items:flex-start }
+}
+
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html" class="logo">VECCHIA</a>
+<div class="nav-left">
+<a href="index.html" class="back-btn">← Volver</a>
+<div class="nav-icons">
+<button class="icon-btn" id="qsOpen" aria-label="Buscar" aria-haspopup="dialog">
+<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.4" y2="16.4"/></svg>
+</button>
+<button class="icon-btn" id="wishlistOpen" aria-label="Favoritos">
+<svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-10-9.3C.4 7.4 2 4 5.4 4c2 0 3.4 1 4.6 2.6C11.2 5 12.6 4 14.6 4 18 4 19.6 7.4 22 10.7 19.5 15.4 12 20 12 20z"/></svg>
+<span class="icon-badge" id="wishlistBadge">0</span>
+</button>
+<button class="icon-btn" id="cartOpen" aria-label="Pedido">
+<svg viewBox="0 0 24 24"><path d="M4 6h16l-1.5 11.5a2 2 0 0 1-2 1.5H7.5a2 2 0 0 1-2-1.5L4 6z"/><path d="M8 6V5a4 4 0 0 1 8 0v1"/></svg>
+<span class="icon-badge" id="cartBadge">0</span>
+</button>
+</div>
+<button id="menuBtn" aria-label="Abrir menú">☰</button>
+</div>
+</nav>
+<div id="menuOverlay" class="menu-overlay"></div>
+
+<!-- QUICK SEARCH -->
+<div id="quick-search" role="dialog" aria-modal="true" aria-label="Buscar perfumes">
+<button class="qs-close" id="qsClose">Cerrar ✕</button>
+<div class="qs-inner">
+<label for="quickSearchInput">Buscar en todo el catálogo</label>
+<input type="text" id="quickSearchInput" placeholder="Ej. Sauvage, oud, dulce…" autocomplete="off">
+<div id="qsResults"></div>
+<p id="qsEmpty" hidden>No encontramos coincidencias. Escríbenos por WhatsApp y te ayudamos a encontrarlo.</p>
+</div>
+</div>
+
+<!-- DRAWER: FAVORITOS / PEDIDO -->
+<div id="drawerBackdrop"></div>
+<aside id="drawer" role="dialog" aria-modal="true" aria-label="Favoritos y pedido">
+<div class="drawer-head">
+<div class="drawer-tabs">
+<button class="drawer-tab" id="tabWishlist" data-tab="wishlist">Favoritos</button>
+<button class="drawer-tab" id="tabCart" data-tab="cart">Pedido</button>
+</div>
+<button class="drawer-close" id="drawerClose" aria-label="Cerrar">✕</button>
+</div>
+<div class="drawer-body" id="drawerBody"></div>
+<div class="drawer-foot" id="drawerFoot"></div>
+</aside>
+<div id="sideMenu" class="side-menu">
+<button id="closeMenu" class="close-menu" aria-label="Cerrar menú">✕</button>
+<a href="index.html">Home</a><a href="mens-collection.html">Men's Collection</a><a href="woman-collection.html">Women's Collection</a><a href="unisex-collection.html">Unisex Collection</a><a href="gift-sets.html">Gift Sets</a>
+</div>
+<section class="hero"><h1>Men's Collection</h1><p>Fragancias masculinas seleccionadas por Vecchia Perfumes</p></section>
+<div class="search-section">
+<div class="search-box"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1016 9.5a6.47 6.47 0 01-1.57 4.23l.27.28h.8L20 20.5 21.5 19 15.5 14zM9.5 14A4.5 4.5 0 119.5 5a4.5 4.5 0 010 9z"/></svg><input type="text" id="searchInput" placeholder="Buscar perfume..."></div>
+<div class="filter-group"><p class="filter-label">Categoría y estilo</p><div class="filters" id="typeFilters">
+<button class="filter-btn active" data-filter="all">Todos</button><button class="filter-btn" data-filter="designer">Designer</button><button class="filter-btn" data-filter="arabes">Árabes</button><button class="filter-btn" data-filter="fresco">Frescos</button><button class="filter-btn" data-filter="dulce">Dulces</button><button class="filter-btn" data-filter="agotado">Agotados</button>
+</div></div>
+<div class="filter-group"><p class="filter-label">Precio</p><div class="filters" id="priceFilters">
+<button class="filter-btn active" data-price-filter="all">Todos los precios</button><button class="filter-btn" data-price-filter="menos50">Menos de $50</button><button class="filter-btn" data-price-filter="50-100">$50 - $100</button><button class="filter-btn" data-price-filter="100-150">$100 - $150</button><button class="filter-btn" data-price-filter="150mas">+$150</button>
+</div></div>
+<p id="resultsInfo" class="results-info"></p>
+</div>
+<section class="products" id="products">
+<article class="card" data-category="designer" data-type="fresco dulce" data-price="160">
+<img src="https://perfumerias.com/static/imagenes/productos/product_info/3614272225718.webp" alt="Armani Stronger With You Intensely EDP 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Armani Stronger With You Intensely EDP 100ml</h2><p class="price">$160</p><p class="desc">Dulce, especiado y muy atractivo para noches y clima fresco.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Armani%20Stronger%20With%20You%20Intensely%20EDP%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="dulce" data-price="170">
+<img src="https://perfumerias.com/static/imagenes/productos/product_info/3614273336383.webp" alt="Stronger With You Absolutely EDP 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Stronger With You Absolutely EDP 100ml</h2><p class="price">$170</p><p class="desc">Más intenso y elegante, con vainilla y ron.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Stronger%20With%20You%20Absolutely%20EDP%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="" data-price="195">
+<img src="https://perfumerias.com/static/imagenes/productos/product_info/3614274219548.webp" alt="Stronger With You Parfum 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Stronger With You Parfum 100ml</h2><p class="price">$195</p><p class="desc">Versión más refinada y duradera de la línea.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Stronger%20With%20You%20Parfum%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="dulce" data-price="150">
+<img src="https://hairsense.ca/cdn/shop/files/valentino-50-ml-uomo-intense-eau-de-parfum-spray-34336090292360_1800x1800.jpg?v=1770668970" alt="Valentino Uomo Intense EDP 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Valentino Uomo Intense EDP 100ml</h2><p class="price">$150</p><p class="desc">Elegante aroma de cuero, vainilla e iris.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Valentino%20Uomo%20Intense%20EDP%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="160">
+<img src="https://perfumerias.com/static/imagenes/productos/product_info/3614273672412.webp" alt="Valentino Uomo Born In Roma Coral Fantasy" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Valentino Uomo Born In Roma Coral Fantasy</h2><p class="price">$160</p><p class="desc">Fresco, moderno y versátil para cualquier ocasión.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Valentino%20Uomo%20Born%20In%20Roma%20Coral%20Fantasy" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="fresco" data-price="160">
+<img src="https://perfumerias.com/static/imagenes/productos/product_info/3614274024807.webp" alt="Valentino Uomo Born In Roma Green Stravaganza" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Valentino Uomo Born In Roma Green Stravaganza</h2><p class="price">$160</p><p class="desc">Aroma verde y energético con gran proyección.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Valentino%20Uomo%20Born%20In%20Roma%20Green%20Stravaganza" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="" data-price="180">
+<img src="https://hairsense.ca/cdn/shop/files/valentino-50-ml-uomo-born-in-roma-eau-de-toilette-spray-34335935201416_1800x1800.webp?v=1770668975" alt="Valentino Uomo Born In Roma EDT" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Valentino Uomo Born In Roma EDT</h2><p class="price">$180</p><p class="desc">Equilibrio perfecto entre frescura y sensualidad.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Valentino%20Uomo%20Born%20In%20Roma%20EDT" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="" data-price="210">
+<img src="https://www.sephora.com/productimages/sku/s2639813-main-zoom.jpg?imwidth=1224" alt="Valentino Uomo Born In Roma Intense" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Valentino Uomo Born In Roma Intense</h2><p class="price">$210</p><p class="desc">Más profundo y seductor para la noche.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Valentino%20Uomo%20Born%20In%20Roma%20Intense" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="arabes" data-type="fresco dulce" data-price="55">
+<img src="https://perfumania.com/cdn/shop/files/mandarin_sky.png?format=pjpg&amp;v=1747402982&amp;width=1100" alt="Odyssey Mandarin Sky EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Odyssey Mandarin Sky EDP</h2><p class="price">$55</p><p class="desc">Dulce cítrico inspirado en fragancias de diseñador.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Odyssey%20Mandarin%20Sky%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="" data-price="60">
+<img src="https://cdn2.jomashop.com/media/catalog/product/cache/b3e31d40bbb1abcc90b26106659d5d3f/a/r/armaf-mens-odyssey-aoud-edp-2-oz-fragrances-6294015189629.jpg?width=800&amp;height=800" alt="Odyssey Aoud EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Odyssey Aoud EDP</h2><p class="price">$60</p><p class="desc">Oud elegante con notas cálidas y amaderadas.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Odyssey%20Aoud%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="arabes" data-type="fresco" data-price="60">
+<img src="https://fragrantvilla.com/cdn/shop/files/dbc8bb598daf422a8d6e12f178b44f72_tplv-omjb5zjo8w-resize-jpeg_800_800_529f722b-f4c1-410c-bd6c-5f1ac1286780.jpg?v=1749076192&amp;width=1946" alt="Odyssey Aqua" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Odyssey Aqua</h2><p class="price">$60</p><p class="desc">Fresco y limpio para uso diario.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Odyssey%20Aqua" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="65">
+<img src="https://cdn2.jomashop.com/media/catalog/product/cache/b3e31d40bbb1abcc90b26106659d5d3f/a/r/armaf-mens-odyssey-homme-white-edition-edp-spray-20-oz-fragrances-6294015189568.jpg?width=800&amp;height=800" alt="Odyssey White" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Odyssey White</h2><p class="price">$65</p><p class="desc">Aroma limpio, elegante y versátil.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Odyssey%20White" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="" data-price="65">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.98692.2x.avif" alt="Odyssey Spectra" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Odyssey Spectra</h2><p class="price">$65</p><p class="desc">Aromático moderno con excelente proyección.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Odyssey%20Spectra" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="dulce" data-price="75">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.106709.2x.avif" alt="Odyssey Mandarin Elixir" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Odyssey Mandarin Elixir</h2><p class="price">$75</p><p class="desc">Mandarina dulce con fondo cremoso y cálido.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Odyssey%20Mandarin%20Elixir" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="arabes" data-type="" data-price="75">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.106710.2x.avif" alt="Odyssey Aristo" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Odyssey Aristo</h2><p class="price">$75</p><p class="desc">Elegante, amaderado y de gran presencia.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Odyssey%20Aristo" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="110">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.121561.2x.avif" alt="Jo Milano Game of Spades Boston" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Jo Milano Game of Spades Boston</h2><p class="price">$110</p><p class="desc">Fresco, cítrico y con toque sofisticado.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Jo%20Milano%20Game%20of%20Spades%20Boston" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="dulce" data-price="115">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.105095.2x.avif" alt="Game of Spades Full House" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Game of Spades Full House</h2><p class="price">$115</p><p class="desc">Dulce, intenso y muy llamativo.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Game%20of%20Spades%20Full%20House" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="" data-price="120">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.121557.2x.avif" alt="Jo Milano Game of Spades Moon" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Jo Milano Game of Spades Moon</h2><p class="price">$120</p><p class="desc">Amaderado, elegante y de excelente rendimiento.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Jo%20Milano%20Game%20of%20Spades%20Moon" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="110">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.38686.2x.avif" alt="Azzaro Wanted EDT" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Azzaro Wanted EDT</h2><p class="price">$110</p><p class="desc">Fresco, especiado y muy versátil.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Azzaro%20Wanted%20EDT" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="dulce" data-price="120">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.66826.2x.avif" alt="The Most Wanted Azzaro Intense" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">The Most Wanted Azzaro Intense</h2><p class="price">$120</p><p class="desc">Ámbar dulce con excelente duración.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20The%20Most%20Wanted%20Azzaro%20Intense" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="" data-price="125">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.73664.2x.avif" alt="Azzaro Most Wanted Parfum" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Azzaro Most Wanted Parfum</h2><p class="price">$125</p><p class="desc">Intenso, cálido y muy seductor.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Azzaro%20Most%20Wanted%20Parfum" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="" data-price="160">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.102882.2x.avif" alt="Azzaro Wanted Elixir Forever" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Azzaro Wanted Elixir Forever</h2><p class="price">$160</p><p class="desc">Elixir intenso con fondo amaderado.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Azzaro%20Wanted%20Elixir%20Forever" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="fresco" data-price="110">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.68226.2x.avif" alt="Phantom Paco Rabanne" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Phantom Paco Rabanne</h2><p class="price">$110</p><p class="desc">Fresco aromático con toque moderno.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Phantom%20Paco%20Rabanne" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="" data-price="160">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.101370.2x.avif" alt="Phantom Elixir" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Phantom Elixir</h2><p class="price">$160</p><p class="desc">Más intenso, oscuro y envolvente.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Phantom%20Elixir" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="dulce" data-price="180">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.55785.2x.avif" alt="Jean Paul Gaultier Le Beau 125ml EDT" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Jean Paul Gaultier Le Beau 125ml EDT</h2><p class="price">$180</p><p class="desc">Coco, haba tonka y maderas exóticas.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Jean%20Paul%20Gaultier%20Le%20Beau%20125ml%20EDT" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="dulce" data-price="185">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.30947.2x.avif" alt="Jean Paul Gaultier Ultra Male 125ml EDT" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Jean Paul Gaultier Ultra Male 125ml EDT</h2><p class="price">$185</p><p class="desc">Dulce, intenso y muy juvenil.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Jean%20Paul%20Gaultier%20Ultra%20Male%20125ml%20EDT" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="dulce" data-price="195">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.81642.2x.avif" alt="Jean Paul Gaultier Le Male Elixir Parfum 125ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Jean Paul Gaultier Le Male Elixir Parfum 125ml</h2><p class="price">$195</p><p class="desc">Miel, vainilla y gran intensidad.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Jean%20Paul%20Gaultier%20Le%20Male%20Elixir%20Parfum%20125ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="210">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.88836.2x.avif" alt="Jean Paul Gaultier Paradise Garden 125ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Jean Paul Gaultier Paradise Garden 125ml EDP</h2><p class="price">$210</p><p class="desc">Tropical, verde y sensual.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Jean%20Paul%20Gaultier%20Paradise%20Garden%20125ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="dulce" data-price="115">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.3747.2x.avif" alt="1 Million Paco Rabanne EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">1 Million Paco Rabanne EDT 100ml</h2><p class="price">$115</p><p class="desc">Dulce especiado con gran personalidad.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%201%20Million%20Paco%20Rabanne%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="" data-price="120">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.79159.2x.avif" alt="1 Million Royal Paco Rabanne 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">1 Million Royal Paco Rabanne 100ml</h2><p class="price">$120</p><p class="desc">Amaderado moderno con toque elegante.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%201%20Million%20Royal%20Paco%20Rabanne%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="" data-price="120">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.84554.2x.avif" alt="1 Million Golden Oud Rabanne EDP 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">1 Million Golden Oud Rabanne EDP 100ml</h2><p class="price">$120</p><p class="desc">Oud intenso con lujo oriental.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%201%20Million%20Golden%20Oud%20Rabanne%20EDP%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco dulce" data-price="120">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.12865.2x.avif" alt="212 VIP Men Carolina Herrera EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">212 VIP Men Carolina Herrera EDT 100ml</h2><p class="price">$120</p><p class="desc">Fresco, dulce y perfecto para fiestas.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20212%20VIP%20Men%20Carolina%20Herrera%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="dulce" data-price="120">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.46093.2x.avif" alt="212 VIP Black EDP 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">212 VIP Black EDP 100ml</h2><p class="price">$120</p><p class="desc">Vainilla aromática con gran elegancia.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20212%20VIP%20Black%20EDP%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="" data-price="135">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.65718.2x.avif" alt="Bad Boy Le Parfum 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Bad Boy Le Parfum 100ml EDP</h2><p class="price">$135</p><p class="desc">Cuero moderno con notas aromáticas.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Bad%20Boy%20Le%20Parfum%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="145">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.71888.2x.avif" alt="Bad Boy Cobalt Électrique 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Bad Boy Cobalt Électrique 100ml EDP</h2><p class="price">$145</p><p class="desc">Mineral fresco con fondo amaderado.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Bad%20Boy%20Cobalt%20%C3%89lectrique%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="" data-price="190">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.79243.2x.avif" alt="Y Yves Saint Laurent Intense 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Y Yves Saint Laurent Intense 100ml EDP</h2><p class="price">$190</p><p class="desc">Elegante, intenso y muy sofisticado.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Y%20Yves%20Saint%20Laurent%20Intense%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="fresco" data-price="40">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.913.2x.avif" alt="Nautica Voyage EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Nautica Voyage EDT 100ml</h2><p class="price">$40</p><p class="desc">Fresco acuático ideal para diario.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Nautica%20Voyage%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="55">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.36402.2x.avif" alt="Nautica Voyage Sport EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Nautica Voyage Sport EDT 100ml</h2><p class="price">$55</p><p class="desc">Cítrico limpio con sensación deportiva.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Nautica%20Voyage%20Sport%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="dulce" data-price="50">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.101124.2x.avif" alt="Asad Bourbon by Lattafa 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Asad Bourbon by Lattafa 100ml EDP</h2><p class="price">$50</p><p class="desc">Dulce especiado con toque licoroso.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Asad%20Bourbon%20by%20Lattafa%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="" data-price="50">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.72821.2x.avif" alt="Asad Lattafa 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Asad Lattafa 100ml EDP</h2><p class="price">$50</p><p class="desc">Potente, especiado y muy duradero.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Asad%20Lattafa%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.90713.2x.avif" alt="Asad Zanzibar 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Asad Zanzibar 100ml EDP</h2><p class="price">$60</p><p class="desc">Exótico, fresco y ligeramente tropical.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Asad%20Zanzibar%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="fresco" data-price="135">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.410.2x.avif" alt="Acqua Di Gio Giorgio Armani EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Acqua Di Gio Giorgio Armani EDT 100ml</h2><p class="price">$135</p><p class="desc">Fresco marino con elegancia atemporal.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Acqua%20Di%20Gio%20Giorgio%20Armani%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="165">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.81508.2x.avif" alt="Acqua Di Gio Parfum 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Acqua Di Gio Parfum 100ml</h2><p class="price">$165</p><p class="desc">Más intenso con notas minerales.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Acqua%20Di%20Gio%20Parfum%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="170">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.31861.2x.avif" alt="Christian Dior Sauvage EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Christian Dior Sauvage EDT 100ml</h2><p class="price">$170</p><p class="desc">Fresco especiado con gran proyección.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Christian%20Dior%20Sauvage%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="" data-price="250">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.56324.2x.avif" alt="Christian Dior Sauvage Parfum 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Christian Dior Sauvage Parfum 100ml</h2><p class="price">$250</p><p class="desc">Versión más intensa y refinada.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Christian%20Dior%20Sauvage%20Parfum%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="" data-price="120">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.13857.2x.avif" alt="Spicebomb Viktor &amp; Rolf EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Spicebomb Viktor &amp; Rolf EDT 100ml</h2><p class="price">$120</p><p class="desc">Explosión especiada con fondo cálido.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Spicebomb%20Viktor%20%26%20Rolf%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="dulce" data-price="130">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.30499.2x.avif" alt="Spicebomb Extreme Viktor &amp; Rolf EDP 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Spicebomb Extreme Viktor &amp; Rolf EDP 100ml</h2><p class="price">$130</p><p class="desc">Vainilla intensa con especias.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Spicebomb%20Extreme%20Viktor%20%26%20Rolf%20EDP%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="arabes" data-type="" data-price="55">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.106193.2x.avif" alt="Stallion 53" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Stallion 53</h2><p class="price">$55</p><p class="desc">Amaderado moderno con excelente duración.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Stallion%2053" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="dulce" data-price="55">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.93646.2x.avif" alt="Glacier Le Noir 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Glacier Le Noir 100ml EDP</h2><p class="price">$55</p><p class="desc">Dulce elegante inspirado en diseñador.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Glacier%20Le%20Noir%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.103352.2x.avif" alt="Jean Lowe Vibe 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Jean Lowe Vibe 100ml EDP</h2><p class="price">$60</p><p class="desc">Cítrico fresco con fondo limpio.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Jean%20Lowe%20Vibe%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="arabes" data-type="" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.94163.2x.avif" alt="Sceptre Malachite 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Sceptre Malachite 100ml EDP</h2><p class="price">$60</p><p class="desc">Amaderado elegante con gran presencia.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Sceptre%20Malachite%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="65">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.98241.2x.avif" alt="Art of Nature I 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Art of Nature I 100ml EDP</h2><p class="price">$65</p><p class="desc">Verde fresco con maderas suaves.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Art%20of%20Nature%20I%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="65">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.258.2x.avif" alt="Calvin Klein Eternity EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Calvin Klein Eternity EDT 100ml</h2><p class="price">$65</p><p class="desc">Clásico fresco para cualquier ocasión.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Calvin%20Klein%20Eternity%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="dulce" data-price="70">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.53215.2x.avif" alt="Halloween Man X EDT 125ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Halloween Man X EDT 125ml</h2><p class="price">$70</p><p class="desc">Café, ámbar y un toque ahumado.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Halloween%20Man%20X%20EDT%20125ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="80">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.33443.2x.avif" alt="Legend Spirit de Mont Blanc EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Legend Spirit de Mont Blanc EDT 100ml</h2><p class="price">$80</p><p class="desc">Fresco limpio con toque amaderado.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Legend%20Spirit%20de%20Mont%20Blanc%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="90">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.56358.2x.avif" alt="Dolce &amp; Gabbana K EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Dolce &amp; Gabbana K EDT 100ml</h2><p class="price">$90</p><p class="desc">Cítrico aromático con carácter moderno.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Dolce%20%26%20Gabbana%20K%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="90">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.74184.2x.avif" alt="Bharara King 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Bharara King 100ml EDP</h2><p class="price">$90</p><p class="desc">Frutal fresco con excelente rendimiento.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Bharara%20King%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="designer" data-type="" data-price="110">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.55858.2x.avif" alt="Toy Boy Moschino EDP 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Toy Boy Moschino EDP 100ml</h2><p class="price">$110</p><p class="desc">Rosa especiada con fondo elegante.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Toy%20Boy%20Moschino%20EDP%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="dulce" data-price="130">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.65051.2x.avif" alt="Givenchy Gentleman Intense EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Givenchy Gentleman Intense EDT 100ml</h2><p class="price">$130</p><p class="desc">Iris elegante con maderas cremosas.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Givenchy%20Gentleman%20Intense%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.82815.2x.avif" alt="Lattafa Shaheen Silver 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Lattafa Shaheen Silver 100ml EDP</h2><p class="price">$60</p><p class="desc">Fresco cítrico con elegante fondo amaderado.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Lattafa%20Shaheen%20Silver%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="dulce" data-price="75">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.96866.2x.avif" alt="His Confession by Lattafa 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">His Confession by Lattafa 100ml EDP</h2><p class="price">$75</p><p class="desc">Dulce especiado con excelente duración.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20His%20Confession%20by%20Lattafa%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="55">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.70465.2x.avif" alt="Fakhar Black Lattafa 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Fakhar Black Lattafa 100ml EDP</h2><p class="price">$55</p><p class="desc">Fresco aromático inspirado en diseñador.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Fakhar%20Black%20Lattafa%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="dulce" data-price="55">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.75902.2x.avif" alt="Lattafa Hayaati 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Lattafa Hayaati 100ml EDP</h2><p class="price">$55</p><p class="desc">Dulce moderno con notas amaderadas.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Lattafa%20Hayaati%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="dulce" data-price="45">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.67996.2x.avif" alt="Lattafa Qaed Al Fursan 100ml Unisex EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Lattafa Qaed Al Fursan 100ml Unisex EDP</h2><p class="price">$45</p><p class="desc">Piña dulce con fondo ahumado.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Lattafa%20Qaed%20Al%20Fursan%20100ml%20Unisex%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="arabes" data-type="fresco" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.70703.2x.avif" alt="Supremacy In Heaven EDP 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Supremacy In Heaven EDP 100ml</h2><p class="price">$60</p><p class="desc">Limpio, cítrico y muy elegante.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Supremacy%20In%20Heaven%20EDP%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="fresco" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.78611.2x.avif" alt="Afnan 9AM Dive 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Afnan 9AM Dive 100ml EDP</h2><p class="price">$60</p><p class="desc">Fresco acuático ideal para diario.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Afnan%209AM%20Dive%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="arabes" data-type="dulce" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.65414.2x.avif" alt="Afnan 9 PM 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Afnan 9 PM 100ml EDP</h2><p class="price">$60</p><p class="desc">Dulce vainilla con excelente proyección.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Afnan%209%20PM%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="arabes" data-type="" data-price="65">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.99238.2x.avif" alt="9PM Rebel Afnan 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">9PM Rebel Afnan 100ml</h2><p class="price">$65</p><p class="desc">Versión intensa con toque moderno.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%209PM%20Rebel%20Afnan%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.64948.2x.avif" alt="Badee Al Oud For Glory Lattafa 100ml EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Badee Al Oud For Glory Lattafa 100ml EDP</h2><p class="price">$60</p><p class="desc">Oud intenso con carácter oriental.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Badee%20Al%20Oud%20For%20Glory%20Lattafa%20100ml%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card" data-category="arabes" data-type="dulce" data-price="60">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.84302.2x.avif" alt="Badee Honor &amp; Glory Al Oud by Lattafa 100ml Unisex EDP" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Badee Honor &amp; Glory Al Oud by Lattafa 100ml Unisex EDP</h2><p class="price">$60</p><p class="desc">Piña cremosa con vainilla y especias.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Badee%20Honor%20%26%20Glory%20Al%20Oud%20by%20Lattafa%20100ml%20Unisex%20EDP" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<article class="card sold-out" data-category="designer" data-type="fresco" data-price="80">
+<img src="https://fimgs.net/mdimg/perfume-thumbs/dark-375x500.485.2x.avif" alt="Dolce &amp; Gabbana Light Blue Men EDT 100ml" loading="lazy" onerror="this.style.opacity='.25'">
+<div class="info"><h2 class="name">Dolce &amp; Gabbana Light Blue Men EDT 100ml</h2><p class="price">$80</p><p class="desc">Cítrico fresco perfecto para verano.</p><a class="buy" href="https://wa.me/582735527411?text=Hola%2C%20estoy%20interesado%20en%20Dolce%20%26%20Gabbana%20Light%20Blue%20Men%20EDT%20100ml" target="_blank" rel="noopener">Comprar</a></div>
+</article>
+<div id="noResults" class="no-results"><h2>No encontramos perfumes</h2><p>Prueba con otra búsqueda o cambia los filtros.</p></div>
+</section>
+<button id="topBtn" aria-label="Subir">⌃</button>
+<script>
+const searchInput=document.getElementById("searchInput");
+const cards=[...document.querySelectorAll(".card")];
+const typeButtons=[...document.querySelectorAll("[data-filter]")];
+const priceButtons=[...document.querySelectorAll("[data-price-filter]")];
+const resultsInfo=document.getElementById("resultsInfo");
+const noResults=document.getElementById("noResults");
+let currentFilter="all", currentPriceFilter="all";
+
+searchInput.addEventListener("input",updateCatalog);
+
+typeButtons.forEach(button=>button.addEventListener("click",()=>{
+ typeButtons.forEach(btn=>btn.classList.remove("active"));
+ button.classList.add("active");
+ currentFilter=button.dataset.filter;
+ updateCatalog();
+}));
+
+priceButtons.forEach(button=>button.addEventListener("click",()=>{
+ priceButtons.forEach(btn=>btn.classList.remove("active"));
+ button.classList.add("active");
+ currentPriceFilter=button.dataset.priceFilter;
+ updateCatalog();
+}));
+
+function updateCatalog(){
+ const search=searchInput.value.trim().toLowerCase();
+ let visible=0;
+ cards.forEach(card=>{
+   const text=card.innerText.toLowerCase();
+   const category=card.dataset.category||"";
+   const types=(card.dataset.type||"").split(" ");
+   const sold=card.classList.contains("sold-out");
+   const price=Number(card.dataset.price)||0;
+   let show=text.includes(search);
+
+   if(currentFilter==="designer") show=show&&category==="designer";
+   else if(currentFilter==="arabes") show=show&&category==="arabes";
+   else if(currentFilter==="fresco") show=show&&types.includes("fresco");
+   else if(currentFilter==="dulce") show=show&&types.includes("dulce");
+   else if(currentFilter==="agotado") show=show&&sold;
+
+   if(currentPriceFilter==="menos50") show=show&&price<50;
+   else if(currentPriceFilter==="50-100") show=show&&price>=50&&price<=100;
+   else if(currentPriceFilter==="100-150") show=show&&price>100&&price<=150;
+   else if(currentPriceFilter==="150mas") show=show&&price>150;
+
+   card.style.display=show?"":"none";
+   if(show) visible++;
+ });
+ resultsInfo.textContent=visible===0?"":`${visible} perfume${visible===1?"":"s"} encontrado${visible===1?"":"s"}`;
+ noResults.style.display=visible===0?"block":"none";
+}
+
+const topBtn=document.getElementById("topBtn");
+window.addEventListener("scroll",()=>topBtn.style.display=window.scrollY>400?"block":"none");
+topBtn.addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+
+const menuBtn=document.getElementById("menuBtn"),sideMenu=document.getElementById("sideMenu"),closeMenu=document.getElementById("closeMenu"),menuOverlay=document.getElementById("menuOverlay");
+function openMenu(){sideMenu.classList.add("open");menuOverlay.classList.add("open");document.body.classList.add("menu-open")}
+function closeSideMenu(){sideMenu.classList.remove("open");menuOverlay.classList.remove("open");document.body.classList.remove("menu-open")}
+menuBtn.addEventListener("click",openMenu);closeMenu.addEventListener("click",closeSideMenu);menuOverlay.addEventListener("click",closeSideMenu);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSideMenu()});
+updateCatalog();
+</script>
+
+<script>
+(function(){
+ 'use strict';
+
+ /* ── Slug helper ── */
+ function slug(str){
+   return str.toLowerCase()
+     .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+     .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+ }
+
+ /* ── Inject fav + add-to-cart buttons into every product card ── */
+ cards.forEach(function(card){
+   var img = card.querySelector('img');
+   var nameEl = card.querySelector('.name');
+   var priceEl = card.querySelector('.price');
+   var info = card.querySelector('.info');
+   var name = nameEl ? nameEl.textContent.trim() : '';
+   var price = priceEl ? priceEl.textContent.trim() : '';
+   var id = slug(name);
+   var imgSrc = img ? img.src : '';
+
+   var fav = document.createElement('button');
+   fav.className = 'fav-btn';
+   fav.type = 'button';
+   fav.setAttribute('aria-label','Agregar a favoritos');
+   fav.dataset.id = id; fav.dataset.name = name; fav.dataset.price = price; fav.dataset.img = imgSrc;
+   fav.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-10-9.3C.4 7.4 2 4 5.4 4c2 0 3.4 1 4.6 2.6C11.2 5 12.6 4 14.6 4 18 4 19.6 7.4 22 10.7 19.5 15.4 12 20 12 20z"/></svg>';
+   card.appendChild(fav);
+
+   if (info && !card.classList.contains('sold-out')){
+     var addBtn = document.createElement('button');
+     addBtn.className = 'add-cart-btn';
+     addBtn.type = 'button';
+     addBtn.dataset.id = id; addBtn.dataset.name = name; addBtn.dataset.price = price;
+     addBtn.textContent = 'Agregar al pedido';
+     info.appendChild(addBtn);
+   } else if (info){
+     var addBtnDisabled = document.createElement('button');
+     addBtnDisabled.className = 'add-cart-btn';
+     addBtnDisabled.type = 'button';
+     addBtnDisabled.disabled = true;
+     addBtnDisabled.textContent = 'Sin stock';
+     info.appendChild(addBtnDisabled);
+   }
+ });
+
+ /* ── Quick search across full catalog ── */
+ var CATALOG = cards.map(function(card){
+   var link = card.querySelector('a.buy');
+   var name = card.querySelector('.name').textContent.trim();
+   var price = card.querySelector('.price').textContent.trim();
+   var sold = card.classList.contains('sold-out');
+   return { name:name, price:price, href: link ? link.href : '#', sold:sold };
+ });
+
+ var qsOverlay = document.getElementById('quick-search');
+ var qsInput = document.getElementById('quickSearchInput');
+ var qsResults = document.getElementById('qsResults');
+ var qsEmpty = document.getElementById('qsEmpty');
+
+ function openQS(){ qsOverlay.classList.add('open'); setTimeout(function(){ qsInput.focus(); },350); }
+ function closeQS(){ qsOverlay.classList.remove('open'); qsInput.value=''; renderQS(''); }
+ document.getElementById('qsOpen').addEventListener('click', openQS);
+ document.getElementById('qsClose').addEventListener('click', closeQS);
+ qsOverlay.addEventListener('keydown', function(e){ if(e.key==='Escape') closeQS(); });
+
+ function renderQS(q){
+   qsResults.innerHTML='';
+   if(!q){ qsEmpty.hidden=true; return; }
+   var matches = CATALOG.filter(function(p){ return p.name.toLowerCase().indexOf(q.toLowerCase())>-1; });
+   if(!matches.length){ qsEmpty.hidden=false; return; }
+   qsEmpty.hidden=true;
+   matches.forEach(function(p){
+     var a=document.createElement('a');
+     a.href=p.href; a.target='_blank'; a.rel='noopener noreferrer';
+     a.innerHTML='<span>'+p.name+(p.sold?' · Agotado':'')+'</span><span>'+p.price+'</span>';
+     qsResults.appendChild(a);
+   });
+ }
+ qsInput.addEventListener('input', function(){ renderQS(qsInput.value.trim()); });
+
+ /* ── Wishlist & Cart (shared localStorage across all VECCHIA pages) ── */
+ var LS_WISH='vecchia_wishlist', LS_CART='vecchia_cart';
+ function load(key){ try{ return JSON.parse(localStorage.getItem(key))||[]; }catch(e){ return []; } }
+ function save(key,arr){ try{ localStorage.setItem(key, JSON.stringify(arr)); }catch(e){} }
+
+ var wishlist = load(LS_WISH);
+ var cart = load(LS_CART);
+
+ function updateBadges(){
+   var wb=document.getElementById('wishlistBadge'), cb=document.getElementById('cartBadge');
+   wb.textContent=wishlist.length; wb.classList.toggle('show', wishlist.length>0);
+   cb.textContent=cart.length; cb.classList.toggle('show', cart.length>0);
+ }
+ function syncButtons(){
+   document.querySelectorAll('.fav-btn').forEach(function(btn){
+     btn.classList.toggle('active', wishlist.some(function(i){ return i.id===btn.dataset.id; }));
+   });
+   document.querySelectorAll('.add-cart-btn:not([disabled])').forEach(function(btn){
+     var inCart = cart.some(function(i){ return i.id===btn.dataset.id; });
+     btn.classList.toggle('active', inCart);
+     btn.textContent = inCart ? 'Agregado ✓' : 'Agregar al pedido';
+   });
+ }
+
+ document.querySelectorAll('.fav-btn').forEach(function(btn){
+   btn.addEventListener('click', function(e){
+     e.preventDefault(); e.stopPropagation();
+     var id=btn.dataset.id;
+     var idx=wishlist.findIndex(function(i){ return i.id===id; });
+     if(idx>-1) wishlist.splice(idx,1);
+     else wishlist.push({ id:id, name:btn.dataset.name, price:btn.dataset.price, img:btn.dataset.img });
+     save(LS_WISH,wishlist);
+     updateBadges(); syncButtons(); renderDrawer();
+   });
+ });
+
+ document.querySelectorAll('.add-cart-btn:not([disabled])').forEach(function(btn){
+   btn.addEventListener('click', function(e){
+     e.preventDefault(); e.stopPropagation();
+     var id=btn.dataset.id;
+     var idx=cart.findIndex(function(i){ return i.id===id; });
+     if(idx>-1) cart.splice(idx,1);
+     else cart.push({ id:id, name:btn.dataset.name, price:btn.dataset.price });
+     save(LS_CART,cart);
+     updateBadges(); syncButtons(); renderDrawer();
+   });
+ });
+
+ /* ── Drawer ── */
+ var drawer=document.getElementById('drawer');
+ var drawerBackdrop=document.getElementById('drawerBackdrop');
+ var drawerBody=document.getElementById('drawerBody');
+ var drawerFoot=document.getElementById('drawerFoot');
+ var currentTab='wishlist';
+
+ function openDrawer(tab){
+   currentTab=tab;
+   document.getElementById('tabWishlist').classList.toggle('active', tab==='wishlist');
+   document.getElementById('tabCart').classList.toggle('active', tab==='cart');
+   drawer.classList.add('open'); drawerBackdrop.classList.add('open');
+   renderDrawer();
+ }
+ function closeDrawer(){ drawer.classList.remove('open'); drawerBackdrop.classList.remove('open'); }
+
+ document.getElementById('wishlistOpen').addEventListener('click', function(){ openDrawer('wishlist'); });
+ document.getElementById('cartOpen').addEventListener('click', function(){ openDrawer('cart'); });
+ document.getElementById('tabWishlist').addEventListener('click', function(){ openDrawer('wishlist'); });
+ document.getElementById('tabCart').addEventListener('click', function(){ openDrawer('cart'); });
+ document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+ drawerBackdrop.addEventListener('click', closeDrawer);
+
+ function renderDrawer(){
+   var list = currentTab==='wishlist' ? wishlist : cart;
+   drawerBody.innerHTML='';
+   if(!list.length){
+     drawerBody.innerHTML='<p class="drawer-empty">'+(currentTab==='wishlist' ? 'Aún no tienes favoritos guardados.' : 'Tu pedido está vacío.')+'</p>';
+   } else {
+     list.forEach(function(item){
+       var row=document.createElement('div');
+       row.className='drawer-item';
+       row.innerHTML =
+         (item.img ? '<img src="'+item.img+'" alt="" loading="lazy">' : '') +
+         '<div class="drawer-item-info"><p class="drawer-item-name">'+item.name+'</p>'+
+         '<p class="drawer-item-price">'+item.price+'</p></div>'+
+         '<button class="drawer-remove" data-id="'+item.id+'">Quitar</button>';
+       drawerBody.appendChild(row);
+     });
+   }
+   drawerBody.querySelectorAll('.drawer-remove').forEach(function(btn){
+     btn.addEventListener('click', function(){
+       var id=btn.dataset.id;
+       if(currentTab==='wishlist'){ wishlist=wishlist.filter(function(i){ return i.id!==id; }); save(LS_WISH,wishlist); }
+       else { cart=cart.filter(function(i){ return i.id!==id; }); save(LS_CART,cart); }
+       updateBadges(); syncButtons(); renderDrawer();
+     });
+   });
+
+   drawerFoot.innerHTML='';
+   if(currentTab==='cart' && cart.length){
+     var msg='Hola, quiero consultar disponibilidad de: '+cart.map(function(i){ return i.name+' ('+i.price+')'; }).join(', ');
+     var a=document.createElement('a');
+     a.target='_blank'; a.rel='noopener noreferrer';
+     a.href='https://wa.me/582735527411?text='+encodeURIComponent(msg);
+     a.textContent='Enviar pedido por WhatsApp';
+     drawerFoot.appendChild(a);
+   }
+ }
+
+ updateBadges(); syncButtons();
+})();
+</script>
+
+<footer class="vecchia-footer">
+  <div class="vf-grid">
+    <div>
+      <h3>VECCHIA</h3>
+      <p>Perfumería de lujo en Venezuela. Fragancias originales,
+         seleccionadas con criterio y entregadas con cuidado.</p>
+    </div>
+    <div>
+      <h3>Colecciones</h3>
+      <ul>
+        <li><a href="mens-collection.html">Men's Collection</a></li>
+        <li><a href="woman-collection.html">Women's Collection</a></li>
+        <li><a href="unisex-collection.html">Unisex Collection</a></li>
+        <li><a href="gift-sets.html">Gift Sets</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Ayuda</h3>
+      <ul>
+        <li><a href="vecchia-quiz.html">Encuentra tu fragancia</a></li>
+        <li><a href="https://wa.me/582735527411" target="_blank" rel="noopener">Atención por WhatsApp</a></li>
+        <li><a href="index.html">Inicio</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Contacto</h3>
+      <ul>
+        <li><a href="https://wa.me/582735527411" target="_blank" rel="noopener">WhatsApp +58 273 552 7411</a></li>
+        <li><a href="https://instagram.com/vecchiaperfumes" target="_blank" rel="noopener">@vecchiaperfumes</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="vf-bottom">
+    <span>© 2026 VECCHIA PERFUMES</span>
+    <span>Hecho con cuidado en Venezuela</span>
+  </div>
+</footer>
+
+<script>
+/* nav compacta al hacer scroll */
+(function(){
+  var n=document.querySelector('nav'); if(!n) return;
+  var f=function(){ n.classList.toggle('scrolled', window.scrollY>40); };
+  f(); window.addEventListener('scroll', f, {passive:true});
+})();
+</script>
+
+</body>
+</html>
