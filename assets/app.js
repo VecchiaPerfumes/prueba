@@ -315,10 +315,16 @@
 
   // ── Cabecera y pie (fuente única, sin duplicar marcado) ──────────
   var NAV = [
-    { href: 'index.html',    label: 'Inicio' },
-    { href: 'catalogo.html', label: 'Catálogo' },
+    { href: 'index.html',            label: 'Inicio' },
+    { href: 'catalogo.html',         label: 'Catálogo' },
+    { href: 'catalogo.html?f=hombre', label: 'Hombre' },
+    { href: 'catalogo.html?f=mujer',  label: 'Mujer' },
+    { href: 'catalogo.html?f=unisex', label: 'Unisex' },
+    { href: 'catalogo.html?f=sets',   label: 'Gift Sets' }
+  ];
+  var NAV_SECONDARY = [
     { href: 'quiz.html',     label: '¿Qué perfume soy?' },
-    { href: 'decants.html',  label: 'Decants' },
+    { href: 'favoritos.html', label: 'Favoritos' },
     { href: 'contacto.html', label: 'Contacto' }
   ];
 
@@ -348,18 +354,28 @@
           '<button class="icon-btn" id="v-cart" aria-label="Abrir pedido">' + ICON.bag +
             '<span class="badge" id="v-cart-badge" aria-hidden="true">0</span></button>' +
         '</div>' +
-      '</div>' +
-      '<nav class="mobile-nav" id="v-mobilenav" aria-label="Menú móvil">' +
+      '</div>');
+
+    /* El menú móvil se construye FUERA de <header>: el header lleva
+       backdrop-filter, y eso convierte a cualquier descendiente
+       position:fixed en un elemento "contenido" dentro del header
+       (64px de alto) en vez de posicionado respecto al viewport
+       completo — el menú quedaba recortado a la altura del header. */
+    var mnav = el('nav', { class: 'mobile-nav', id: 'v-mobilenav', 'aria-label': 'Menú móvil' }, '' +
+      '<div class="mobile-nav__primary">' +
         NAV.map(function (n) { return '<a href="' + n.href + '">' + esc(n.label) + '</a>'; }).join('') +
-        '<a href="favoritos.html">Favoritos</a>' +
-      '</nav>');
+      '</div>' +
+      '<div class="mobile-nav__secondary">' +
+        NAV_SECONDARY.map(function (n) { return '<a href="' + n.href + '">' + esc(n.label) + '</a>'; }).join('') +
+      '</div>');
 
     // Detrás del enlace «saltar al contenido», para que siga siendo el primer tab
     var skip = document.querySelector('.skip-link');
     if (skip && skip.nextSibling) document.body.insertBefore(header, skip.nextSibling);
     else document.body.insertBefore(header, document.body.firstChild);
+    header.insertAdjacentElement('afterend', mnav);
 
-    var burger = $('#v-burger'), mnav = $('#v-mobilenav');
+    var burger = $('#v-burger');
     burger.addEventListener('click', function () {
       var open = burger.getAttribute('aria-expanded') === 'true';
       burger.setAttribute('aria-expanded', String(!open));
@@ -394,7 +410,6 @@
             '<li><a href="catalogo.html?f=mujer">Mujer</a></li>' +
             '<li><a href="catalogo.html?f=unisex">Unisex</a></li>' +
             '<li><a href="catalogo.html?f=sets">Gift Sets</a></li>' +
-            '<li><a href="decants.html">Decants 5 ml</a></li>' +
           '</ul></div>' +
           '<div><h3>Ayuda</h3><ul>' +
             '<li><a href="quiz.html">¿Qué perfume soy?</a></li>' +

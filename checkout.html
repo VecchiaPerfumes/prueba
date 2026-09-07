@@ -109,7 +109,7 @@ document.addEventListener('vecchia:ready', function () {
     $('#ck-lines').innerHTML = lines.map(function (l) {
       var p = l.product;
       return '<div class="line">' +
-        '<div class="' + V.mediaClass(p, 'line__img') + '">' + V.imgTag(p, 'lazy') + '</div>' +
+        '<div class="line__img">' + V.imgTag(p, 'lazy') + '</div>' +
         '<div>' + (p.brand ? '<p class="line__brand">' + esc(p.brand) + '</p>' : '') +
         '<a class="line__name link-underline" href="producto.html?id=' + esc(p.id) + '">' + esc(p.name) + '</a>' +
         '<div class="line__row"><span class="qty">' +

@@ -104,7 +104,7 @@ document.addEventListener('vecchia:ready', function () {
 
   root.innerHTML =
     '<div class="pdp">' +
-      '<div class="' + V.mediaClass(p, 'pdp__media') + '">' + V.imgTag(p) + '</div>' +
+      '<div class="pdp__media">' + V.imgTag(p) + '</div>' +
       '<div class="pdp__info">' +
         '<p class="eyebrow">' + esc(p.brand ? p.brand + ' · ' + p.familyLabel : p.familyLabel) + '</p>' +
         '<h1>' + esc(p.name) + '</h1>' +
