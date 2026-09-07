@@ -74,6 +74,46 @@ sin ningún servidor. Lo que **no** existe y requeriría backend:
 4. **Favoritos entre dispositivos.** Se guardan en el navegador de cada
    visitante (localStorage). Para sincronizarlos haría falta login y base de datos.
 
+## Paleta
+
+Solo tres valores, definidos al principio de `assets/vecchia.css`:
+
+```css
+--cream:#F4F1EA    /* fondo de la página */
+--cream-2:#EDE9E0  /* superficie alterna: baldosas de foto, campos */
+--gray:#DCD7CC     /* gris claro: bordes y separadores */
+--black:#000000    /* texto, botones y superficies oscuras */
+```
+
+Los grises intermedios salen de negro con opacidad, así que cambiando esas
+cuatro líneas cambia el sitio entero. No hay blanco puro en pantalla (solo en
+la hoja de impresión, que es lo correcto para papel).
+
+## Por qué unas fotos van sobre negro y otras sobre crema
+
+Tus 116 fotos vienen de **22 tiendas distintas** y cada una trae su propio
+fondo incrustado en el archivo: **72 con fondo oscuro** (las de fimgs.net) y
+**44 con fondo claro**. Por eso antes se veía «cada foto de un color».
+
+No se pueden repintar desde la web, así que cada tipo recibe el tratamiento
+que la hace desaparecer:
+
+- **Fondo claro** → baldosa crema + `mix-blend-mode:multiply`: el blanco de la
+  foto se funde con el crema y solo queda el frasco.
+- **Fondo oscuro** → baldosa negra y foto a sangre (`object-fit:cover`): la
+  foto cubre la baldosa entera, así que no se ve ningún recuadro.
+
+El sitio decide solo, mirando si la URL contiene `dark-`. Si algún día
+cambias una foto, actualiza el campo `dark` de ese producto en `data.js`
+(`true` si la nueva foto tiene fondo oscuro).
+
+**Si quieres que todas vayan sobre crema**, la solución de fondo es sustituir
+esas 72 fotos por versiones con fondo blanco. Prueba primero una URL en el
+navegador antes de cambiarlas todas: si funciona, es un buscar-y-reemplazar
+de `dark-375x500` por `375x500` en `data.js`, y luego poner `"dark": false`.
+No lo hice yo porque desde aquí no tengo acceso a internet para comprobar que
+esas direcciones existan, y a ciegas se habrían roto las 72 fotos.
+
 ## Notas sobre los datos
 
 - Los 116 productos, precios, fotos y descripciones salen de tus páginas
