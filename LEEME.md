@@ -10,7 +10,6 @@ Si subes los archivos sueltos, el CSS y el JS no cargarán.
 ├── index.html
 ├── catalogo.html
 ├── producto.html
-├── decants.html
 ├── quiz.html
 ├── favoritos.html
 ├── checkout.html
@@ -21,7 +20,9 @@ Si subes los archivos sueltos, el CSS y el JS no cargarán.
 ├── woman-collection.html     │ redirecciones de las URLs
 ├── unisex-collection.html    │ antiguas (no borrar: mantienen
 ├── gift-sets.html            │ vivos los enlaces ya compartidos)
-├── vecchia-quiz.html         ┘
+├── vecchia-quiz.html         │
+├── decants.html              ┘ (la sección Decants ya no existe;
+│                                queda como redirección a catalogo.html)
 └── assets/
     ├── vecchia.css
     ├── data.js

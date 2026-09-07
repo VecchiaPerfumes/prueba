@@ -173,9 +173,9 @@ document.addEventListener('vecchia:ready', function () {
         '<p class="meta">' + esc(p.familia) + '</p>' +
       '</div>' +
       '<div class="pdp">' +
-        '<div class="pdp__media' + (/dark-/.test(p.imagen || '') ? ' is-dark' : '') + '">' +
+        '<div class="pdp__media">' +
           (p.imagen ? '<img src="' + esc(p.imagen) + '" alt="' + esc(p.nombre) + '" ' +
-            'decoding="async">' :
+            'decoding="async" onerror="this.style.opacity=.18;this.alt=\'Imagen no disponible\'">' :
             '<span class="card__media--empty meta">Sin imagen</span>') +
         '</div>' +
         '<div class="pdp__info">' +
@@ -215,13 +215,6 @@ document.addEventListener('vecchia:ready', function () {
         '<h3 class="section-title">Fragancias afines</h3></div></div>' +
       '<div class="grid" id="q-related"></div>' +
     '</div>';
-
-    var qimg = elRes.querySelector('.pdp__media img');
-    if (qimg) qimg.addEventListener('error', function () {
-      var box = this.closest('.pdp__media');
-      if (box) box.classList.add('is-broken');
-      this.remove();
-    });
 
     show(elRes);
     elRes.scrollIntoView({ behavior: 'smooth', block: 'start' });

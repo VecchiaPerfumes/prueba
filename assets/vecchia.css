@@ -238,18 +238,30 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
 }
 .mobile-nav.is-open{ opacity:1; visibility:visible; transform:none }
 @media(min-width:1000px){ .mobile-nav{ display:none } }
-.mobile-nav a{
+.mobile-nav__primary{ display:flex; flex-direction:column }
+.mobile-nav__primary a{
   font-family:var(--font-display); font-size:clamp(1.9rem,8vw,2.6rem);
   padding-block:.5rem; border-bottom:1px solid var(--ink-08);
   opacity:0; transform:translateY(10px);
 }
-.mobile-nav.is-open a{ animation:navIn var(--t-slow) var(--ease) forwards }
-.mobile-nav.is-open a:nth-child(1){ animation-delay:.04s }
-.mobile-nav.is-open a:nth-child(2){ animation-delay:.08s }
-.mobile-nav.is-open a:nth-child(3){ animation-delay:.12s }
-.mobile-nav.is-open a:nth-child(4){ animation-delay:.16s }
-.mobile-nav.is-open a:nth-child(5){ animation-delay:.20s }
-.mobile-nav.is-open a:nth-child(6){ animation-delay:.24s }
+.mobile-nav__secondary{ display:flex; flex-direction:column; margin-top:var(--s4) }
+.mobile-nav__secondary a{
+  font-size:var(--fs-micro); letter-spacing:var(--tracking-wide); text-transform:uppercase;
+  color:var(--ink-55); padding-block:.85rem; border-bottom:1px solid var(--ink-08);
+  opacity:0; transform:translateY(10px); transition:color var(--t-base) var(--ease);
+}
+.mobile-nav__secondary a:hover{ color:var(--black) }
+.mobile-nav.is-open .mobile-nav__primary a,
+.mobile-nav.is-open .mobile-nav__secondary a{ animation:navIn var(--t-slow) var(--ease) forwards }
+.mobile-nav.is-open .mobile-nav__primary a:nth-child(1){ animation-delay:.04s }
+.mobile-nav.is-open .mobile-nav__primary a:nth-child(2){ animation-delay:.08s }
+.mobile-nav.is-open .mobile-nav__primary a:nth-child(3){ animation-delay:.12s }
+.mobile-nav.is-open .mobile-nav__primary a:nth-child(4){ animation-delay:.16s }
+.mobile-nav.is-open .mobile-nav__primary a:nth-child(5){ animation-delay:.20s }
+.mobile-nav.is-open .mobile-nav__primary a:nth-child(6){ animation-delay:.24s }
+.mobile-nav.is-open .mobile-nav__secondary a:nth-child(1){ animation-delay:.28s }
+.mobile-nav.is-open .mobile-nav__secondary a:nth-child(2){ animation-delay:.32s }
+.mobile-nav.is-open .mobile-nav__secondary a:nth-child(3){ animation-delay:.36s }
 @keyframes navIn{ to{ opacity:1; transform:none } }
 
 .page{ padding-top:var(--header-h) }
@@ -359,6 +371,20 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
   display:flex; flex-wrap:wrap; align-items:center; gap:var(--s2);
   padding-block:var(--s3); border-bottom:1px solid var(--ink-12);
 }
+/* min-width:0 es obligatorio: sin él, un hijo flex nunca se encoge por
+   debajo del ancho de su contenido (todos los chips en una fila) y
+   empujaba scroll horizontal a toda la página en móvil. */
+.chips-wrap{ position:relative; flex:1 1 100%; min-width:0 }
+@media(min-width:760px){ .chips-wrap{ flex:1 1 auto } }
+.chips-wrap::after{
+  content:""; position:absolute; top:0; right:0; bottom:2px; width:2.5rem;
+  background:linear-gradient(to right,transparent,var(--white));
+  opacity:1; transition:opacity var(--t-base) var(--ease); pointer-events:none;
+}
+.chips-wrap.is-end::after{ opacity:0 }
+@media(min-width:760px){ .chips-wrap::after{ display:none } }
+.toolbar__row{ display:flex; align-items:center; gap:var(--s2); flex:1 1 100%; min-width:0 }
+@media(min-width:760px){ .toolbar__row{ flex:0 0 auto; margin-left:auto } }
 .chips{ display:flex; gap:.5rem; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none;
         padding-bottom:2px; margin-inline:calc(var(--gutter) * -1); padding-inline:var(--gutter) }
 .chips::-webkit-scrollbar{ display:none }
