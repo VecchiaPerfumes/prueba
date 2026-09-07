@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://prueba-vou6.vercel.app/index.html</loc><priority>1.0</priority></url>
+  <url><loc>https://prueba-vou6.vercel.app/catalogo.html</loc><priority>0.7</priority></url>
+  <url><loc>https://prueba-vou6.vercel.app/decants.html</loc><priority>0.7</priority></url>
+  <url><loc>https://prueba-vou6.vercel.app/quiz.html</loc><priority>0.7</priority></url>
+  <url><loc>https://prueba-vou6.vercel.app/favoritos.html</loc><priority>0.7</priority></url>
+  <url><loc>https://prueba-vou6.vercel.app/contacto.html</loc><priority>0.7</priority></url>
+  <url><loc>https://prueba-vou6.vercel.app/checkout.html</loc><priority>0.7</priority></url>
+</urlset>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Producto | VECCHIA PERFUMES</title>
+<meta name="description" content="Ficha de producto: notas olfativas, precio y disponibilidad. Fragancias originales con envío a toda Venezuela.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://prueba-vou6.vercel.app/producto.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VECCHIA PERFUMES">
+<meta property="og:locale" content="es_VE">
+<meta property="og:title" content="Producto | VECCHIA PERFUMES">
+<meta property="og:description" content="Ficha de producto: notas olfativas, precio y disponibilidad. Fragancias originales con envío a toda Venezuela.">
+<meta property="og:url" content="https://prueba-vou6.vercel.app/producto.html">
+<meta property="og:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Producto | VECCHIA PERFUMES">
+<meta name="twitter:description" content="Ficha de producto: notas olfativas, precio y disponibilidad. Fragancias originales con envío a toda Venezuela.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vecchia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<noscript><div style="padding:1rem;background:#000;color:#fff;text-align:center;font-size:.85rem">
+Esta tienda necesita JavaScript para el catálogo y el pedido.
+<a href="https://wa.me/582735527411" style="color:#fff;text-decoration:underline">Escríbenos por WhatsApp</a>.
+</div></noscript>
+
+<main id="main" class="page">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Ruta" id="pdp-crumbs">
+      <a href="index.html">Inicio</a><span>/</span><a href="catalogo.html">Catálogo</a>
+    </nav>
+    <div id="pdp-root">
+      <div class="pdp">
+        <div class="pdp__media skeleton"></div>
+        <div>
+          <h1 class="sr-only">Cargando fragancia</h1>
+          <div class="skeleton sk-line" style="width:30%"></div>
+          <div class="skeleton sk-line" style="height:36px"></div>
+          <div class="skeleton sk-line sk-line--sm"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" id="pdp-related-wrap" hidden>
+    <div class="wrap">
+      <div class="section-head"><div><p class="eyebrow">También te puede gustar</p>
+        <h2 class="section-title">Fragancias relacionadas</h2></div></div>
+      <div class="grid" id="pdp-related"></div>
+    </div>
+  </section>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener('vecchia:ready', function () {
+  var V = window.Vecchia, $ = V.$, esc = V.esc;
+  var id = new URLSearchParams(location.search).get('id');
+  var p = id && V.byId[id];
+  var root = $('#pdp-root');
+
+  if (!p) {
+    document.title = 'Producto no encontrado | VECCHIA PERFUMES';
+    root.innerHTML = '<div class="state"><h1 class="state__title">No encontramos esta fragancia</h1>' +
+      '<p class="state__text">Puede que ya no esté disponible o que el enlace sea incorrecto.</p>' +
+      '<div class="state__suggest"><a class="btn" href="catalogo.html">Ver catálogo</a>' +
+      '<button class="btn btn--ghost" data-open-search>Buscar</button></div></div>';
+    return;
+  }
+
+  document.title = p.name + ' | VECCHIA PERFUMES';
+  var d = document.querySelector('meta[name="description"]');
+  if (d) d.setAttribute('content', (p.desc || p.name) + ' — ' + p.brand + '. VECCHIA Perfumes.');
+  var ogt = document.querySelector('meta[property="og:title"]');
+  if (ogt) ogt.setAttribute('content', p.name + ' | VECCHIA PERFUMES');
+  var ogi = document.querySelector('meta[property="og:image"]');
+  if (ogi && p.image) ogi.setAttribute('content', p.image);
+  var can = document.querySelector('link[rel="canonical"]');
+  if (can) can.setAttribute('href', can.getAttribute('href').split('?')[0] + '?id=' + p.id);
+
+  var ld = document.createElement('script');
+  ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'Product',
+    name: p.name, brand: { '@type': 'Brand', name: p.brand },
+    image: p.image ? [p.image] : undefined,
+    description: p.desc || (p.name + ' — fragancia disponible en VECCHIA Perfumes.'),
+    offers: {
+      '@type': 'Offer', price: p.price, priceCurrency: 'USD',
+      availability: p.soldOut ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock'
+    }
+  });
+  document.head.appendChild(ld);
+
+  $('#pdp-crumbs').insertAdjacentHTML('beforeend',
+    '<span>/</span><span>' + esc(p.name) + '</span>');
+
+  var notes = p.notes;
+  var fav = V.Wish.has(p.id);
+
+  root.innerHTML =
+    '<div class="pdp">' +
+      '<div class="pdp__media">' + V.imgTag(p) + '</div>' +
+      '<div class="pdp__info">' +
+        '<p class="eyebrow">' + esc(p.brand ? p.brand + ' · ' + p.familyLabel : p.familyLabel) + '</p>' +
+        '<h1>' + esc(p.name) + '</h1>' +
+        '<p class="pdp__price">' + (p.price ? V.money(V.toCents(p.price)) : 'Consultar precio') +
+          (p.soldOut ? ' <span class="flag flag--out" style="vertical-align:middle">Agotado</span>' : '') + '</p>' +
+        (p.desc ? '<p class="pdp__desc">' + esc(p.desc) + '</p>' : '') +
+
+        '<div class="pdp__buy" data-qty-scope>' +
+          (p.soldOut ? '' :
+            '<span class="qty">' +
+              '<button type="button" data-q="-1" aria-label="Quitar una unidad">−</button>' +
+              '<output id="pdp-qty" aria-label="Cantidad">1</output>' +
+              '<button type="button" data-q="1" aria-label="Añadir una unidad">+</button>' +
+            '</span>') +
+          (p.soldOut
+            ? '<a class="btn btn--block" href="' + V.waLink('Hola VECCHIA, ¿cuándo tendrán stock de ' + p.name + '?') +
+              '" target="_blank" rel="noopener">Avísame cuando llegue</a>'
+            : '<button class="btn" data-add="' + esc(p.id) + '">Añadir al pedido</button>') +
+          '<button class="fav" style="position:static;width:48px;height:48px;border-radius:0" ' +
+            'data-fav="' + esc(p.id) + '" aria-pressed="' + fav + '" ' +
+            'aria-label="Guardar ' + esc(p.name) + ' en favoritos">' + V.ICON.heart + '</button>' +
+        '</div>' +
+
+        (p.soldOut ? '' :
+          '<a class="btn btn--ghost btn--block" href="' +
+          V.waLink('Hola VECCHIA, quiero pedir: ' + p.name + ' (' + V.money(V.toCents(p.price)) + ')') +
+          '" target="_blank" rel="noopener">Comprar ahora por WhatsApp</a>') +
+
+        '<dl class="spec mt-3">' +
+          (p.brand ? '<dt>Marca</dt><dd>' + esc(p.brand) + '</dd>' : '') +
+          '<dt>Categoría</dt><dd>' + esc(p.familyLabel) + '</dd>' +
+          (p.genderLabel ? '<dt>Línea</dt><dd>' + esc(p.genderLabel) + '</dd>' : '') +
+          (p.tags && p.tags.length ? '<dt>Perfil</dt><dd>' + esc(p.tags.join(' · ')) + '</dd>' : '') +
+          '<dt>Disponibilidad</dt><dd>' + (p.soldOut ? 'Sin stock' : 'En stock') + '</dd>' +
+        '</dl>' +
+
+        (notes ?
+          '<div class="mt-3"><p class="eyebrow">Pirámide olfativa</p>' +
+          '<dl class="notes-grid">' +
+            (notes.top   ? '<div class="note"><dt>Salida</dt><dd>' + esc(notes.top) + '</dd></div>' : '') +
+            (notes.heart ? '<div class="note"><dt>Corazón</dt><dd>' + esc(notes.heart) + '</dd></div>' : '') +
+            (notes.base  ? '<div class="note"><dt>Fondo</dt><dd>' + esc(notes.base) + '</dd></div>' : '') +
+          '</dl></div>' : '') +
+
+        '<ul class="trust">' +
+          '<li>' + V.ICON.shield + '<span>Fragancia original. Verificamos cada unidad antes de entregarla.</span></li>' +
+          '<li>' + V.ICON.ship + '<span>Envíos a toda Venezuela. Coordinamos entrega y pago por WhatsApp.</span></li>' +
+        '</ul>' +
+      '</div>' +
+    '</div>';
+
+  var out = $('#pdp-qty');
+  root.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-q]'); if (!b || !out) return;
+    var n = Math.max(1, Math.min(99, (parseInt(out.textContent, 10) || 1) + parseInt(b.getAttribute('data-q'), 10)));
+    out.textContent = n;
+  });
+
+  var rel = V.products.filter(function (x) {
+    return x.id !== p.id && (x.brand === p.brand || x.family === p.family);
+  }).sort(function (a, b) {
+    var sa = (a.brand === p.brand ? 0 : 1), sb = (b.brand === p.brand ? 0 : 1);
+    if (sa !== sb) return sa - sb;
+    if (a.soldOut !== b.soldOut) return a.soldOut ? 1 : -1;
+    return 0;
+  }).slice(0, 4);
+  if (rel.length) {
+    $('#pdp-related-wrap').hidden = false;
+    V.renderGrid($('#pdp-related'), rel);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Decants 5 ml | VECCHIA PERFUMES</title>
+<meta name="description" content="Decants de 5 ml de fragancias de diseñador y nicho. Prueba antes de invertir en una botella completa. Consulta disponibilidad por WhatsApp.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://prueba-vou6.vercel.app/decants.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VECCHIA PERFUMES">
+<meta property="og:locale" content="es_VE">
+<meta property="og:title" content="Decants 5 ml | VECCHIA PERFUMES">
+<meta property="og:description" content="Decants de 5 ml de fragancias de diseñador y nicho. Prueba antes de invertir en una botella completa. Consulta disponibilidad por WhatsApp.">
+<meta property="og:url" content="https://prueba-vou6.vercel.app/decants.html">
+<meta property="og:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Decants 5 ml | VECCHIA PERFUMES">
+<meta name="twitter:description" content="Decants de 5 ml de fragancias de diseñador y nicho. Prueba antes de invertir en una botella completa. Consulta disponibilidad por WhatsApp.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vecchia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<noscript><div style="padding:1rem;background:#000;color:#fff;text-align:center;font-size:.85rem">
+Esta tienda necesita JavaScript para el catálogo y el pedido.
+<a href="https://wa.me/582735527411" style="color:#fff;text-decoration:underline">Escríbenos por WhatsApp</a>.
+</div></noscript>
+
+<main id="main" class="page">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Ruta"><a href="index.html">Inicio</a><span>/</span><span>Decants</span></nav>
+  </div>
+
+  <section class="split split--dark" style="margin-top:var(--s3)">
+    <div class="split__media">
+      <img src="https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=900&q=80" alt="Frascos pequeños de perfume" loading="lazy" decoding="async">
+    </div>
+    <div style="padding:clamp(2rem,6vw,4.5rem)">
+      <p class="eyebrow">Formato 5 ml</p>
+      <h1 class="section-title">Decants</h1>
+      <p class="lede mt-3">Un decant es una porción de un perfume original trasvasada
+        a un frasco de 5 ml. Te permite vivir la fragancia varios días antes de decidir
+        si quieres la botella completa.</p>
+      <ul class="trust" style="border-color:var(--paper-12)">
+        <li style="color:var(--paper-70)">Fragancias de nicho y diseñador en 5 ml</li>
+        <li style="color:var(--paper-70)">Perfectos para viajes y para probar antes de invertir</li>
+        <li style="color:var(--paper-70)">Más de 50 fragancias disponibles · actualización constante</li>
+      </ul>
+      <div class="hero__actions">
+        <a class="btn btn--onDark" href="https://wa.me/582735527411?text=Hola%20VECCHIA%2C%20quiero%20consultar%20precios%20de%20decants%205ml"
+           target="_blank" rel="noopener">Consultar precios</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <div><p class="eyebrow">Del catálogo</p>
+          <h2 class="section-title">Disponibles para decant</h2>
+          <p class="lede">Estas fragancias de nuestro catálogo pueden pedirse en 5 ml.
+            El precio del decant depende de la fragancia: te lo confirmamos al momento por WhatsApp.</p></div>
+      </div>
+      <div class="grid" id="dec-grid"></div>
+    </div>
+  </section>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener('vecchia:ready', function () {
+  var V = window.Vecchia, esc = V.esc;
+  /* Solo fragancias reales del catálogo que están en stock.
+     No se inventa precio de decant: se consulta por WhatsApp. */
+  var list = V.products.filter(function (p) {
+    return !p.soldOut && p.genders.indexOf('sets') === -1;
+  }).sort(V.SORTS.relevancia).slice(0, 12);
+
+  V.$('#dec-grid').innerHTML = list.map(function (p) {
+    return '<article class="card reveal">' +
+      '<a class="card__media" href="producto.html?id=' + esc(p.id) + '" aria-label="Ver ' + esc(p.name) + '">' +
+        '<span class="card__flags"><span class="flag">5 ml</span></span>' +
+        V.imgTag(p, 'lazy') + '</a>' +
+      '<div class="card__body">' +
+        '<p class="card__brand">' + esc(p.brand) + '</p>' +
+        '<h3 class="card__name"><a href="producto.html?id=' + esc(p.id) + '">' + esc(p.name) + '</a></h3>' +
+        '<p class="card__price">Precio del decant: a consultar</p>' +
+        '<div class="card__actions"><a class="btn btn--ghost" target="_blank" rel="noopener" href="' +
+          V.waLink('Hola VECCHIA, quiero un decant 5ml de ' + p.name) + '">Consultar</a></div>' +
+      '</div></article>';
+  }).join('');
+  V.observeReveals(document);
+});
+</script>
+</body>
+</html>

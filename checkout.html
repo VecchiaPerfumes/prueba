@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Finalizar pedido | VECCHIA PERFUMES</title>
+<meta name="description" content="Revisa tu pedido y envíanoslo por WhatsApp para coordinar pago y entrega.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://prueba-vou6.vercel.app/checkout.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VECCHIA PERFUMES">
+<meta property="og:locale" content="es_VE">
+<meta property="og:title" content="Finalizar pedido | VECCHIA PERFUMES">
+<meta property="og:description" content="Revisa tu pedido y envíanoslo por WhatsApp para coordinar pago y entrega.">
+<meta property="og:url" content="https://prueba-vou6.vercel.app/checkout.html">
+<meta property="og:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Finalizar pedido | VECCHIA PERFUMES">
+<meta name="twitter:description" content="Revisa tu pedido y envíanoslo por WhatsApp para coordinar pago y entrega.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vecchia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<noscript><div style="padding:1rem;background:#000;color:#fff;text-align:center;font-size:.85rem">
+Esta tienda necesita JavaScript para el catálogo y el pedido.
+<a href="https://wa.me/582735527411" style="color:#fff;text-decoration:underline">Escríbenos por WhatsApp</a>.
+</div></noscript>
+
+<main id="main" class="page">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Ruta"><a href="index.html">Inicio</a><span>/</span><span>Pedido</span></nav>
+    <header class="section--tight">
+      <p class="eyebrow">Último paso</p>
+      <h1 class="section-title">Finalizar pedido</h1>
+    </header>
+
+    <div id="ck-empty" hidden></div>
+
+    <div class="pdp" id="ck-wrap" style="align-items:start">
+      <section aria-labelledby="h-resumen">
+        <h2 class="eyebrow" id="h-resumen">Resumen</h2>
+        <div id="ck-lines"></div>
+        <div class="totals mt-3" id="ck-totals"></div>
+      </section>
+
+      <section aria-labelledby="h-datos">
+        <h2 class="eyebrow" id="h-datos">Tus datos</h2>
+        <form id="ck-form" novalidate>
+          <div class="field">
+            <label for="ck-name">Nombre y apellido *</label>
+            <input id="ck-name" name="name" autocomplete="name" required>
+            <p class="err" id="err-name"></p>
+          </div>
+          <div class="field">
+            <label for="ck-phone">Teléfono / WhatsApp *</label>
+            <input id="ck-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+                   placeholder="0414 000 0000">
+            <p class="err" id="err-phone"></p>
+          </div>
+          <div class="field">
+            <label for="ck-city">Ciudad *</label>
+            <input id="ck-city" name="city" autocomplete="address-level2" required>
+            <p class="err" id="err-city"></p>
+          </div>
+          <div class="field">
+            <label for="ck-delivery">Entrega</label>
+            <select id="ck-delivery" name="delivery" class="field">
+              <option>Envío nacional</option>
+              <option>Entrega en Barinas</option>
+              <option>Retiro acordado</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ck-notes">Nota para el pedido (opcional)</label>
+            <textarea id="ck-notes" name="notes" rows="3"
+              placeholder="Referencia de entrega, horario preferido…"></textarea>
+          </div>
+          <button class="btn btn--block" type="submit">Enviar pedido por WhatsApp</button>
+          <p class="meta mt-3" style="text-transform:none;letter-spacing:0;line-height:1.6">
+            Al enviar se abre WhatsApp con el pedido ya redactado. Confirmamos disponibilidad,
+            total y forma de pago por ese mismo chat. No se procesa ningún cobro en esta web.
+          </p>
+        </form>
+      </section>
+    </div>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener('vecchia:ready', function () {
+  var V = window.Vecchia, $ = V.$, esc = V.esc;
+
+  function render() {
+    var lines = V.Cart.detailed();
+    var wrap = $('#ck-wrap'), empty = $('#ck-empty');
+    if (!lines.length) {
+      wrap.hidden = true; empty.hidden = false;
+      empty.innerHTML = '<div class="state"><p class="state__title">Tu pedido está vacío</p>' +
+        '<p class="state__text">Añade fragancias al pedido y vuelve aquí para finalizarlo.</p>' +
+        '<a class="btn" href="catalogo.html">Ver catálogo</a></div>';
+      return;
+    }
+    wrap.hidden = false; empty.hidden = true;
+
+    $('#ck-lines').innerHTML = lines.map(function (l) {
+      var p = l.product;
+      return '<div class="line">' +
+        '<div class="line__img">' + V.imgTag(p, 'lazy') + '</div>' +
+        '<div>' + (p.brand ? '<p class="line__brand">' + esc(p.brand) + '</p>' : '') +
+        '<a class="line__name link-underline" href="producto.html?id=' + esc(p.id) + '">' + esc(p.name) + '</a>' +
+        '<div class="line__row"><span class="qty">' +
+          '<button data-ck="dec" data-id="' + esc(p.id) + '" aria-label="Quitar una unidad de ' + esc(p.name) + '">−</button>' +
+          '<output aria-label="Cantidad">' + l.qty + '</output>' +
+          '<button data-ck="inc" data-id="' + esc(p.id) + '" aria-label="Añadir una unidad de ' + esc(p.name) + '">+</button>' +
+        '</span><span class="line__price">' + V.money(l.lineCents) + '</span></div>' +
+        '<button class="line__remove" data-ck="del" data-id="' + esc(p.id) + '">Eliminar</button>' +
+        '</div></div>';
+    }).join('');
+
+    $('#ck-totals').innerHTML =
+      '<div class="t-sub"><span>Subtotal (' + V.Cart.count() + ' art.)</span><span>' +
+        V.money(V.Cart.subtotalCents()) + '</span></div>' +
+      '<div class="t-sub"><span>Envío</span><span>Se coordina por WhatsApp</span></div>' +
+      '<div class="t-total"><span>Total</span><span>' + V.money(V.Cart.totalCents()) + '</span></div>';
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ck]'); if (!b) return;
+    var id = b.getAttribute('data-id'), a = b.getAttribute('data-ck');
+    if (a === 'inc') V.Cart.setQty(id, V.Cart.qtyOf(id) + 1);
+    if (a === 'dec') V.Cart.setQty(id, V.Cart.qtyOf(id) - 1);
+    if (a === 'del') V.Cart.remove(id);
+  });
+  document.addEventListener('vecchia:ui', render);
+  render();
+
+  var form = $('#ck-form');
+  var RULES = {
+    name:  function (v) { return v.trim().length >= 3 || 'Escribe tu nombre completo.'; },
+    phone: function (v) { return (v.replace(/\D/g, '').length >= 7) || 'Escribe un teléfono válido.'; },
+    city:  function (v) { return v.trim().length >= 2 || 'Indica tu ciudad.'; }
+  };
+
+  function validate(showAll) {
+    var ok = true, firstBad = null;
+    Object.keys(RULES).forEach(function (k) {
+      var input = form.elements[k], msg = RULES[k](input.value);
+      var err = $('#err-' + k);
+      if (msg !== true) {
+        ok = false;
+        if (showAll || input.dataset.touched) {
+          err.textContent = msg;
+          input.setAttribute('aria-invalid', 'true');
+          if (!firstBad) firstBad = input;
+        }
+      } else { err.textContent = ''; input.removeAttribute('aria-invalid'); }
+    });
+    return { ok: ok, firstBad: firstBad };
+  }
+
+  ['name', 'phone', 'city'].forEach(function (k) {
+    form.elements[k].addEventListener('blur', function () { this.dataset.touched = '1'; validate(false); });
+    form.elements[k].addEventListener('input', function () { if (this.dataset.touched) validate(false); });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var lines = V.Cart.detailed();
+    if (!lines.length) { V.Toast.show('Tu pedido está vacío'); return; }
+    var r = validate(true);
+    if (!r.ok) { if (r.firstBad) r.firstBad.focus(); V.Toast.show('Revisa los datos marcados'); return; }
+
+    var f = form.elements;
+    var txt = 'PEDIDO VECCHIA\n\n' +
+      lines.map(function (l) {
+        return '• ' + l.product.name + ' x' + l.qty + ' — ' + V.money(l.lineCents);
+      }).join('\n') +
+      '\n\nTotal: ' + V.money(V.Cart.totalCents()) +
+      '\n\nNombre: ' + f.name.value.trim() +
+      '\nTeléfono: ' + f.phone.value.trim() +
+      '\nCiudad: ' + f.city.value.trim() +
+      '\nEntrega: ' + f.delivery.value +
+      (f.notes.value.trim() ? '\nNota: ' + f.notes.value.trim() : '');
+
+    window.open(V.waLink(txt), '_blank', 'noopener');
+    V.Toast.show('Abriendo WhatsApp con tu pedido', 'check');
+  });
+});
+</script>
+</body>
+</html>

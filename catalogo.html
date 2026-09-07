@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Catálogo de perfumes | VECCHIA PERFUMES</title>
+<meta name="description" content="Más de 100 fragancias originales: diseñador, árabes, unisex y gift sets. Filtra por categoría y precio, y haz tu pedido por WhatsApp.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://prueba-vou6.vercel.app/catalogo.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="VECCHIA PERFUMES">
+<meta property="og:locale" content="es_VE">
+<meta property="og:title" content="Catálogo de perfumes | VECCHIA PERFUMES">
+<meta property="og:description" content="Más de 100 fragancias originales: diseñador, árabes, unisex y gift sets. Filtra por categoría y precio, y haz tu pedido por WhatsApp.">
+<meta property="og:url" content="https://prueba-vou6.vercel.app/catalogo.html">
+<meta property="og:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Catálogo de perfumes | VECCHIA PERFUMES">
+<meta name="twitter:description" content="Más de 100 fragancias originales: diseñador, árabes, unisex y gift sets. Filtra por categoría y precio, y haz tu pedido por WhatsApp.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vecchia.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<noscript><div style="padding:1rem;background:#000;color:#fff;text-align:center;font-size:.85rem">
+Esta tienda necesita JavaScript para el catálogo y el pedido.
+<a href="https://wa.me/582735527411" style="color:#fff;text-decoration:underline">Escríbenos por WhatsApp</a>.
+</div></noscript>
+
+<main id="main" class="page">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Ruta"><a href="index.html">Inicio</a><span>/</span><span>Catálogo</span></nav>
+    <header class="section--tight">
+      <p class="eyebrow">Catálogo</p>
+      <h1 class="section-title" id="cat-title">Todas las fragancias</h1>
+      <p class="lede">Selección completa de VECCHIA. Añade al pedido y lo cerramos por WhatsApp.</p>
+    </header>
+    <hr class="rule" hidden>
+
+    <div class="toolbar">
+      <div class="chips" role="group" aria-label="Filtrar por categoría" id="cat-filters"></div>
+      <label class="sr-only" for="cat-sort">Ordenar por</label>
+      <select class="select" id="cat-sort">
+        <option value="relevancia">Relevancia</option>
+        <option value="precio-asc">Precio: menor a mayor</option>
+        <option value="precio-desc">Precio: mayor a menor</option>
+        <option value="vendidos">Más vendidos</option>
+        <option value="nuevos">Novedades</option>
+      </select>
+      <p class="count" id="cat-count" aria-live="polite"></p>
+    </div>
+
+    <section class="section--tight" aria-label="Resultados">
+      <div class="grid" id="cat-grid"></div>
+      <div id="cat-empty" hidden></div>
+    </section>
+  </div>
+</main>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener('vecchia:ready', function () {
+  var V = window.Vecchia, $ = V.$;
+  var CHIPS = [
+    ['todos','Todos'],['hombre','Hombre'],['mujer','Mujer'],['unisex','Unisex'],
+    ['sets','Gift Sets'],['designer','Designer'],['arabes','Árabes'],
+    ['vendidos','Más vendidos'],['nuevos','Novedades'],['stock','En stock']
+  ];
+  var TITLES = {
+    todos:'Todas las fragancias', hombre:'Colección hombre', mujer:'Colección mujer',
+    unisex:'Colección unisex', sets:'Gift sets', designer:'Fragancias de diseñador',
+    arabes:'Fragancias árabes', vendidos:'Más vendidos', nuevos:'Novedades', stock:'Disponibles ahora'
+  };
+
+  var params = new URLSearchParams(location.search);
+  var active = V.FILTERS[params.get('f')] ? params.get('f') : 'todos';
+  var sort = V.SORTS[params.get('s')] ? params.get('s') : 'relevancia';
+  var query = params.get('q') || '';
+  $('#cat-sort').value = sort;
+
+  $('#cat-filters').innerHTML = CHIPS.map(function (c) {
+    return '<button class="chip" data-f="' + c[0] + '" aria-pressed="' +
+      (c[0] === active) + '">' + c[1] + '</button>';
+  }).join('');
+
+  function apply(push) {
+    var list = V.products.filter(V.FILTERS[active]);
+    if (query) list = V.search(query, list);
+    list = list.slice().sort(V.SORTS[sort]);
+
+    $('#cat-title').textContent = TITLES[active] || 'Catálogo';
+    $('#cat-count').textContent = list.length + (list.length === 1 ? ' fragancia' : ' fragancias');
+    V.$$('#cat-filters .chip').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === active));
+    });
+
+    var empty = $('#cat-empty');
+    if (!list.length) {
+      empty.hidden = false;
+      empty.innerHTML = '<div class="state"><p class="state__title">Sin resultados</p>' +
+        '<p class="state__text">No hay fragancias con estos filtros. Prueba con otra categoría.</p>' +
+        '<button class="btn" data-reset>Ver todo el catálogo</button></div>';
+    } else { empty.hidden = true; empty.innerHTML = ''; }
+
+    V.renderGrid($('#cat-grid'), list);
+
+    if (push) {
+      var p = new URLSearchParams();
+      if (active !== 'todos') p.set('f', active);
+      if (sort !== 'relevancia') p.set('s', sort);
+      if (query) p.set('q', query);
+      var qs = p.toString();
+      history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+    }
+  }
+
+  $('#cat-filters').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-f]'); if (!b) return;
+    active = b.getAttribute('data-f'); apply(true);
+  });
+  $('#cat-sort').addEventListener('change', function () { sort = this.value; apply(true); });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-reset]')) { active = 'todos'; query = ''; apply(true); }
+  });
+
+  apply(false);
+});
+</script>
+</body>
+</html>
