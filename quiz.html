@@ -166,6 +166,11 @@ document.addEventListener('vecchia:ready', function () {
       return xn === n || xn.indexOf(n) === 0 || n.indexOf(xn) === 0;
     })[0];
 
+    /* Foto real del catálogo. Las del quiz original eran imágenes de stock
+       genéricas; si no hay coincidencia fiable no se pone ninguna. */
+    var IMGS = window.VECCHIA_QUIZ_IMGS || {};
+    var foto = IMGS[p.id] || (match ? match.image : '');
+
     elRes.innerHTML = '<div class="wrap">' +
       '<div class="center" style="margin-bottom:clamp(2rem,5vw,3.5rem)">' +
         '<p class="eyebrow">Tu fragancia</p>' +
@@ -173,11 +178,11 @@ document.addEventListener('vecchia:ready', function () {
         '<p class="meta">' + esc(p.familia) + '</p>' +
       '</div>' +
       '<div class="pdp">' +
-        '<div class="pdp__media' + (/dark-/.test(p.imagen || '') ? ' is-dark' : '') + '">' +
-          (p.imagen ? '<img src="' + esc(p.imagen) + '" alt="' + esc(p.nombre) + '" ' +
-            'decoding="async">' :
-            '<span class="card__media--empty meta">Sin imagen</span>') +
-        '</div>' +
+        (foto
+          ? '<div class="pdp__media">' +
+              '<img src="' + esc(foto) + '" alt="' + esc(p.nombre) + '" decoding="async">' +
+            '</div>'
+          : '<div class="pdp__media pdp__media--type"><span>' + esc(p.nombre) + '</span></div>') +
         '<div class="pdp__info">' +
           (p.personalidad ? '<p class="lede">' + esc(p.personalidad) + '</p>' : '') +
           (p.descripcion ? '<p class="pdp__desc mt-3">' + esc(p.descripcion) + '</p>' : '') +
@@ -215,13 +220,6 @@ document.addEventListener('vecchia:ready', function () {
         '<h3 class="section-title">Fragancias afines</h3></div></div>' +
       '<div class="grid" id="q-related"></div>' +
     '</div>';
-
-    var qimg = elRes.querySelector('.pdp__media img');
-    if (qimg) qimg.addEventListener('error', function () {
-      var box = this.closest('.pdp__media');
-      if (box) box.classList.add('is-broken');
-      this.remove();
-    });
 
     show(elRes);
     elRes.scrollIntoView({ behavior: 'smooth', block: 'start' });

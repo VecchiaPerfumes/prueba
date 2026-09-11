@@ -7,19 +7,19 @@ Sin frameworks, sin dependencias y sin paso de compilación: se sube tal cual.
 
 ---
 
-## Subir a GitHub (versión plana, ideal desde el celular)
-
-En esta versión **todos los archivos van en la raíz**, sin subcarpetas. Así se
-pueden subir todos de una sola vez, que es lo único que permiten los
-navegadores del móvil.
+## Subir a GitHub
 
 1. En tu repositorio: **Add file → Upload files**.
-2. Selecciona **todos** los archivos de esta carpeta a la vez.
+2. Arrastra **todo el contenido de esta carpeta**, incluida la carpeta `assets`
+   entera (arrastra la carpeta, no los tres archivos sueltos).
 3. Commit.
 
-No hay carpetas que conservar: si están todos en la raíz, funciona.
+> ⚠️ Si subes `vecchia.css`, `app.js` y `data.js` sueltos en la raíz en vez de
+> dentro de `assets/`, la web sale en blanco. La carpeta tiene que conservarse.
 
 ### Borra del repositorio estos archivos viejos
+
+Ya no se usan y solo estorban:
 
 ```
 site-components.css
@@ -27,30 +27,31 @@ site-footer.css
 site-variables.css
 ```
 
-### Archivos
+### Estructura correcta
 
 ```
-index.html            inicio
-catalogo.html         catálogo con filtros y ordenación
-producto.html         ficha de producto (?id=...)
-favoritos.html
-checkout.html
-contacto.html
-quiz.html             ¿Qué perfume soy?
-vecchia.css           sistema de diseño
-app.js                carrito, favoritos, buscador, tasa
-data.js               catálogo completo
-robots.txt
-sitemap.xml
-vercel.json
-README.md · LEEME.md
-
-mens-collection.html   ┐
-woman-collection.html  │ redirecciones de las URLs antiguas
-unisex-collection.html │ (no las borres: mantienen vivos
-gift-sets.html         │  los enlaces ya compartidos)
-vecchia-quiz.html      │
-catalog.html           ┘
+/
+├── index.html              inicio
+├── catalogo.html           catálogo con filtros y ordenación
+├── producto.html           ficha de producto (?id=...)
+├── favoritos.html
+├── checkout.html
+├── contacto.html
+├── quiz.html               ¿Qué perfume soy?
+├── robots.txt
+├── sitemap.xml
+├── README.md
+├── LEEME.md                manual completo
+├── mens-collection.html    ┐
+├── woman-collection.html   │ redirecciones de las URLs antiguas
+├── unisex-collection.html  │ (no las borres: mantienen vivos
+├── gift-sets.html          │  los enlaces ya compartidos)
+├── vecchia-quiz.html       │
+├── catalog.html            ┘
+└── assets/
+    ├── vecchia.css         sistema de diseño
+    ├── app.js              carrito, favoritos, buscador, tasa
+    └── data.js             catálogo completo
 ```
 
 ## Publicar en Vercel
@@ -61,7 +62,7 @@ Es un sitio estático: no hay que configurar nada.
 - Build command: *(vacío)*
 - Output directory: *(vacío o `.`)*
 
-El `vercel.json` incluido está vacío: no hace falta configurar nada.
+El `vercel.json` incluido solo añade caché para `assets/`.
 
 ---
 

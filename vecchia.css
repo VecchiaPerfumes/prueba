@@ -309,7 +309,10 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
 @media(min-width:760px){ .grid{ grid-template-columns:repeat(3,minmax(0,1fr)) } }
 @media(min-width:1120px){ .grid{ grid-template-columns:repeat(4,minmax(0,1fr)) } }
 
-.card{ position:relative; display:flex; flex-direction:column; background:var(--white) }
+.card{
+  position:relative; display:flex; flex-direction:column; height:100%;
+  background:var(--white);
+}
 /* ── Tratamiento de foto ──────────────────────────────────────────
    Las 116 fotos vienen de 22 tiendas distintas y traen su propio fondo
    incrustado: 72 oscuro y 44 claro. Sin normalizarlas se veía «cada foto
@@ -325,6 +328,8 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
   mix-blend-mode:multiply;
   transition:transform var(--t-slow) var(--ease), opacity var(--t-base) var(--ease);
 }
+/* Respaldo: si una foto clara no existiera, el JS repone la oscura
+   y esta regla evita que se vea un recuadro negro suelto. */
 .card__media.is-dark{ background:var(--black); border-color:var(--black) }
 .card__media.is-dark img{ object-fit:cover; padding:0; mix-blend-mode:normal }
 .card:hover .card__media img{ transform:scale(1.045) }
@@ -355,13 +360,18 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
 @keyframes favBump{ 40%{ transform:scale(1.28) } }
 
 .card__body{ padding-top:.85rem; display:flex; flex-direction:column; flex:1; gap:.3rem }
+.card__stock{ margin-bottom:0 }
 .card__brand{
   font-size:var(--fs-micro); letter-spacing:var(--tracking-mid);
   text-transform:uppercase; color:var(--ink-55);
 }
+/* Dos líneas fijas: así los precios y los botones quedan alineados
+   entre tarjetas aunque los nombres tengan distinta longitud. */
 .card__name{
   font-family:var(--font-display); font-size:clamp(1.02rem,2.5vw,1.28rem);
   line-height:1.18; font-weight:400;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+  overflow:hidden; min-height:calc(1.18em * 2);
 }
 .card__cat{
   font-size:var(--fs-micro); letter-spacing:.04em; color:var(--ink-40);
@@ -379,7 +389,7 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
 }
 .card__stock.is-out{ color:var(--black); font-weight:500 }
 .card__price s{ color:var(--ink-40); font-weight:400; margin-right:.4rem }
-.card__actions{ margin-top:.85rem }
+.card__actions{ margin-top:auto; padding-top:.85rem }
 .card__actions .btn{ min-height:42px; padding:.7rem 1rem; width:100% }
 /* A dos columnas en móvil la etiqueta no cabía en una línea */
 @media(max-width:560px){
@@ -796,7 +806,7 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
 @media(min-width:900px){ .editorial{ grid-template-columns:1.2fr 1fr } }
 .editorial__feature{
   position:relative; display:flex; align-items:flex-end; overflow:hidden;
-  min-height:clamp(340px,52vw,540px); padding:clamp(1.75rem,4vw,3rem);
+  min-height:clamp(300px,58vw,540px); padding:clamp(1.75rem,4vw,3rem);
   background:var(--black); color:var(--white);
 }
 .editorial__feature img{
@@ -809,10 +819,29 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
   font-family:var(--font-display); font-size:clamp(1.7rem,4vw,2.6rem); margin-bottom:.6rem;
 }
 .editorial__copy p{ color:var(--paper-70); font-size:var(--fs-small); margin-bottom:var(--s3) }
-.editorial__side{ display:grid; gap:2px; grid-template-columns:1fr 1fr }
-@media(max-width:899px){ .editorial__side{ gap:clamp(1rem,2.4vw,2rem) } }
+/* Las tarjetas no se estiran para igualar la altura del panel grande:
+   conservan su proporción 3/4 y se alinean arriba. */
+.editorial__side{
+  display:grid; gap:2px; grid-template-columns:1fr 1fr; align-content:start;
+}
+@media(max-width:899px){
+  .editorial__side{ gap:clamp(1rem,2.4vw,2rem); padding:var(--gutter) }
+}
+@media(min-width:900px){ .editorial__side{ padding-left:2px } }
+.editorial__feature{ align-self:start }
 
 /* Filtro de precio del catálogo */
 .filter-row{ display:flex; align-items:center; gap:var(--s2); flex-wrap:wrap }
 .filter-row .select{ flex:1 1 auto; min-width:0 }
 @media(min-width:760px){ .filter-row .select{ flex:0 0 auto } }
+
+/* Resultado del test sin foto fiable: bloque tipográfico en vez de una
+   imagen de stock que no corresponde al perfume. */
+.pdp__media--type{
+  display:grid; place-items:center; text-align:center;
+  padding:clamp(1.5rem,5vw,3rem);
+}
+.pdp__media--type span{
+  font-family:var(--font-display); font-size:clamp(1.6rem,4vw,2.6rem);
+  line-height:1.15; color:var(--ink-40);
+}

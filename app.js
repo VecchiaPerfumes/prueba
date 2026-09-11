@@ -424,6 +424,21 @@
     { href: 'contacto.html',           label: 'Contacto' }
   ];
 
+  /* El menú de las tres barras muestra el sitio completo, no solo el
+     menú reducido de escritorio. */
+  var MOBILE_NAV = [
+    { href: 'index.html',              label: 'Inicio' },
+    { href: 'catalogo.html',           label: 'Catálogo' },
+    { href: 'catalogo.html?f=hombre',  label: 'Hombre' },
+    { href: 'catalogo.html?f=mujer',   label: 'Mujer' },
+    { href: 'catalogo.html?f=unisex',  label: 'Unisex' },
+    { href: 'catalogo.html?f=sets',    label: 'Gift Sets' },
+    { href: 'catalogo.html?f=arabes',  label: 'Árabes' },
+    { href: 'quiz.html',               label: '¿Qué perfume soy?' },
+    { href: 'favoritos.html',          label: 'Favoritos' },
+    { href: 'contacto.html',           label: 'Contacto' }
+  ];
+
   function currentPage() {
     return (location.pathname.split('/').pop() || 'index.html').toLowerCase();
   }
@@ -461,8 +476,10 @@
         '</div>' +
       '</div>' +
       '<nav class="mobile-nav" id="v-mobilenav" aria-label="Menú móvil">' +
-        NAV.map(function (n) { return '<a href="' + n.href + '">' + esc(n.label) + '</a>'; }).join('') +
-        '<a href="favoritos.html">Favoritos</a>' +
+        MOBILE_NAV.map(function (n) {
+          return '<a href="' + n.href + '"' +
+            (n.blank ? ' target="_blank" rel="noopener"' : '') + '>' + esc(n.label) + '</a>';
+        }).join('') +
       '</nav>');
 
     // Detrás del enlace «saltar al contenido», para que siga siendo el primer tab
@@ -749,10 +766,12 @@
   // ── Tarjetas ─────────────────────────────────────────────────────
   function imgTag(p, loading) {
     if (!p.image) return '<span class="card__media--empty meta">Sin imagen</span>';
+    /* data-fallback: si la foto de fondo blanco no existiera en el servidor,
+       el navegador repone la versión de fondo oscuro en vez de dejar un hueco.
+       Se intenta una sola vez por imagen. */
     return '<img src="' + esc(p.image) + '" alt="' + esc(p.alt || p.name) + '"' +
-      (loading ? ' loading="' + loading + '"' : '') + ' decoding="async" ' +
-      'onerror="this.closest(\'.card__media,.pdp__media,.line__img,.result__img\')' +
-      '?.classList.add(\'is-broken\');this.remove()">';
+      (p.imageDark ? ' data-fallback="' + esc(p.imageDark) + '"' : '') +
+      (loading ? ' loading="' + loading + '"' : '') + ' decoding="async">';
   }
 
   /* Clase de baldosa: las fotos con fondo oscuro incrustado se muestran
@@ -828,6 +847,25 @@
   }
 
   // ── Delegación global de clics ───────────────────────────────────
+  /* Un único manejador para los errores de imagen de todo el sitio.
+     Va en fase de captura porque el evento error de <img> no burbujea. */
+  function wireImageFallback() {
+    document.addEventListener('error', function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== 'IMG' || img.dataset.tried) return;
+      img.dataset.tried = '1';
+      var box = img.closest('.card__media,.pdp__media,.line__img,.result__img');
+      var alt = img.getAttribute('data-fallback');
+      if (alt) {
+        if (box) box.classList.add('is-dark');   // la de respaldo es la oscura
+        img.src = alt;
+        return;
+      }
+      if (box) box.classList.add('is-broken');
+      img.remove();
+    }, true);
+  }
+
   function wireGlobalActions() {
     document.addEventListener('click', function (e) {
       var add = e.target.closest('[data-add]');
@@ -907,6 +945,7 @@
     Drawer.build();
     Search.build();
     buildFooter();
+    wireImageFallback();
     wireGlobalActions();
     syncUI();
     observeReveals(document);
