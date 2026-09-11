@@ -187,6 +187,106 @@
     }
   };
 
+
+  /* ═══════════════════════════════════════════════════════════════
+     TASA USD → Bs
+     Conserva la integración original (api.exchangerate.host) y le añade
+     una fuente venezolana, caché con fecha y override manual.
+     Regla de oro: si no hay una tasa válida NO se muestra nada en Bs.
+     Nunca se pinta NaN, undefined, 0 ni "Tasa no configurada".
+     ═══════════════════════════════════════════════════════════════ */
+  var Rate = {
+    KEY: 'vecchia.rate.v1',
+
+    /* ── AJUSTE MANUAL ──────────────────────────────────────────────
+       Escribe aquí la tasa (por ejemplo 234.56) y mandará sobre las APIs.
+       Déjalo en null para que el sitio la busque solo.                */
+    manual: null,
+
+    /* Fuentes en orden. La primera que devuelva un número válido gana. */
+    sources: [
+      { url: 'https://ve.dolarapi.com/v1/dolares/oficial',
+        pick: function (d) { return d && (d.promedio || d.valor); }, name: 'BCV' },
+      { url: 'https://api.exchangerate.host/latest?base=USD&symbols=VES',
+        pick: function (d) { return d && d.rates && d.rates.VES; }, name: 'exchangerate.host' },
+      { url: 'https://api.exchangerate.host/convert?from=USD&to=VES',
+        pick: function (d) { return d && d.result; }, name: 'exchangerate.host' }
+    ],
+
+    state: null,
+
+    valid: function (n) {
+      n = Number(n);
+      // Descarta NaN, Infinity, cero, negativos y valores absurdos
+      return isFinite(n) && n > 0 && n < 1e7 ? n : null;
+    },
+
+    load: function () {
+      var m = Rate.valid(Rate.manual);
+      if (m) { Rate.state = { value: m, updatedAt: null, source: 'manual' }; return; }
+      var c = Store.read(Rate.KEY, null);
+      if (c && Rate.valid(c.value)) Rate.state = c;
+    },
+
+    set: function (value, source) {
+      var v = Rate.valid(value);
+      if (!v) return false;
+      Rate.state = { value: v, updatedAt: new Date().toISOString(), source: source || 'auto' };
+      Store.write(Rate.KEY, Rate.state);
+      document.dispatchEvent(new CustomEvent('vecchia:rate'));
+      return true;
+    },
+
+    /* Consulta las fuentes en segundo plano. Si todas fallan no pasa nada:
+       se sigue usando la última tasa buena guardada. */
+    refresh: function () {
+      if (Rate.valid(Rate.manual)) return;          // manual manda: no consultar
+      if (!window.fetch) return;
+      var i = 0;
+      (function next() {
+        if (i >= Rate.sources.length) return;
+        var src = Rate.sources[i++];
+        var ctl = window.AbortController ? new AbortController() : null;
+        var to = setTimeout(function () { if (ctl) ctl.abort(); }, 6000);
+        fetch(src.url, { cache: 'no-store', signal: ctl ? ctl.signal : undefined })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(0); })
+          .then(function (d) {
+            clearTimeout(to);
+            if (!Rate.set(src.pick(d), src.name)) next();
+          })
+          .catch(function () { clearTimeout(to); next(); });
+      })();
+    },
+
+    value: function () { return Rate.state ? Rate.state.value : null; },
+
+    /* Bs con formato venezolano. Devuelve '' si no hay tasa: quien llama
+       simplemente no pinta la línea. */
+    bs: function (cents) {
+      var r = Rate.value();
+      if (!r || !isFinite(cents)) return '';
+      var n = (Number(cents) / 100) * r;
+      if (!isFinite(n) || n <= 0) return '';
+      try {
+        return 'Bs ' + n.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      } catch (e) {
+        return 'Bs ' + n.toFixed(2);
+      }
+    },
+
+    /* «Tasa actualizada el 9/9/2026» — solo si la conocemos */
+    stamp: function () {
+      if (!Rate.state) return '';
+      if (Rate.state.source === 'manual') return 'Tasa configurada por la tienda';
+      if (!Rate.state.updatedAt) return '';
+      try {
+        return 'Tasa actualizada el ' +
+          new Date(Rate.state.updatedAt).toLocaleDateString('es-VE',
+            { day: 'numeric', month: 'long', year: 'numeric' });
+      } catch (e) { return ''; }
+    }
+  };
+
   // ── Favoritos ────────────────────────────────────────────────────
   var Wish = {
     has: function (id) { return State.wish.indexOf(id) !== -1; },
@@ -247,7 +347,8 @@
     nuevos: function (a, b) {
       var s = (b.nuevo ? 1 : 0) - (a.nuevo ? 1 : 0);
       return s || SORTS.relevancia(a, b);
-    }
+    },
+    az: function (a, b) { return a.name.localeCompare(b.name, 'es'); }
   };
 
   var FILTERS = {
@@ -315,22 +416,32 @@
 
   // ── Cabecera y pie (fuente única, sin duplicar marcado) ──────────
   var NAV = [
-    { href: 'index.html',    label: 'Inicio' },
-    { href: 'catalogo.html', label: 'Catálogo' },
-    { href: 'quiz.html',     label: '¿Qué perfume soy?' },
-    { href: 'decants.html',  label: 'Decants' },
-    { href: 'contacto.html', label: 'Contacto' }
+    { href: 'index.html',              label: 'Inicio' },
+    { href: 'catalogo.html',           label: 'Catálogo' },
+    { href: 'catalogo.html?f=hombre',  label: 'Hombre' },
+    { href: 'catalogo.html?f=mujer',   label: 'Mujer' },
+    { href: 'catalogo.html?f=unisex',  label: 'Unisex' },
+    { href: 'contacto.html',           label: 'Contacto' }
   ];
 
   function currentPage() {
-    var f = location.pathname.split('/').pop() || 'index.html';
-    return f.toLowerCase();
+    return (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  }
+
+  /* Un enlace está activo si coincide el archivo y, cuando lo lleva, el filtro */
+  function isCurrent(href) {
+    var here = currentPage();
+    var file = href.split('?')[0].toLowerCase();
+    if (file !== here) return false;
+    var want = (href.split('?')[1] || '');
+    var have = location.search.replace(/^\?/, '');
+    if (!want) return !have || here !== 'catalogo.html';
+    return have === want;
   }
 
   function buildHeader() {
-    var here = currentPage();
     var links = NAV.map(function (n) {
-      var cur = n.href.toLowerCase() === here ? ' aria-current="page"' : '';
+      var cur = isCurrent(n.href) ? ' aria-current="page"' : '';
       return '<a href="' + n.href + '"' + cur + '>' + esc(n.label) + '</a>';
     }).join('');
 
@@ -385,32 +496,31 @@
         '<div class="footer__grid">' +
           '<div>' +
             '<p class="footer__brand">VECCHIA</p>' +
-            '<p class="footer__note">Perfumería en Barinas, Venezuela. Fragancias originales, ' +
-            'seleccionadas una a una y entregadas con cuidado.</p>' +
+            '<p class="footer__note">Perfumes. Fragancias originales seleccionadas ' +
+            'una a una, en Barinas, Venezuela.</p>' +
           '</div>' +
           '<div><h3>Tienda</h3><ul>' +
-            '<li><a href="catalogo.html">Catálogo completo</a></li>' +
+            '<li><a href="index.html">Inicio</a></li>' +
+            '<li><a href="catalogo.html">Catálogo</a></li>' +
             '<li><a href="catalogo.html?f=hombre">Hombre</a></li>' +
             '<li><a href="catalogo.html?f=mujer">Mujer</a></li>' +
             '<li><a href="catalogo.html?f=unisex">Unisex</a></li>' +
-            '<li><a href="catalogo.html?f=sets">Gift Sets</a></li>' +
-            '<li><a href="decants.html">Decants 5 ml</a></li>' +
+            '<li><a href="contacto.html">Contacto</a></li>' +
           '</ul></div>' +
           '<div><h3>Ayuda</h3><ul>' +
             '<li><a href="quiz.html">¿Qué perfume soy?</a></li>' +
             '<li><a href="favoritos.html">Mis favoritos</a></li>' +
-            '<li><a href="contacto.html">Contacto y envíos</a></li>' +
-            '<li><a href="' + waLink('Hola VECCHIA, tengo una consulta.') + '" target="_blank" rel="noopener">Atención por WhatsApp</a></li>' +
+            '<li><a href="catalogo.html?f=sets">Gift sets</a></li>' +
           '</ul></div>' +
           '<div><h3>Contacto</h3><ul>' +
             '<li><a href="' + waLink('Hola VECCHIA, tengo una consulta.') + '" target="_blank" rel="noopener">WhatsApp +58 273 552 7411</a></li>' +
-            '<li><a href="https://instagram.com/vecchiaperfumes" target="_blank" rel="noopener">@vecchiaperfumes</a></li>' +
-            '<li><span style="color:var(--paper-45);font-size:var(--fs-small)">Barinas · Venezuela</span></li>' +
+            '<li><a href="https://instagram.com/vecchiaperfumes" target="_blank" rel="noopener">Instagram @vecchiaperfumes</a></li>' +
+            '<li><span class="footer__place">Barinas · Venezuela</span></li>' +
           '</ul></div>' +
         '</div>' +
         '<div class="footer__bottom">' +
           '<span>© ' + year + ' ' + CFG.brandName + '</span>' +
-          '<span>Fragancias originales · Envíos a todo el país</span>' +
+          '<span id="v-rate-stamp"></span>' +
         '</div>' +
       '</div>');
     document.body.appendChild(f);
@@ -528,6 +638,8 @@
             '<div class="t-sub"><span>Subtotal (' + Cart.count() + ' art.)</span><span>' + money(sub) + '</span></div>' +
             '<div class="t-sub"><span>Envío</span><span>Se coordina por WhatsApp</span></div>' +
             '<div class="t-total"><span>Total</span><span>' + money(Cart.totalCents()) + '</span></div>' +
+            (Rate.bs(Cart.totalCents())
+              ? '<div class="t-sub t-bs"><span></span><span>' + esc(Rate.bs(Cart.totalCents())) + '</span></div>' : '') +
           '</div>' +
           '<a class="btn btn--block" href="checkout.html">Finalizar pedido</a>' +
           '<a class="btn btn--ghost btn--block" href="catalogo.html">Seguir viendo</a>';
@@ -669,7 +781,13 @@
       '<div class="card__body">' +
         (p.brand ? '<p class="card__brand">' + esc(p.brand) + '</p>' : '') +
         '<h3 class="card__name"><a href="producto.html?id=' + esc(p.id) + '">' + esc(p.name) + '</a></h3>' +
-        '<p class="card__price">' + (p.price ? money(toCents(p.price)) : 'Consultar') + '</p>' +
+        '<p class="card__cat">' + esc(p.familyLabel + (p.genderLabel ? ' · ' + p.genderLabel : '')) + '</p>' +
+        '<p class="card__price"' + (p.price ? ' data-cents="' + toCents(p.price) + '"' : '') + '>' +
+          (p.price ? money(toCents(p.price)) : 'Consultar') +
+          (p.price && Rate.bs(toCents(p.price))
+            ? '<span class="card__bs">' + esc(Rate.bs(toCents(p.price))) + '</span>' : '') + '</p>' +
+        '<p class="card__stock' + (p.soldOut ? ' is-out' : '') + '">' +
+          (p.soldOut ? 'Agotado' : 'Disponible') + '</p>' +
         '<div class="card__actions">' +
           (p.soldOut
             ? '<a class="btn btn--ghost" href="' + waLink('Hola VECCHIA, ¿tienen stock de ' + p.name + '?') + '" target="_blank" rel="noopener">Consultar stock</a>'
@@ -687,6 +805,7 @@
     node.innerHTML = list.map(function (p, i) {
       return cardHTML(p, { eager: i < 4 });
     }).join('');
+    paintBs(node);
     observeReveals(node);
   }
 
@@ -745,6 +864,22 @@
   }
 
   // ── Sincronización de la interfaz ────────────────────────────────
+  /* La tasa suele llegar después de pintar el catálogo: en vez de volver a
+     renderizar las 116 tarjetas, solo se inserta o actualiza su línea en Bs. */
+  function paintBs(root) {
+    $$('.card__price[data-cents]', root || document).forEach(function (node) {
+      var cents = parseInt(node.getAttribute('data-cents'), 10);
+      var txt = Rate.bs(cents);
+      var span = node.querySelector('.card__bs');
+      if (!txt) { if (span) span.remove(); return; }
+      if (!span) {
+        span = el('span', { class: 'card__bs' });
+        node.appendChild(span);
+      }
+      span.textContent = txt;
+    });
+  }
+
   function syncUI() {
     var cb = $('#v-cart-badge'), wb = $('#v-wish-badge');
     var c = Cart.count(), w = Wish.count();
@@ -756,6 +891,10 @@
       b.setAttribute('aria-pressed', String(on));
     });
 
+    var stamp = $('#v-rate-stamp');
+    if (stamp) stamp.textContent = Rate.stamp();
+    paintBs();
+
     if (Drawer.node && Drawer.node.classList.contains('is-open')) Drawer.render();
     document.dispatchEvent(new CustomEvent('vecchia:ui'));
   }
@@ -763,6 +902,7 @@
   // ── Arranque ─────────────────────────────────────────────────────
   function init() {
     loadState();
+    Rate.load();
     buildHeader();
     Drawer.build();
     Search.build();
@@ -776,6 +916,8 @@
     window.addEventListener('storage', function (e) {
       if (e.key === CFG.keys.cart || e.key === CFG.keys.wish) { loadState(); syncUI(); }
     });
+    Rate.refresh();
+    document.addEventListener('vecchia:rate', syncUI);
     document.dispatchEvent(new CustomEvent('vecchia:ready'));
   }
 
@@ -785,6 +927,7 @@
     Cart: Cart, Wish: Wish, Drawer: Drawer, Search: Search, Toast: Toast,
     search: search, SORTS: SORTS, FILTERS: FILTERS,
     money: money, toCents: toCents, esc: esc, el: el, $: $, $$: $$,
+    Rate: Rate, paintBs: paintBs,
     waLink: waLink, cardHTML: cardHTML, renderGrid: renderGrid,
     imgTag: imgTag, mediaClass: mediaClass,
     observeReveals: observeReveals, ICON: ICON, norm: norm

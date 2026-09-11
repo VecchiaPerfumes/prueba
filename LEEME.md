@@ -76,43 +76,74 @@ sin ningún servidor. Lo que **no** existe y requeriría backend:
 
 ## Paleta
 
-Solo tres valores, definidos al principio de `assets/vecchia.css`:
+Dos colores. Están al principio de `assets/vecchia.css`:
 
 ```css
---cream:#F4F1EA    /* fondo de la página */
---cream-2:#EDE9E0  /* superficie alterna: baldosas de foto, campos */
---gray:#DCD7CC     /* gris claro: bordes y separadores */
---black:#000000    /* texto, botones y superficies oscuras */
+--white:#FFFFFF   /* fondo, tarjetas, modales, formularios */
+--black:#000000   /* texto, iconos, bordes, botones */
 ```
 
-Los grises intermedios salen de negro con opacidad, así que cambiando esas
-cuatro líneas cambia el sitio entero. No hay blanco puro en pantalla (solo en
-la hoja de impresión, que es lo correcto para papel).
+Todo lo demás (bordes, texto secundario, separadores) es negro con opacidad,
+no un color aparte. Las superficies oscuras — héroe, pie, buscador, baldosas
+de foto — son negro puro con texto blanco.
 
-## Por qué unas fotos van sobre negro y otras sobre crema
+Botones: fondo blanco, texto negro, borde negro; al pasar el ratón se
+invierten. Esquinas prácticamente rectas (radio 0–1 px).
 
-Tus 116 fotos vienen de **22 tiendas distintas** y cada una trae su propio
-fondo incrustado en el archivo: **72 con fondo oscuro** (las de fimgs.net) y
-**44 con fondo claro**. Por eso antes se veía «cada foto de un color».
+## Por qué unas fotos van sobre negro y otras sobre blanco
+
+Tus 116 fotos vienen de **22 tiendas distintas** y cada archivo trae su propio
+fondo incrustado: **72 con fondo oscuro** (las de fimgs.net) y **44 con fondo
+claro**. Por eso antes se veía «cada foto de un color».
 
 No se pueden repintar desde la web, así que cada tipo recibe el tratamiento
-que la hace desaparecer:
+que hace desaparecer su fondo:
 
-- **Fondo claro** → baldosa crema + `mix-blend-mode:multiply`: el blanco de la
-  foto se funde con el crema y solo queda el frasco.
+- **Fondo claro** → baldosa blanca + `mix-blend-mode:multiply`: el blanco de
+  la foto se funde con el fondo y solo queda el frasco.
 - **Fondo oscuro** → baldosa negra y foto a sangre (`object-fit:cover`): la
   foto cubre la baldosa entera, así que no se ve ningún recuadro.
 
-El sitio decide solo, mirando si la URL contiene `dark-`. Si algún día
-cambias una foto, actualiza el campo `dark` de ese producto en `data.js`
-(`true` si la nueva foto tiene fondo oscuro).
+El sitio lo decide solo, mirando si la URL contiene `dark-`. Si cambias una
+foto, actualiza el campo `dark` de ese producto en `data.js`.
 
-**Si quieres que todas vayan sobre crema**, la solución de fondo es sustituir
-esas 72 fotos por versiones con fondo blanco. Prueba primero una URL en el
-navegador antes de cambiarlas todas: si funciona, es un buscar-y-reemplazar
-de `dark-375x500` por `375x500` en `data.js`, y luego poner `"dark": false`.
-No lo hice yo porque desde aquí no tengo acceso a internet para comprobar que
-esas direcciones existan, y a ciegas se habrían roto las 72 fotos.
+**Si quieres que todas vayan sobre blanco**, hay que sustituir esas 72 fotos
+por versiones con fondo blanco. Prueba primero una URL en el navegador: si
+`375x500` funciona en lugar de `dark-375x500`, es un buscar-y-reemplazar en
+`data.js` y poner `"dark": false`. No lo hice yo porque desde aquí no tengo
+acceso a internet para comprobarlo, y a ciegas se habrían roto las 72.
+
+## Tasa USD → Bs
+
+El precio en bolívares aparece en las tarjetas, la ficha, el carrito y el
+checkout. La lógica está en `assets/app.js`, bloque `Rate`.
+
+**Cómo obtiene la tasa**, en este orden:
+
+1. **Tasa manual** — si la escribes, manda sobre todo lo demás. En `app.js`:
+   ```js
+   manual: null,     // pon aquí el número, p. ej.  manual: 234.56
+   ```
+2. **La última tasa buena guardada** en el navegador del visitante.
+3. **Las APIs**, consultadas en segundo plano: `ve.dolarapi.com` (BCV) y las
+   dos direcciones de `api.exchangerate.host` que ya usaba tu panel de gestión.
+
+**Qué pasa si todo falla:** no se muestra ningún precio en bolívares. No sale
+`NaN`, ni `undefined`, ni `$0`, ni «Tasa no configurada» — sencillamente la
+línea en Bs no existe y el sitio sigue funcionando en dólares.
+
+Cualquier valor absurdo (texto, cero, negativo, mayor de diez millones) se
+descarta y se conserva la tasa anterior. Cuando la tasa viene de una API, el
+pie muestra «Tasa actualizada el …».
+
+> Nota: no pude probar las APIs desde aquí porque este entorno no tiene salida
+> a internet. Por eso la tasa manual es el camino garantizado: si al publicar
+> ves que no aparecen los bolívares, escribe el número en `manual` y listo.
+
+## Decants
+
+Eliminada por completo: la página, el enlace del menú, el del pie, la sección
+del inicio y la entrada del sitemap. No queda ninguna referencia en el código.
 
 ## Notas sobre los datos
 

@@ -18,15 +18,15 @@
 <meta name="twitter:title" content="Producto | VECCHIA PERFUMES">
 <meta name="twitter:description" content="Ficha de producto: notas olfativas, precio y disponibilidad. Fragancias originales con envío a toda Venezuela.">
 <meta name="twitter:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23F4F1EA' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/vecchia.css">
+<link rel="stylesheet" href="vecchia.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
-<noscript><div style="padding:1rem;background:#000;color:#F4F1EA;text-align:center;font-size:.85rem">
+<noscript><div style="padding:1rem;background:#000;color:#fff;text-align:center;font-size:.85rem">
 Esta tienda necesita JavaScript para el catálogo y el pedido.
-<a href="https://wa.me/582735527411" style="color:#F4F1EA;text-decoration:underline">Escríbenos por WhatsApp</a>.
+<a href="https://wa.me/582735527411" style="color:#fff;text-decoration:underline">Escríbenos por WhatsApp</a>.
 </div></noscript>
 
 <main id="main" class="page">
@@ -54,8 +54,8 @@ Esta tienda necesita JavaScript para el catálogo y el pedido.
     </div>
   </section>
 </main>
-<script src="assets/data.js"></script>
-<script src="assets/app.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 <script>
 document.addEventListener('vecchia:ready', function () {
   var V = window.Vecchia, $ = V.$, esc = V.esc;
@@ -101,6 +101,8 @@ document.addEventListener('vecchia:ready', function () {
 
   var notes = p.notes;
   var fav = V.Wish.has(p.id);
+  // Bs solo si hay una tasa válida; si no, la línea no existe
+  var bs = p.price ? V.Rate.bs(V.toCents(p.price)) : '';
 
   root.innerHTML =
     '<div class="pdp">' +
@@ -110,6 +112,9 @@ document.addEventListener('vecchia:ready', function () {
         '<h1>' + esc(p.name) + '</h1>' +
         '<p class="pdp__price">' + (p.price ? V.money(V.toCents(p.price)) : 'Consultar precio') +
           (p.soldOut ? ' <span class="flag flag--out" style="vertical-align:middle">Agotado</span>' : '') + '</p>' +
+        (bs ? '<p class="pdp__bs">' + esc(bs) +
+              (V.Rate.stamp() ? '<span class="pdp__ratestamp" style="display:block">' +
+                esc(V.Rate.stamp()) + '</span>' : '') + '</p>' : '') +
         (p.desc ? '<p class="pdp__desc">' + esc(p.desc) + '</p>' : '') +
 
         '<div class="pdp__buy" data-qty-scope>' +
@@ -136,7 +141,10 @@ document.addEventListener('vecchia:ready', function () {
         '<dl class="spec mt-3">' +
           (p.brand ? '<dt>Marca</dt><dd>' + esc(p.brand) + '</dd>' : '') +
           '<dt>Categoría</dt><dd>' + esc(p.familyLabel) + '</dd>' +
-          (p.genderLabel ? '<dt>Línea</dt><dd>' + esc(p.genderLabel) + '</dd>' : '') +
+          (p.genderLabel ? '<dt>Género</dt><dd>' + esc(p.genderLabel) + '</dd>' : '') +
+          (p.conc ? '<dt>Concentración</dt><dd>' + esc(p.conc) + '</dd>' : '') +
+          (p.size ? '<dt>Tamaño</dt><dd>' + esc(p.size) + '</dd>' : '') +
+          (notes && notes.familia ? '<dt>Familia olfativa</dt><dd>' + esc(notes.familia) + '</dd>' : '') +
           (p.tags && p.tags.length ? '<dt>Perfil</dt><dd>' + esc(p.tags.join(' · ')) + '</dd>' : '') +
           '<dt>Disponibilidad</dt><dd>' + (p.soldOut ? 'Sin stock' : 'En stock') + '</dd>' +
         '</dl>' +
@@ -161,6 +169,14 @@ document.addEventListener('vecchia:ready', function () {
     var b = e.target.closest('[data-q]'); if (!b || !out) return;
     var n = Math.max(1, Math.min(99, (parseInt(out.textContent, 10) || 1) + parseInt(b.getAttribute('data-q'), 10)));
     out.textContent = n;
+  });
+
+  document.addEventListener('vecchia:rate', function () {
+    var box = V.$('.pdp__bs'), val = p.price ? V.Rate.bs(V.toCents(p.price)) : '';
+    if (box && val) {
+      box.innerHTML = esc(val) + (V.Rate.stamp()
+        ? '<span class="pdp__ratestamp" style="display:block">' + esc(V.Rate.stamp()) + '</span>' : '');
+    }
   });
 
   var rel = V.products.filter(function (x) {

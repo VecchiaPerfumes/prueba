@@ -18,15 +18,15 @@
 <meta name="twitter:title" content="Catálogo de perfumes | VECCHIA PERFUMES">
 <meta name="twitter:description" content="Más de 100 fragancias originales: diseñador, árabes, unisex y gift sets. Filtra por categoría y precio, y haz tu pedido por WhatsApp.">
 <meta name="twitter:image" content="https://images.unsplash.com/photo-1541643600914-78b084683601?w=1800&q=80">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23F4F1EA' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23fff' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/vecchia.css">
+<link rel="stylesheet" href="vecchia.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
-<noscript><div style="padding:1rem;background:#000;color:#F4F1EA;text-align:center;font-size:.85rem">
+<noscript><div style="padding:1rem;background:#000;color:#fff;text-align:center;font-size:.85rem">
 Esta tienda necesita JavaScript para el catálogo y el pedido.
-<a href="https://wa.me/582735527411" style="color:#F4F1EA;text-decoration:underline">Escríbenos por WhatsApp</a>.
+<a href="https://wa.me/582735527411" style="color:#fff;text-decoration:underline">Escríbenos por WhatsApp</a>.
 </div></noscript>
 
 <main id="main" class="page">
@@ -43,17 +43,34 @@ Esta tienda necesita JavaScript para el catálogo y el pedido.
       <div class="chips-wrap" id="cat-chipswrap">
         <div class="chips" role="group" aria-label="Filtrar por categoría" id="cat-filters"></div>
       </div>
-      <div class="toolbar__row">
+      <div class="filter-row">
+        <label class="sr-only" for="cat-price">Rango de precio</label>
+        <select class="select" id="cat-price">
+          <option value="all">Todos los precios</option>
+          <option value="0-50">Menos de $50</option>
+          <option value="50-100">$50 – $100</option>
+          <option value="100-150">$100 – $150</option>
+          <option value="150-9999">Más de $150</option>
+        </select>
+
+        <label class="sr-only" for="cat-stock">Disponibilidad</label>
+        <select class="select" id="cat-stock">
+          <option value="all">Toda la disponibilidad</option>
+          <option value="in">Solo disponibles</option>
+          <option value="out">Solo agotados</option>
+        </select>
+
         <label class="sr-only" for="cat-sort">Ordenar por</label>
         <select class="select" id="cat-sort">
-          <option value="relevancia">Relevancia</option>
+          <option value="relevancia">Destacados</option>
+          <option value="vendidos">Más vendidos</option>
           <option value="precio-asc">Precio: menor a mayor</option>
           <option value="precio-desc">Precio: mayor a menor</option>
-          <option value="vendidos">Más vendidos</option>
           <option value="nuevos">Novedades</option>
+          <option value="az">A – Z</option>
         </select>
-        <p class="count" id="cat-count" aria-live="polite"></p>
       </div>
+      <p class="count" id="cat-count" aria-live="polite"></p>
     </div>
 
     <section class="section--tight" aria-label="Resultados">
@@ -62,8 +79,8 @@ Esta tienda necesita JavaScript para el catálogo y el pedido.
     </section>
   </div>
 </main>
-<script src="assets/data.js"></script>
-<script src="assets/app.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
 <script>
 document.addEventListener('vecchia:ready', function () {
   var V = window.Vecchia, $ = V.$;
@@ -82,7 +99,23 @@ document.addEventListener('vecchia:ready', function () {
   var active = V.FILTERS[params.get('f')] ? params.get('f') : 'todos';
   var sort = V.SORTS[params.get('s')] ? params.get('s') : 'relevancia';
   var query = params.get('q') || '';
+  var price = params.get('p') || 'all';
+  var stock = params.get('d') || 'all';
   $('#cat-sort').value = sort;
+  if ($('#cat-price').querySelector('[value="' + price + '"]')) $('#cat-price').value = price;
+  if ($('#cat-stock').querySelector('[value="' + stock + '"]')) $('#cat-stock').value = stock;
+
+  function inPrice(p) {
+    if (price === 'all') return true;
+    var r = price.split('-'), lo = parseFloat(r[0]), hi = parseFloat(r[1]);
+    var v = Number(p.price);
+    return isFinite(v) && v >= lo && v <= hi;
+  }
+  function inStock(p) {
+    if (stock === 'in') return !p.soldOut;
+    if (stock === 'out') return !!p.soldOut;
+    return true;
+  }
 
   $('#cat-filters').innerHTML = CHIPS.map(function (c) {
     return '<button class="chip" data-f="' + c[0] + '" aria-pressed="' +
@@ -90,7 +123,7 @@ document.addEventListener('vecchia:ready', function () {
   }).join('');
 
   function apply(push) {
-    var list = V.products.filter(V.FILTERS[active]);
+    var list = V.products.filter(V.FILTERS[active]).filter(inPrice).filter(inStock);
     if (query) list = V.search(query, list);
     list = list.slice().sort(V.SORTS[sort]);
 
@@ -104,7 +137,8 @@ document.addEventListener('vecchia:ready', function () {
     if (!list.length) {
       empty.hidden = false;
       empty.innerHTML = '<div class="state"><p class="state__title">Sin resultados</p>' +
-        '<p class="state__text">No hay fragancias con estos filtros. Prueba con otra categoría.</p>' +
+        '<p class="state__text">Ninguna fragancia coincide con esta combinación de ' +
+        'categoría, precio y disponibilidad.</p>' +
         '<button class="btn" data-reset>Ver todo el catálogo</button></div>';
     } else { empty.hidden = true; empty.innerHTML = ''; }
 
@@ -114,6 +148,8 @@ document.addEventListener('vecchia:ready', function () {
       var p = new URLSearchParams();
       if (active !== 'todos') p.set('f', active);
       if (sort !== 'relevancia') p.set('s', sort);
+      if (price !== 'all') p.set('p', price);
+      if (stock !== 'all') p.set('d', stock);
       if (query) p.set('q', query);
       var qs = p.toString();
       history.replaceState(null, '', qs ? '?' + qs : location.pathname);
@@ -125,8 +161,14 @@ document.addEventListener('vecchia:ready', function () {
     active = b.getAttribute('data-f'); apply(true);
   });
   $('#cat-sort').addEventListener('change', function () { sort = this.value; apply(true); });
+  $('#cat-price').addEventListener('change', function () { price = this.value; apply(true); });
+  $('#cat-stock').addEventListener('change', function () { stock = this.value; apply(true); });
   document.addEventListener('click', function (e) {
-    if (e.target.closest('[data-reset]')) { active = 'todos'; query = ''; apply(true); }
+    if (e.target.closest('[data-reset]')) {
+      active = 'todos'; query = ''; price = 'all'; stock = 'all';
+      $('#cat-price').value = 'all'; $('#cat-stock').value = 'all';
+      apply(true);
+    }
   });
 
   apply(false);

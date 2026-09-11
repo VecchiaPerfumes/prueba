@@ -23,6 +23,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": {
    "top": "Cardamomo, Salvia, Cedro de Virginia",
    "heart": "Chestnut, Vainilla, Lavanda",
@@ -51,6 +53,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -72,6 +76,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": true,
+  "conc": "Parfum",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -95,6 +101,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -118,6 +126,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": true,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -141,6 +151,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -162,6 +174,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "",
   "notes": null
  },
  {
@@ -183,6 +197,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -207,6 +223,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": true,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "",
   "notes": null
  },
  {
@@ -229,6 +247,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "",
   "notes": null
  },
  {
@@ -252,6 +272,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -275,6 +297,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -296,6 +320,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -319,6 +345,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Elixir",
+  "size": "",
   "notes": null
  },
  {
@@ -340,6 +368,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -363,6 +393,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -386,6 +418,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -407,6 +441,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -430,6 +466,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "",
   "notes": null
  },
  {
@@ -453,6 +491,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": true,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -474,6 +514,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Parfum",
+  "size": "",
   "notes": null
  },
  {
@@ -495,6 +537,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Elixir",
+  "size": "",
   "notes": null
  },
  {
@@ -518,6 +562,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -539,6 +585,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Elixir",
+  "size": "",
   "notes": null
  },
  {
@@ -562,6 +610,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "125 ml",
   "notes": null
  },
  {
@@ -585,6 +635,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "125 ml",
   "notes": null
  },
  {
@@ -608,6 +660,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Elixir",
+  "size": "125 ml",
   "notes": {
    "top": "Lavanda, Bergamota, Cardamomo",
    "heart": "Iris, Vainilla, Tonka",
@@ -636,6 +690,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "125 ml",
   "notes": null
  },
  {
@@ -659,6 +715,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -680,6 +738,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -701,6 +761,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -725,6 +787,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -748,6 +812,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -769,6 +835,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -792,6 +860,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -813,6 +883,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -836,6 +908,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -859,6 +933,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -882,6 +958,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -903,6 +981,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": true,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -926,6 +1006,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -949,6 +1031,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -972,6 +1056,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Parfum",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -995,6 +1081,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1016,6 +1104,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Parfum",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1037,6 +1127,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1060,6 +1152,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1082,6 +1176,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1105,6 +1201,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1128,6 +1226,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1149,6 +1249,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1172,6 +1274,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1195,6 +1299,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1218,6 +1324,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "125 ml",
   "notes": null
  },
  {
@@ -1241,6 +1349,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1264,6 +1374,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1287,6 +1399,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1308,6 +1422,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1331,6 +1447,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1354,6 +1472,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1377,6 +1497,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1400,6 +1522,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1423,6 +1547,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1446,6 +1572,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1469,6 +1597,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1492,6 +1622,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1515,6 +1647,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1536,6 +1670,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1557,6 +1693,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1580,6 +1718,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Parfum (EDP)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1603,6 +1743,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Eau de Toilette (EDT)",
+  "size": "100 ml",
   "notes": null
  },
  {
@@ -1626,6 +1768,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1649,6 +1793,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1672,6 +1818,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1695,6 +1843,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1718,6 +1868,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1741,6 +1893,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Extrait de Parfum",
+  "size": "",
   "notes": null
  },
  {
@@ -1764,6 +1918,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1787,6 +1943,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1810,6 +1968,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1833,6 +1993,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1856,6 +2018,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1879,6 +2043,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1902,6 +2068,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1925,6 +2093,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1948,6 +2118,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1971,6 +2143,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -1994,6 +2168,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2017,6 +2193,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2040,6 +2218,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2063,6 +2243,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2087,6 +2269,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": {
    "top": "Azafrán, Bergamota, Pera",
    "heart": "Jazmín, Rosa, Oud",
@@ -2115,6 +2299,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2138,6 +2324,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2161,6 +2349,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2184,6 +2374,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2207,6 +2399,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2231,6 +2425,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": true,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2254,6 +2450,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "Elixir",
+  "size": "",
   "notes": null
  },
  {
@@ -2277,6 +2475,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2300,6 +2500,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2323,6 +2525,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2346,6 +2550,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2369,6 +2575,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2392,6 +2600,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2415,6 +2625,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2438,6 +2650,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2461,6 +2675,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2484,6 +2700,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2507,6 +2725,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2530,6 +2750,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2553,6 +2775,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2576,6 +2800,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2599,6 +2825,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": false,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2622,6 +2850,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": false,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": null
  },
  {
@@ -2641,6 +2871,8 @@ window.VECCHIA_PRODUCTS = [
   "dark": true,
   "bestseller": true,
   "nuevo": false,
+  "conc": "",
+  "size": "",
   "notes": {
    "top": "Menta, Limón Verde, Manzana Verde",
    "heart": "Tonka, Ambroxan, Geranio",
