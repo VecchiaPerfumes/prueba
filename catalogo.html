@@ -35,7 +35,7 @@ Esta tienda necesita JavaScript para el catálogo y el pedido.
     <header class="page-head">
       <p class="eyebrow">Catálogo</p>
       <h1 class="section-title" id="cat-title">Todas las fragancias</h1>
-      <p class="lede">Selección completa de VECCHIA. Añade al pedido y lo cerramos por WhatsApp.</p>
+      <p class="lede" id="cat-lede">Selección completa de VECCHIA. Añade al pedido y lo cerramos por WhatsApp.</p>
     </header>
     <hr class="rule" hidden>
 
@@ -44,9 +44,12 @@ Esta tienda necesita JavaScript para el catálogo y el pedido.
         <div class="chips" role="group" aria-label="Filtrar por categoría" id="cat-filters"></div>
       </div>
       <div class="filter-row">
+        <label class="sr-only" for="cat-brand">Marca</label>
+        <select class="select" id="cat-brand"><option value="all">Todas las marcas</option></select>
+
         <label class="sr-only" for="cat-price">Rango de precio</label>
         <select class="select" id="cat-price">
-          <option value="all">Todos los precios</option>
+          <option value="all">Precio</option>
           <option value="0-50">Menos de $50</option>
           <option value="50-100">$50 – $100</option>
           <option value="100-150">$100 – $150</option>
@@ -55,9 +58,9 @@ Esta tienda necesita JavaScript para el catálogo y el pedido.
 
         <label class="sr-only" for="cat-stock">Disponibilidad</label>
         <select class="select" id="cat-stock">
-          <option value="all">Toda la disponibilidad</option>
-          <option value="in">Solo disponibles</option>
-          <option value="out">Solo agotados</option>
+          <option value="all">Disponibilidad</option>
+          <option value="in">En stock</option>
+          <option value="out">Agotados</option>
         </select>
 
         <label class="sr-only" for="cat-sort">Ordenar por</label>
@@ -72,6 +75,7 @@ Esta tienda necesita JavaScript para el catálogo y el pedido.
       </div>
       <p class="count" id="cat-count" aria-live="polite"></p>
     </div>
+    <div class="active-filters" id="cat-active" aria-live="polite"></div>
 
     <section class="section--tight" aria-label="Resultados">
       <div class="grid" id="cat-grid"></div>
@@ -101,6 +105,17 @@ document.addEventListener('vecchia:ready', function () {
   var query = params.get('q') || '';
   var price = params.get('p') || 'all';
   var stock = params.get('d') || 'all';
+  var brand = params.get('m') || 'all';
+
+  // El desplegable de marcas se rellena desde el catálogo, con su conteo
+  $('#cat-brand').innerHTML = '<option value="all">Todas las marcas</option>' +
+    V.BRANDS.map(function (b) {
+      return '<option value="' + V.esc(b.name) + '">' +
+        V.esc(b.name) + ' (' + b.n + ')</option>';
+    }).join('');
+  if ($('#cat-brand').querySelector('[value="' + CSS.escape(brand) + '"]')) {
+    $('#cat-brand').value = brand;
+  } else { brand = 'all'; }
   $('#cat-sort').value = sort;
   if ($('#cat-price').querySelector('[value="' + price + '"]')) $('#cat-price').value = price;
   if ($('#cat-stock').querySelector('[value="' + stock + '"]')) $('#cat-stock').value = stock;
@@ -111,6 +126,7 @@ document.addEventListener('vecchia:ready', function () {
     var v = Number(p.price);
     return isFinite(v) && v >= lo && v <= hi;
   }
+  function inBrand(p) { return brand === 'all' || p.brand === brand; }
   function inStock(p) {
     if (stock === 'in') return !p.soldOut;
     if (stock === 'out') return !!p.soldOut;
@@ -123,11 +139,15 @@ document.addEventListener('vecchia:ready', function () {
   }).join('');
 
   function apply(push) {
-    var list = V.products.filter(V.FILTERS[active]).filter(inPrice).filter(inStock);
+    var list = V.products.filter(V.FILTERS[active])
+                 .filter(inBrand).filter(inPrice).filter(inStock);
     if (query) list = V.search(query, list);
     list = list.slice().sort(V.SORTS[sort]);
 
-    $('#cat-title').textContent = TITLES[active] || 'Catálogo';
+    $('#cat-title').textContent = brand !== 'all' ? brand : (TITLES[active] || 'Catálogo');
+    $('#cat-lede').textContent = brand !== 'all'
+      ? 'Todas las fragancias de ' + brand + ' disponibles en VECCHIA.'
+      : 'Selección completa de VECCHIA. Añade al pedido y lo cerramos por WhatsApp.';
     $('#cat-count').textContent = list.length + (list.length === 1 ? ' fragancia' : ' fragancias');
     V.$$('#cat-filters .chip').forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === active));
@@ -142,6 +162,29 @@ document.addEventListener('vecchia:ready', function () {
         '<button class="btn" data-reset>Ver todo el catálogo</button></div>';
     } else { empty.hidden = true; empty.innerHTML = ''; }
 
+    // Resumen de filtros activos, cada uno con su X
+    var PRICE_LABEL = {
+      '0-50': 'Menos de $50', '50-100': '$50 – $100',
+      '100-150': '$100 – $150', '150-9999': 'Más de $150'
+    };
+    var STOCK_LABEL = { 'in': 'En stock', 'out': 'Agotados' };
+    var chips = [];
+    if (active !== 'todos') chips.push({ k: 'f', t: 'Categoría', v: TITLES[active] || active });
+    if (brand !== 'all')    chips.push({ k: 'm', t: 'Marca', v: brand });
+    if (price !== 'all')    chips.push({ k: 'p', t: 'Precio', v: PRICE_LABEL[price] || price });
+    if (stock !== 'all')    chips.push({ k: 'd', t: 'Stock', v: STOCK_LABEL[stock] || stock });
+    if (query)              chips.push({ k: 'q', t: 'Búsqueda', v: query });
+
+    $('#cat-active').innerHTML = chips.length
+      ? '<span class="active-filters__label">Filtrando por</span>' +
+        chips.map(function (c) {
+          return '<span class="pill">' + V.esc(c.t) + ': <b>' + V.esc(c.v) + '</b>' +
+            '<button data-drop="' + c.k + '" aria-label="Quitar filtro ' +
+            V.esc(c.t) + '">×</button></span>';
+        }).join('') +
+        '<button class="clear-all" data-reset>Limpiar todo</button>'
+      : '';
+
     V.renderGrid($('#cat-grid'), list);
 
     if (push) {
@@ -150,6 +193,7 @@ document.addEventListener('vecchia:ready', function () {
       if (sort !== 'relevancia') p.set('s', sort);
       if (price !== 'all') p.set('p', price);
       if (stock !== 'all') p.set('d', stock);
+      if (brand !== 'all') p.set('m', brand);
       if (query) p.set('q', query);
       var qs = p.toString();
       history.replaceState(null, '', qs ? '?' + qs : location.pathname);
@@ -163,10 +207,23 @@ document.addEventListener('vecchia:ready', function () {
   $('#cat-sort').addEventListener('change', function () { sort = this.value; apply(true); });
   $('#cat-price').addEventListener('change', function () { price = this.value; apply(true); });
   $('#cat-stock').addEventListener('change', function () { stock = this.value; apply(true); });
+  $('#cat-brand').addEventListener('change', function () { brand = this.value; apply(true); });
+  $('#cat-active').addEventListener('click', function (e) {
+    var d = e.target.closest('[data-drop]'); if (!d) return;
+    var k = d.getAttribute('data-drop');
+    if (k === 'f') active = 'todos';
+    if (k === 'm') { brand = 'all'; $('#cat-brand').value = 'all'; }
+    if (k === 'p') { price = 'all'; $('#cat-price').value = 'all'; }
+    if (k === 'd') { stock = 'all'; $('#cat-stock').value = 'all'; }
+    if (k === 'q') query = '';
+    apply(true);
+  });
+
   document.addEventListener('click', function (e) {
     if (e.target.closest('[data-reset]')) {
-      active = 'todos'; query = ''; price = 'all'; stock = 'all';
+      active = 'todos'; query = ''; price = 'all'; stock = 'all'; brand = 'all';
       $('#cat-price').value = 'all'; $('#cat-stock').value = 'all';
+      $('#cat-brand').value = 'all';
       apply(true);
     }
   });

@@ -241,31 +241,80 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
 .burger[aria-expanded="true"] span:nth-child(2){ opacity:0; transform:scaleX(.3) }
 .burger[aria-expanded="true"] span:nth-child(3){ transform:translateY(-7px) rotate(-45deg) }
 
-/* Menú móvil */
+/* Menú móvil: pantalla completa, con secciones y jerarquía */
 .mobile-nav{
   position:fixed; inset:var(--header-h) 0 0; z-index:var(--z-overlay);
-  background:var(--white); padding:var(--s5) var(--gutter) var(--s6);
-  display:flex; flex-direction:column; gap:var(--s1);
-  opacity:0; visibility:hidden; transform:translateY(-8px);
+  background:var(--white);
+  display:flex; flex-direction:column;
+  opacity:0; visibility:hidden; transform:translateY(-6px);
   transition:opacity var(--t-base) var(--ease), transform var(--t-base) var(--ease),
              visibility var(--t-base);
-  overflow-y:auto; overscroll-behavior:contain;
 }
 .mobile-nav.is-open{ opacity:1; visibility:visible; transform:none }
 @media(min-width:1000px){ .mobile-nav{ display:none } }
-.mobile-nav a{
-  font-family:var(--font-display); font-size:clamp(1.9rem,8vw,2.6rem);
-  padding-block:.5rem; border-bottom:1px solid var(--gray);
-  opacity:0; transform:translateY(10px);
+
+.mobile-nav__inner{
+  flex:1; overflow-y:auto; overscroll-behavior:contain;
+  padding:var(--s3) var(--gutter) var(--s4);
 }
-.mobile-nav.is-open a{ animation:navIn var(--t-slow) var(--ease) forwards }
-.mobile-nav.is-open a:nth-child(1){ animation-delay:.04s }
-.mobile-nav.is-open a:nth-child(2){ animation-delay:.08s }
-.mobile-nav.is-open a:nth-child(3){ animation-delay:.12s }
-.mobile-nav.is-open a:nth-child(4){ animation-delay:.16s }
-.mobile-nav.is-open a:nth-child(5){ animation-delay:.20s }
-.mobile-nav.is-open a:nth-child(6){ animation-delay:.24s }
-@keyframes navIn{ to{ opacity:1; transform:none } }
+.mobile-nav__foot{
+  padding:var(--s3) var(--gutter) calc(var(--s3) + env(safe-area-inset-bottom));
+  border-top:1px solid var(--gray);
+}
+
+/* Acceso al buscador, arriba del todo */
+.mobile-nav__search{
+  width:100%; display:flex; align-items:center; gap:.75rem;
+  min-height:50px; padding:0 1rem; margin-bottom:var(--s3);
+  border:1px solid var(--gray); background:var(--white);
+  color:var(--ink-55); font-size:.9rem; text-align:left;
+  transition:border-color var(--t-base) var(--ease), color var(--t-base) var(--ease);
+}
+.mobile-nav__search:hover,.mobile-nav__search:focus-visible{
+  border-color:var(--black); color:var(--black);
+}
+.mobile-nav__search svg{
+  width:17px; height:17px; flex:0 0 auto;
+  fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round;
+}
+
+.mobile-nav__label{
+  font-size:var(--fs-micro); letter-spacing:var(--tracking-wide);
+  text-transform:uppercase; color:var(--ink-40);
+  margin:var(--s3) 0 .5rem;
+}
+.mobile-nav__list{ display:grid }
+.mobile-nav__list a{
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:var(--font-display); font-size:1.9rem; line-height:1.25;
+  padding-block:.45rem; border-bottom:1px solid var(--ink-08);
+  transition:padding-left var(--t-base) var(--ease);
+}
+/* Las secciones secundarias, algo más pequeñas: así se lee la jerarquía */
+.mobile-nav__list.is-sub a{ font-size:1.4rem }
+.mobile-nav__list a:active{ padding-left:.4rem }
+.mobile-nav__n{
+  font-family:var(--font-body); font-size:var(--fs-micro); font-weight:600;
+  min-width:20px; height:20px; padding:0 5px; border-radius:10px;
+  display:grid; place-items:center; background:var(--black); color:var(--white);
+}
+.mobile-nav__n:empty{ display:none }
+
+.mobile-nav__brands{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.25rem }
+.mobile-nav__brands .chip{ text-transform:none; letter-spacing:.02em }
+.mobile-nav__brands .chip span{ color:var(--ink-40); margin-left:.3rem }
+
+/* Aparición escalonada de las secciones */
+.mobile-nav.is-open .mobile-nav__inner > *{
+  opacity:0; animation:navIn var(--t-slow) var(--ease) forwards;
+}
+.mobile-nav.is-open .mobile-nav__inner > *:nth-child(1){ animation-delay:.03s }
+.mobile-nav.is-open .mobile-nav__inner > *:nth-child(2){ animation-delay:.06s }
+.mobile-nav.is-open .mobile-nav__inner > *:nth-child(3){ animation-delay:.09s }
+.mobile-nav.is-open .mobile-nav__inner > *:nth-child(4){ animation-delay:.12s }
+.mobile-nav.is-open .mobile-nav__inner > *:nth-child(5){ animation-delay:.15s }
+.mobile-nav.is-open .mobile-nav__inner > *:nth-child(n+6){ animation-delay:.18s }
+@keyframes navIn{ from{ opacity:0; transform:translateY(8px) } to{ opacity:1; transform:none } }
 
 .page{ padding-top:var(--header-h) }
 
@@ -845,3 +894,40 @@ h1,h2,h3,h4{ font-weight:300; line-height:1.05; letter-spacing:-.02em }
   font-family:var(--font-display); font-size:clamp(1.6rem,4vw,2.6rem);
   line-height:1.15; color:var(--ink-40);
 }
+
+
+/* ── Filtros del catálogo: marca, chips activos y limpiar ────────── */
+.filter-row{ display:flex; flex-wrap:wrap; gap:var(--s2); align-items:center }
+.filter-row .select{ flex:1 1 calc(50% - var(--s2)); min-width:0 }
+@media(min-width:560px){ .filter-row .select{ flex:1 1 auto } }
+@media(min-width:900px){ .filter-row .select{ flex:0 0 auto } }
+
+/* Resumen de lo que está filtrando, con X para quitar cada cosa */
+.active-filters{
+  display:flex; flex-wrap:wrap; gap:.5rem; align-items:center;
+  padding-block:var(--s2);
+}
+.active-filters:empty{ display:none }
+.active-filters__label{
+  font-size:var(--fs-micro); letter-spacing:var(--tracking-mid);
+  text-transform:uppercase; color:var(--ink-40);
+}
+.pill{
+  display:inline-flex; align-items:center; gap:.45rem;
+  min-height:32px; padding:.3rem .5rem .3rem .7rem;
+  border:1px solid var(--black); background:var(--white);
+  font-size:var(--fs-micro); letter-spacing:.04em;
+}
+.pill b{ font-weight:600 }
+.pill button{
+  width:20px; height:20px; display:grid; place-items:center;
+  font-size:15px; line-height:1; color:var(--ink-55); border-radius:50%;
+  transition:background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.pill button:hover{ background:var(--black); color:var(--white) }
+.clear-all{
+  font-size:var(--fs-micro); letter-spacing:var(--tracking-mid);
+  text-transform:uppercase; text-decoration:underline;
+  text-underline-offset:3px; color:var(--ink-55);
+}
+.clear-all:hover{ color:var(--black) }

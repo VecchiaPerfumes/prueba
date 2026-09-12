@@ -308,6 +308,20 @@
     }
   };
 
+  /* Marcas presentes en el catálogo, con su número de fragancias.
+     Se calcula de los datos: no hay una lista que mantener a mano. */
+  var BRANDS = (function () {
+    var count = {};
+    PRODUCTS.forEach(function (p) {
+      if (p.brand) count[p.brand] = (count[p.brand] || 0) + 1;
+    });
+    return Object.keys(count).map(function (b) {
+      return { name: b, n: count[b] };
+    }).sort(function (a, b) {
+      return b.n - a.n || a.name.localeCompare(b.name, 'es');
+    });
+  })();
+
   // ── Búsqueda y filtros ───────────────────────────────────────────
   function haystack(p) {
     if (p._hay) return p._hay;
@@ -426,17 +440,25 @@
 
   /* El menú de las tres barras muestra el sitio completo, no solo el
      menú reducido de escritorio. */
-  var MOBILE_NAV = [
-    { href: 'index.html',              label: 'Inicio' },
-    { href: 'catalogo.html',           label: 'Catálogo' },
-    { href: 'catalogo.html?f=hombre',  label: 'Hombre' },
-    { href: 'catalogo.html?f=mujer',   label: 'Mujer' },
-    { href: 'catalogo.html?f=unisex',  label: 'Unisex' },
-    { href: 'catalogo.html?f=sets',    label: 'Gift Sets' },
-    { href: 'catalogo.html?f=arabes',  label: 'Árabes' },
-    { href: 'quiz.html',               label: '¿Qué perfume soy?' },
-    { href: 'favoritos.html',          label: 'Favoritos' },
-    { href: 'contacto.html',           label: 'Contacto' }
+  /* El menú de las tres barras, agrupado: no es una lista plana de diez
+     enlaces iguales, sino secciones con jerarquía. */
+  var MOBILE_MENU = [
+    { group: null, items: [
+      { href: 'index.html',    label: 'Inicio' },
+      { href: 'catalogo.html', label: 'Catálogo' }
+    ]},
+    { group: 'Colecciones', items: [
+      { href: 'catalogo.html?f=hombre', label: 'Hombre' },
+      { href: 'catalogo.html?f=mujer',  label: 'Mujer' },
+      { href: 'catalogo.html?f=unisex', label: 'Unisex' },
+      { href: 'catalogo.html?f=sets',   label: 'Gift Sets' },
+      { href: 'catalogo.html?f=arabes', label: 'Árabes' }
+    ]},
+    { group: 'Más', items: [
+      { href: 'quiz.html',      label: '¿Qué perfume soy?' },
+      { href: 'favoritos.html', label: 'Favoritos', badge: 'wish' },
+      { href: 'contacto.html',  label: 'Contacto' }
+    ]}
   ];
 
   function currentPage() {
@@ -475,19 +497,49 @@
             '<span class="badge" id="v-cart-badge" aria-hidden="true">0</span></button>' +
         '</div>' +
       '</div>' +
-      '<nav class="mobile-nav" id="v-mobilenav" aria-label="Menú móvil">' +
-        MOBILE_NAV.map(function (n) {
-          return '<a href="' + n.href + '"' +
-            (n.blank ? ' target="_blank" rel="noopener"' : '') + '>' + esc(n.label) + '</a>';
-        }).join('') +
-      '</nav>');
+      '');
 
     // Detrás del enlace «saltar al contenido», para que siga siendo el primer tab
     var skip = document.querySelector('.skip-link');
     if (skip && skip.nextSibling) document.body.insertBefore(header, skip.nextSibling);
     else document.body.insertBefore(header, document.body.firstChild);
 
-    var burger = $('#v-burger'), mnav = $('#v-mobilenav');
+    /* Hermano de la cabecera, no hijo: si va dentro, el backdrop-filter
+       del header lo hace su bloque contenedor y el menú queda sin altura. */
+    var mobileNav = el('nav', {
+      class: 'mobile-nav', id: 'v-mobilenav', 'aria-label': 'Menú'
+    }, '' +
+        '<div class="mobile-nav__inner">' +
+          '<button class="mobile-nav__search" data-open-search>' +
+            ICON.search + '<span>Buscar fragancia o marca</span>' +
+          '</button>' +
+          MOBILE_MENU.map(function (sec) {
+            return (sec.group ? '<p class="mobile-nav__label">' + esc(sec.group) + '</p>' : '') +
+              '<ul class="mobile-nav__list' + (sec.group ? ' is-sub' : '') + '">' +
+              sec.items.map(function (it) {
+                return '<li><a href="' + it.href + '">' + esc(it.label) +
+                  (it.badge === 'wish' ? '<span class="mobile-nav__n" data-mn-wish></span>' : '') +
+                  '</a></li>';
+              }).join('') + '</ul>';
+          }).join('') +
+          '<p class="mobile-nav__label">Marcas</p>' +
+          '<div class="mobile-nav__brands">' +
+            BRANDS.slice(0, 8).map(function (b) {
+              return '<a class="chip" href="catalogo.html?m=' + encodeURIComponent(b.name) + '">' +
+                esc(b.name) + ' <span>' + b.n + '</span></a>';
+            }).join('') +
+            '<a class="chip" href="catalogo.html">Ver todas</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mobile-nav__foot">' +
+          '<a class="btn btn--block" href="' + waLink('Hola VECCHIA, quiero información.') + '" ' +
+            'target="_blank" rel="noopener">Escribir por WhatsApp</a>' +
+        '</div>' +
+      '');
+
+    document.body.appendChild(mobileNav);
+
+    var burger = $('#v-burger'), mnav = mobileNav;
     burger.addEventListener('click', function () {
       var open = burger.getAttribute('aria-expanded') === 'true';
       burger.setAttribute('aria-expanded', String(!open));
@@ -733,8 +785,13 @@
       if (!q || !q.trim()) {
         box.innerHTML = '<p class="meta" style="color:var(--paper-45);padding:.75rem 0">Sugerencias</p>' +
           '<div class="state__suggest" style="justify-content:flex-start">' +
-          ['Lattafa', 'Azzaro', 'Armani', 'Árabes', 'Gift set', 'Dulce']
-            .map(function (s) { return '<button class="chip" data-suggest="' + s + '">' + s + '</button>'; }).join('') +
+          BRANDS.slice(0, 7).map(function (b) {
+            return '<button class="chip" data-suggest="' + esc(b.name) + '">' +
+              esc(b.name) + '</button>';
+          }).join('') +
+          ['Árabes', 'Dulce', 'Fresco'].map(function (s) {
+            return '<button class="chip" data-suggest="' + s + '">' + s + '</button>';
+          }).join('') +
           '</div>';
         return;
       }
@@ -744,8 +801,10 @@
           '<p class="state__title">No encontramos lo que buscas</p>' +
           '<p class="state__text">Prueba con otro término, o escríbenos y te ayudamos a localizarlo.</p>' +
           '<div class="state__suggest">' +
-          ['Lattafa', 'Azzaro', 'Versace', 'Árabes', 'Gift set']
-            .map(function (s) { return '<button class="chip" data-suggest="' + s + '">' + s + '</button>'; }).join('') +
+          BRANDS.slice(0, 5).map(function (b) {
+            return '<button class="chip" data-suggest="' + esc(b.name) + '">' +
+              esc(b.name) + '</button>';
+          }).join('') +
           '<a class="btn btn--onDark" href="' + waLink('Hola VECCHIA, busco: ' + q) + '" target="_blank" rel="noopener">Preguntar por WhatsApp</a>' +
           '</div></div>';
         return;
@@ -924,6 +983,9 @@
     if (cb) { cb.textContent = c; cb.classList.toggle('is-on', c > 0); }
     if (wb) { wb.textContent = w; wb.classList.toggle('is-on', w > 0); }
 
+    var mnWish = $('[data-mn-wish]');
+    if (mnWish) mnWish.textContent = w > 0 ? w : '';
+
     $$('[data-fav]').forEach(function (b) {
       var on = Wish.has(b.getAttribute('data-fav'));
       b.setAttribute('aria-pressed', String(on));
@@ -964,7 +1026,7 @@
   window.Vecchia = {
     cfg: CFG, products: PRODUCTS, byId: BY_ID,
     Cart: Cart, Wish: Wish, Drawer: Drawer, Search: Search, Toast: Toast,
-    search: search, SORTS: SORTS, FILTERS: FILTERS,
+    search: search, SORTS: SORTS, FILTERS: FILTERS, BRANDS: BRANDS,
     money: money, toCents: toCents, esc: esc, el: el, $: $, $$: $$,
     Rate: Rate, paintBs: paintBs,
     waLink: waLink, cardHTML: cardHTML, renderGrid: renderGrid,
