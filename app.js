@@ -189,28 +189,37 @@
 
 
   /* ═══════════════════════════════════════════════════════════════
-     TASA USD → Bs
-     Conserva la integración original (api.exchangerate.host) y le añade
-     una fuente venezolana, caché con fecha y override manual.
+     TASA EURO → Bs
+     Los precios se muestran en USD y su equivalente en bolívares se
+     calcula con la TASA EURO del BCV. Conserva la integración original
+     (api.exchangerate.host) como respaldo, con caché y ajuste manual.
      Regla de oro: si no hay una tasa válida NO se muestra nada en Bs.
      Nunca se pinta NaN, undefined, 0 ni "Tasa no configurada".
      ═══════════════════════════════════════════════════════════════ */
   var Rate = {
-    KEY: 'vecchia.rate.v1',
+    /* v2: la clave cambia con la moneda. Así un visitante que ya tenía
+       guardada la tasa dólar no sigue viendo cálculos con ella. */
+    KEY: 'vecchia.rate.eur.v2',
 
-    /* ── AJUSTE MANUAL ──────────────────────────────────────────────
-       Escribe aquí la tasa (por ejemplo 234.56) y mandará sobre las APIs.
-       Déjalo en null para que el sitio la busque solo.                */
+    /* ── AJUSTE MANUAL DE LA TASA EURO ──────────────────────────────
+       Escribe aquí los bolívares por euro (por ejemplo 968.07) y mandará
+       sobre las APIs. Déjalo en null para que el sitio la busque solo. */
     manual: null,
 
-    /* Fuentes en orden. La primera que devuelva un número válido gana. */
+    /* Fuentes de la TASA EURO, en orden; la primera con un número válido
+       gana. Comprobadas contra el servidor real: ve.dolarapi.com devuelve
+       {moneda:"EUR", promedio:968.06…, fechaActualizacion:"…"}.        */
     sources: [
-      { url: 'https://ve.dolarapi.com/v1/dolares/oficial',
-        pick: function (d) { return d && (d.promedio || d.valor); }, name: 'BCV' },
-      { url: 'https://api.exchangerate.host/latest?base=USD&symbols=VES',
-        pick: function (d) { return d && d.rates && d.rates.VES; }, name: 'exchangerate.host' },
-      { url: 'https://api.exchangerate.host/convert?from=USD&to=VES',
-        pick: function (d) { return d && d.result; }, name: 'exchangerate.host' }
+      { url: 'https://ve.dolarapi.com/v1/euros/oficial',
+        pick: function (d) { return d && (d.promedio || d.venta || d.compra); },
+        when: function (d) { return d && d.fechaActualizacion; },
+        name: 'BCV' },
+      { url: 'https://api.exchangerate.host/latest?base=EUR&symbols=VES',
+        pick: function (d) { return d && d.rates && d.rates.VES; },
+        name: 'exchangerate.host' },
+      { url: 'https://api.exchangerate.host/convert?from=EUR&to=VES',
+        pick: function (d) { return d && d.result; },
+        name: 'exchangerate.host' }
     ],
 
     state: null,
@@ -228,10 +237,16 @@
       if (c && Rate.valid(c.value)) Rate.state = c;
     },
 
-    set: function (value, source) {
+    set: function (value, source, updatedAt) {
       var v = Rate.valid(value);
       if (!v) return false;
-      Rate.state = { value: v, updatedAt: new Date().toISOString(), source: source || 'auto' };
+      /* Si la fuente informa su propia fecha se usa esa: es la del BCV,
+         no la del momento en que el visitante abrió la página. */
+      var when = new Date().toISOString();
+      if (updatedAt && !isNaN(new Date(updatedAt).getTime())) {
+        when = new Date(updatedAt).toISOString();
+      }
+      Rate.state = { value: v, updatedAt: when, source: source || 'auto' };
       Store.write(Rate.KEY, Rate.state);
       document.dispatchEvent(new CustomEvent('vecchia:rate'));
       return true;
@@ -252,7 +267,8 @@
           .then(function (r) { return r.ok ? r.json() : Promise.reject(0); })
           .then(function (d) {
             clearTimeout(to);
-            if (!Rate.set(src.pick(d), src.name)) next();
+            if (!Rate.set(src.pick(d), src.name,
+                          src.when ? src.when(d) : null)) next();
           })
           .catch(function () { clearTimeout(to); next(); });
       })();
@@ -260,31 +276,40 @@
 
     value: function () { return Rate.state ? Rate.state.value : null; },
 
-    /* Bs con formato venezolano. Devuelve '' si no hay tasa: quien llama
-       simplemente no pinta la línea. */
+    /* Número al estilo venezolano: 1.234,56 */
+    fmt: function (n) {
+      try {
+        return n.toLocaleString('es-VE',
+          { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      } catch (e) { return n.toFixed(2); }
+    },
+
+    /* Equivalente en bolívares calculado con la TASA EURO.
+       Devuelve '' si no hay tasa: quien llama no pinta la línea. */
     bs: function (cents) {
       var r = Rate.value();
       if (!r || !isFinite(cents)) return '';
       var n = (Number(cents) / 100) * r;
       if (!isFinite(n) || n <= 0) return '';
-      try {
-        return 'Bs ' + n.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      } catch (e) {
-        return 'Bs ' + n.toFixed(2);
-      }
+      return 'Bs ' + Rate.fmt(n);
     },
 
-    /* «Tasa actualizada el 9/9/2026» — solo si la conocemos */
+    /* «Tasa euro: Bs 968,07 · actualizada el 11 de septiembre de 2026».
+       Se nombra la tasa para que el comprador sepa con qué se calculó. */
     stamp: function () {
       if (!Rate.state) return '';
-      if (Rate.state.source === 'manual') return 'Tasa configurada por la tienda';
-      if (!Rate.state.updatedAt) return '';
+      var base = 'Tasa euro: Bs ' + Rate.fmt(Rate.state.value);
+      if (Rate.state.source === 'manual') return base + ' \u00b7 fijada por la tienda';
+      if (!Rate.state.updatedAt) return base;
       try {
-        return 'Tasa actualizada el ' +
+        return base + ' \u00b7 actualizada el ' +
           new Date(Rate.state.updatedAt).toLocaleDateString('es-VE',
             { day: 'numeric', month: 'long', year: 'numeric' });
-      } catch (e) { return ''; }
-    }
+      } catch (e) { return base; }
+    },
+
+    /* Etiqueta corta que acompaña al importe en Bs */
+    label: 'Tasa euro'
   };
 
   // ── Favoritos ────────────────────────────────────────────────────

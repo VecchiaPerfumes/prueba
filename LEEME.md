@@ -36,7 +36,7 @@ Borra del repositorio los archivos antiguos que ya no se usan:
 
 ## Cómo editar el catálogo
 
-Todo el catálogo vive en **`assets/data.js`**, en un único array.
+Todo el catálogo vive en **`data.js`**, en un único array.
 Para cambiar un precio, una foto o el stock, edita solo ese archivo:
 
 ```js
@@ -76,7 +76,7 @@ sin ningún servidor. Lo que **no** existe y requeriría backend:
 
 ## Paleta
 
-Dos colores. Están al principio de `assets/vecchia.css`:
+Dos colores. Están al principio de `vecchia.css`:
 
 ```css
 --white:#FFFFFF   /* fondo, tarjetas, modales, formularios */
@@ -113,32 +113,37 @@ por versiones con fondo blanco. Prueba primero una URL en el navegador: si
 `data.js` y poner `"dark": false`. No lo hice yo porque desde aquí no tengo
 acceso a internet para comprobarlo, y a ciegas se habrían roto las 72.
 
-## Tasa USD → Bs
+## Tasa euro → Bs
 
-El precio en bolívares aparece en las tarjetas, la ficha, el carrito y el
-checkout. La lógica está en `assets/app.js`, bloque `Rate`.
+Los precios se muestran en **dólares**, y el equivalente en bolívares se
+calcula con la **tasa euro del BCV**. Aparece en las tarjetas, la ficha, el
+carrito y el checkout. La lógica está en `app.js`, bloque `Rate`.
+
+El pie de cada página dice con qué tasa se calculó, por ejemplo:
+`Tasa euro: Bs 968,07 · actualizada el 11 de septiembre de 2026`.
+Así el comprador ve el número exacto que se usó y no hay malentendidos.
 
 **Cómo obtiene la tasa**, en este orden:
 
 1. **Tasa manual** — si la escribes, manda sobre todo lo demás. En `app.js`:
    ```js
-   manual: null,     // pon aquí el número, p. ej.  manual: 234.56
+   manual: null,     // bolívares por euro, p. ej.  manual: 968.07
    ```
 2. **La última tasa buena guardada** en el navegador del visitante.
-3. **Las APIs**, consultadas en segundo plano: `ve.dolarapi.com` (BCV) y las
-   dos direcciones de `api.exchangerate.host` que ya usaba tu panel de gestión.
+3. **Las APIs**, en segundo plano:
+   - `ve.dolarapi.com/v1/euros/oficial` (BCV) — comprobada y funcionando
+   - `api.exchangerate.host` con `base=EUR` — respaldo
 
 **Qué pasa si todo falla:** no se muestra ningún precio en bolívares. No sale
-`NaN`, ni `undefined`, ni `$0`, ni «Tasa no configurada» — sencillamente la
-línea en Bs no existe y el sitio sigue funcionando en dólares.
+`NaN`, ni `undefined`, ni `$0`, ni «Tasa no configurada» — la línea en Bs
+simplemente no existe y el sitio sigue funcionando en dólares.
 
 Cualquier valor absurdo (texto, cero, negativo, mayor de diez millones) se
-descarta y se conserva la tasa anterior. Cuando la tasa viene de una API, el
-pie muestra «Tasa actualizada el …».
+descarta y se conserva la tasa anterior.
 
-> Nota: no pude probar las APIs desde aquí porque este entorno no tiene salida
-> a internet. Por eso la tasa manual es el camino garantizado: si al publicar
-> ves que no aparecen los bolívares, escribe el número en `manual` y listo.
+> La clave de caché es `vecchia.rate.eur.v2`. Si algún día vuelves a la tasa
+> dólar, cambia también esa clave: si no, quien ya visitó el sitio seguiría
+> viendo cálculos hechos con la tasa vieja guardada en su navegador.
 
 ## Decants
 
